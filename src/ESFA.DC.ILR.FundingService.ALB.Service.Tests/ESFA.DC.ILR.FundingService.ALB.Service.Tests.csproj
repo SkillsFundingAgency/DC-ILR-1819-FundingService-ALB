@@ -147,9 +147,9 @@
       <Project>{05FCEB04-1F18-4B30-892C-213FB0753D45}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.Service</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ESFA.DC.TestHelpers.Mock\ESFA.DC.TestHelpers.csproj">
-      <Project>{e756cbde-3973-45f1-8083-25fafbf14970}</Project>
-      <Name>ESFA.DC.TestHelpers</Name>
+    <ProjectReference Include="..\ESFA.DC.TestHelpers.Mock\ESFA.DC.TestHelpers.Mock.csproj">
+      <Project>{2f41d425-9302-40cf-b848-9ac4f08243f7}</Project>
+      <Name>ESFA.DC.TestHelpers.Mock</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
