@@ -10,7 +10,7 @@ using ESFA.DC.ILR.FundingService.ALB.ExternalData;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.LARS.Model;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Postcodes.Model;
-using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Implementation;
+using ESFA.DC.ILR.FundingService.ALB.Service.Builders;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
 using ESFA.DC.ILR.Model;
@@ -28,6 +28,11 @@ using ESFA.DC.Data.Postcodes.Model;
 using ESFA.DC.ILR.Model.Interface;
 using ESFA.DC.OPA.Service.Interface.Rulebase;
 using ESFA.DC.OPA.Service.Rulebase;
+using ESFA.DC.ILR.FundingService.ALB.Stubs;
+using ESFA.DC.Serialization.Interfaces;
+using ESFA.DC.Serialization.Xml;
+using ESFA.DC.IO.Interfaces;
+using ESFA.DC.IO.Dictionary;
 
 namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
 {
@@ -436,6 +441,92 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
 
         #endregion
 
+        #region Retrieve Valid Learners Tests
+
+        /// <summary>
+        /// Return Valid Learners from KeyValuePersistanceService
+        /// </summary>
+        [Fact(DisplayName = "Valid Learners - Learners Exist"), Trait("Funding Service", "Unit")]
+        public void ValidLearners_LearnersExist()
+        {
+            // ARRANGE
+            var fundingContext = new FundingContextStub { ValidLearnRefNumbersKey = "ValidLearnRefNumbers" };
+
+            IKeyValuePersistenceService keyValuePersistenceService = new DictionaryKeyValuePersistenceService();
+            ISerializationService serializationService = new XmlSerializationService();
+
+            var validationOutput = new ValidationOutputStub(fundingContext, keyValuePersistenceService, serializationService);
+
+            var validLearnersList = new List<string> { "22v237", "16v224" };
+
+            //ACT
+            validationOutput.ValidLearners(validLearnersList);
+
+            //ASSERT
+            var result = keyValuePersistenceService.GetAsync(fundingContext.ValidLearnRefNumbersKey).Result;
+
+            result.Should().NotBeNull();
+        }
+
+        /// <summary>
+        /// Return Valid Learners from KeyValuePersistanceService
+        /// </summary>
+        [Fact(DisplayName = "Valid Learners - Learners Correct"), Trait("Funding Service", "Unit")]
+        public void ValidLearners_LearnersCorrect()
+        {
+            // ARRANGE
+            var fundingContext = new FundingContextStub { ValidLearnRefNumbersKey = "ValidLearnRefNumbers" };
+
+            IKeyValuePersistenceService keyValuePersistenceService = new DictionaryKeyValuePersistenceService();
+            ISerializationService serializationService = new XmlSerializationService();
+
+            var validationOutput = new ValidationOutputStub(fundingContext, keyValuePersistenceService, serializationService);
+
+            var validLearnersList = new List<string> { "22v237", "16v224" };
+
+            //ACT
+            validationOutput.ValidLearners(validLearnersList);
+
+            //ASSERT
+            var result = keyValuePersistenceService.GetAsync(fundingContext.ValidLearnRefNumbersKey).Result;
+
+            serializationService.Deserialize<List<string>>(result).Should().BeEquivalentTo(validLearnersList);
+        }
+
+        /// <summary>
+        /// Return Valid Learners from KeyValuePersistanceService
+        /// </summary>
+        [Fact(DisplayName = "Valid Learners - Run Funding Service - Learner Count"), Trait("Funding Service", "Unit")]
+        public void ValidLearners_FundingServiceLearnersCount()
+        {
+            // ARRANGE        
+            var validLearnersList = new List<string> { "16v224" };
+
+            //ACT
+            var dataEntity = RunFundingServiceForValidLearners(@"Files\ILR-10006341-1819-20180118-023456-02.xml", validLearnersList);
+
+            //ASSERT
+            dataEntity.Count().Should().Be(1);
+        }
+
+        /// <summary>
+        /// Return Valid Learners from KeyValuePersistanceService
+        /// </summary>
+        [Fact(DisplayName = "Valid Learners - Run Funding Service - Learner Correct"), Trait("Funding Service", "Unit")]
+        public void ValidLearners_FundingServiceLearnersCorrect()
+        {
+            // ARRANGE        
+            var validLearnersList = new List<string> { "16v224" };
+
+            //ACT
+            var dataEntity = RunFundingServiceForValidLearners(@"Files\ILR-10006341-1819-20180118-023456-02.xml", validLearnersList);
+
+            //ASSERT
+            dataEntity.Select(g => g.Children.Select(l => l.LearnRefNumber)).Single().Should().BeEquivalentTo("16v224");
+        }
+        
+        #endregion
+
         #region Test Helpers
 
         #region Test Data
@@ -599,14 +690,17 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
         private static readonly Mock<ILARS> larsContextMock = new Mock<ILARS>();
         private static readonly Mock<IPostcodes> postcodesContextMock = new Mock<IPostcodes>();
 
-        private Implementation.FundingService FundingServicePopulationReferenceDataMock(IReferenceDataCache referenceDataCache)
+        private FundingService FundingServicePopulationReferenceDataMock(IReferenceDataCache referenceDataCache)
         {
+            IFundingContext fundingContext = new FundingContextStub { ValidLearnRefNumbersKey = "ValidLearnRefNumbers" };
+            IKeyValuePersistenceService keyValuePersistenceService = new DictionaryKeyValuePersistenceService();
+            ISerializationService serializationService = new XmlSerializationService();
             IAttributeBuilder<IAttributeData> attributeBuilder = new AttributeBuilder();
             var dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
 
             var referenceDataCachePopulationService = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock().Object, PostcodesMock().Object);
 
-            return new Implementation.FundingService(referenceDataCachePopulationService, dataEntityBuilder, opaService);
+            return new FundingService(referenceDataCachePopulationService, keyValuePersistenceService, serializationService, fundingContext, dataEntityBuilder, opaService);
         }
 
         private Mock<ILARS> LARSMock()
@@ -637,11 +731,36 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
         {
             Message message = ILRFile(filePath);
 
+            IKeyValuePersistenceService keyValuePersistenceService = new DictionaryKeyValuePersistenceService();
+            ISerializationService serializationService = new XmlSerializationService();
+            IFundingContext fundingContext = new FundingContextStub { ValidLearnRefNumbersKey = "ValidLearnRefNumbers" };
+            var validationOutput = new ValidationOutputStub(fundingContext, keyValuePersistenceService, serializationService);
+            validationOutput.ValidLearners(message.Learner.Select(l => l.LearnRefNumber).ToList());
+
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
             IReferenceDataCachePopulationService referenceDataCachePopulationService = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock().Object, PostcodesMock().Object);
             IAttributeBuilder<IAttributeData> attributeBuilder = new AttributeBuilder();
             var dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
-            IFundingSevice fundingService = new Implementation.FundingService(referenceDataCachePopulationService, dataEntityBuilder, opaService);
+            IFundingSevice fundingService = new FundingService(referenceDataCachePopulationService, keyValuePersistenceService, serializationService, fundingContext, dataEntityBuilder, opaService);
+
+            return fundingService.ProcessFunding(message);
+        }
+
+        private IEnumerable<IDataEntity> RunFundingServiceForValidLearners(string filePath, IList<string> validLearners)
+        {
+            Message message = ILRFile(filePath);
+
+            IKeyValuePersistenceService keyValuePersistenceService = new DictionaryKeyValuePersistenceService();
+            ISerializationService serializationService = new XmlSerializationService();
+            IFundingContext fundingContext = new FundingContextStub { ValidLearnRefNumbersKey = "ValidLearnRefNumbers" };
+            var validationOutput = new ValidationOutputStub(fundingContext, keyValuePersistenceService, serializationService);
+            validationOutput.ValidLearners(validLearners);
+
+            IReferenceDataCache referenceDataCache = new ReferenceDataCache();
+            IReferenceDataCachePopulationService referenceDataCachePopulationService = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock().Object, PostcodesMock().Object);
+            IAttributeBuilder<IAttributeData> attributeBuilder = new AttributeBuilder();
+            var dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
+            IFundingSevice fundingService = new FundingService(referenceDataCachePopulationService, keyValuePersistenceService, serializationService, fundingContext, dataEntityBuilder, opaService);
 
             return fundingService.ProcessFunding(message);
         }

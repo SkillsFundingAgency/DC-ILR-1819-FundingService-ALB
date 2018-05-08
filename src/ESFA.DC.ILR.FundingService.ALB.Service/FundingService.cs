@@ -1,25 +1,32 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
 using ESFA.DC.ILR.Model.Interface;
+using ESFA.DC.IO.Interfaces;
 using ESFA.DC.OPA.Model.Interface;
 using ESFA.DC.OPA.Service.Interface;
+using ESFA.DC.Serialization.Interfaces;
 
-namespace ESFA.DC.ILR.FundingService.ALB.Service.Implementation
+namespace ESFA.DC.ILR.FundingService.ALB.Service
 {
     public class FundingService : IFundingSevice
     {
         private readonly IReferenceDataCachePopulationService _referenceDataCachePopulationService;
+        private readonly IKeyValuePersistenceService _keyValuePersistenceService;
+        private readonly ISerializationService _serializationService;
+        private readonly IFundingContext _fundingContext;
         private readonly IDataEntityBuilder _dataEntityBuilder;
         private readonly IOPAService _opaService;
 
-        public FundingService(IReferenceDataCachePopulationService referenceDataCachePopulationService, IDataEntityBuilder dataEntityBuilder, IOPAService opaService)
+        public FundingService(IReferenceDataCachePopulationService referenceDataCachePopulationService, IKeyValuePersistenceService keyValuePersistenceService, ISerializationService serializationService, IFundingContext fundingContext, IDataEntityBuilder dataEntityBuilder, IOPAService opaService)
         {
             _referenceDataCachePopulationService = referenceDataCachePopulationService;
+            _keyValuePersistenceService = keyValuePersistenceService;
+            _serializationService = serializationService;
+            _fundingContext = fundingContext;
             _dataEntityBuilder = dataEntityBuilder;
             _opaService = opaService;
         }
@@ -28,8 +35,8 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Implementation
         {
             int ukprn = message.LearningProviderEntity.UKPRN;
 
-            var learner2s = message.Learners; //.Where(ld => ld.LearningDeliveries.Any(fm => fm.FundModel == 99));
-            var learners = message.Learners.Where(ld => ld.LearningDeliveries.Any(fm => fm.FundModel == 99));
+            var validLearners = _serializationService.Deserialize<List<string>>(_keyValuePersistenceService.GetAsync(_fundingContext.ValidLearnRefNumbersKey).Result);
+            var learners = message.Learners.Where(l => l.LearningDeliveries.Any(fm => fm.FundModel == 99 && validLearners.Contains(l.LearnRefNumber)));
 
             PopulateReferenceData(learners);
 
@@ -56,5 +63,12 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Implementation
 
             _referenceDataCachePopulationService.Populate(learnAimRefs, postcodesList);
         }
+
+        //protected internal IEnumerable<string> ValidLearners()
+        //{
+        //    var valid = _keyValuePersistenceService.GetAsync(ValidLearnRefNumbersKey).Result;
+
+        //    return valid;
+        //}
     }
 }

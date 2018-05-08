@@ -119,6 +119,10 @@
       <Project>{40a43ba4-a9aa-4746-836d-e60ebffe5727}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.ExternalData</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.Service.Interface\ESFA.DC.ILR.FundingService.ALB.Service.Interface.csproj">
+      <Project>{b483baed-652e-4ec1-aaef-654721bdcfaf}</Project>
+      <Name>ESFA.DC.ILR.FundingService.ALB.Service.Interface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.Service\ESFA.DC.ILR.FundingService.ALB.Service.csproj">
       <Project>{6cb11e3a-7270-410b-98de-ba4880213768}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.Service</Name>

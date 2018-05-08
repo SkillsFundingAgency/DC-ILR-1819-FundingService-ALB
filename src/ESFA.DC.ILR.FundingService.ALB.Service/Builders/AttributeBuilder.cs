@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Interface;
 using ESFA.DC.OPA.Model;
 using ESFA.DC.OPA.Model.Interface;
 
-namespace ESFA.DC.ILR.FundingService.ALB.Service.Builders.Implementation
+namespace ESFA.DC.ILR.FundingService.ALB.Service.Builders
 {
     public class AttributeBuilder : IAttributeBuilder<IAttributeData>
     {

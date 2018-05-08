@@ -8,7 +8,7 @@ using ESFA.DC.Data.Postcodes.Model;
 using ESFA.DC.Data.Postcodes.Model.Interfaces;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
-using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Implementation;
+using ESFA.DC.ILR.FundingService.ALB.Service.Builders;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Rulebase;
@@ -89,7 +89,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
             builder.RegisterType<OPAService>().As<IOPAService>().InstancePerLifetimeScope();
             builder.RegisterType<AttributeBuilder>().As<IAttributeBuilder<IAttributeData>>().InstancePerLifetimeScope();
             builder.RegisterType<DataEntityBuilder>().As<IDataEntityBuilder>().InstancePerLifetimeScope();
-            builder.RegisterType<Service.Implementation.FundingService>().As<IFundingSevice>();
+            builder.RegisterType<Service.FundingService>().As<IFundingSevice>();
 
             return builder;
         }

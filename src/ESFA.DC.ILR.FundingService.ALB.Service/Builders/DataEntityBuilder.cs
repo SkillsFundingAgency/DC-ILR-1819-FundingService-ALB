@@ -8,7 +8,7 @@ using ESFA.DC.ILR.Model.Interface;
 using ESFA.DC.OPA.Model;
 using ESFA.DC.OPA.Model.Interface;
 
-namespace ESFA.DC.ILR.FundingService.ALB.Service.Builders.Implementation
+namespace ESFA.DC.ILR.FundingService.ALB.Service.Builders
 {
     public class DataEntityBuilder : IDataEntityBuilder
     {
