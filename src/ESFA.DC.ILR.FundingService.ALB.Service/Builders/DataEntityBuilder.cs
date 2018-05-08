@@ -95,7 +95,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Builders
             IDataEntity globalDataEntity = new DataEntity(Entityglobal)
             {
                 Attributes =
-                    _attributeBuilder.BuildGlobalAttributes(ukprn, _referenceDataCache.LARSCurrentVersion, _referenceDataCache.PostcodeCurrentVersion)
+                    _attributeBuilder.BuildGlobalAttributes(ukprn, _referenceDataCache.LARSCurrentVersion, _referenceDataCache.PostcodeCurrentVersion),
             };
 
             return globalDataEntity;
@@ -106,7 +106,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Builders
             IDataEntity learnerDataEntity = new DataEntity(EntityLearner)
             {
                 Attributes =
-                    _attributeBuilder.BuildLearnerAttributes(learnRefNumber)
+                    _attributeBuilder.BuildLearnerAttributes(learnRefNumber),
             };
 
             return learnerDataEntity;
@@ -131,7 +131,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Builders
                         learningDelivery.OtherFundAdjNullable,
                         learningDelivery.OutcomeNullable,
                         learningDelivery.PriorLearnFundAdjNullable,
-                        larsLearningDelivery?.RegulatedCreditValue)
+                        larsLearningDelivery?.RegulatedCreditValue),
             };
 
             return learningDeliveryDataEntity;
@@ -146,7 +146,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Builders
                         learningDeliveryFam.LearnDelFAMCode,
                         learningDeliveryFam.LearnDelFAMDateFromNullable,
                         learningDeliveryFam.LearnDelFAMDateToNullable,
-                        learningDeliveryFam.LearnDelFAMType)
+                        learningDeliveryFam.LearnDelFAMType),
             };
 
             return learningDeliveryFAMDataEntity;
@@ -160,7 +160,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Builders
                 _attributeBuilder.BuildLearningDeliverySfaAreaCostAttributes(
                         sfaAreaCost?.EffectiveFrom,
                         sfaAreaCost?.EffectiveTo,
-                        sfaAreaCost.AreaCostFactor)
+                        sfaAreaCost.AreaCostFactor),
             };
 
             return sfaAreaCostDataEntity;
@@ -175,7 +175,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Builders
                     larsFunding.EffectiveFrom,
                     larsFunding?.EffectiveTo,
                     larsFunding.RateWeighted,
-                    larsFunding.WeightingFactor)
+                    larsFunding.WeightingFactor),
             };
 
             return larsFundingDataEntity;

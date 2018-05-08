@@ -28,7 +28,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
            { 9, new DateTime(2018, 04, 01) },
            { 10, new DateTime(2018, 05, 01) },
            { 11, new DateTime(2018, 06, 01) },
-           { 12, new DateTime(2018, 07, 01) }
+           { 12, new DateTime(2018, 07, 01) },
         };
 
         public void PersistData(IEnumerable<IDataEntity> dataEntities)
@@ -43,7 +43,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
                    new FundingOutput()
                    {
                        LearnRefNumber = learnRefNumber,
-                       Instance = de
+                       Instance = de,
                    };
 
                 output.Add(outputToadd);
@@ -90,7 +90,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
                 var globaltoStage = new GlobalAttribute()
                 {
                     Name = name,
-                    Data = output.Attributes[name].Value.ToString()
+                    Data = output.Attributes[name].Value.ToString(),
                 };
 
                 globalStaged.Add(globaltoStage);
@@ -127,7 +127,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
                         LearnRefNumber = ld.Parent.LearnRefNumber,
                         AimSeqNumber = ld.Attributes[aim].Value.ToString(),
                         Name = lda,
-                        Data = ld.Attributes[lda].Value.ToString()
+                        Data = ld.Attributes[lda].Value.ToString(),
                     };
 
                     outputAtt.Add(ldToStage);
@@ -156,7 +156,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
                     LoanBursSupp = ConvertToBit(ld.Where(n => n.Name == "LoanBursSupp").Select(v => v.Data).First()),
                     OutstndNumOnProgInstalm = DecimalStrToInt(ld.Where(n => n.Name == "OutstndNumOnProgInstalm").Select(v => v.Data).First()),
                     PlannedNumOnProgInstalm = DecimalStrToInt(ld.Where(n => n.Name == "PlannedNumOnProgInstalm").Select(v => v.Data).First()),
-                    WeightedRate = decimal.Parse(ld.Where(n => n.Name == "WeightedRate").Select(v => v.Data).First(), Culture)
+                    WeightedRate = decimal.Parse(ld.Where(n => n.Name == "WeightedRate").Select(v => v.Data).First(), Culture),
                 }).ToArray();
 
             return pivot;
@@ -189,7 +189,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
                                 AimSeqNumber = ld.Attributes[aim].Value.ToString(),
                                 Period = GetPeriodNumber(p.Value),
                                 Name = lda,
-                                Data = ld.Attributes[lda].Value.ToString()
+                                Data = ld.Attributes[lda].Value.ToString(),
                             };
                             outputAtt.Add(ldToStage);
                         }
@@ -230,7 +230,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
                          ALBCode = DecimalStrToInt(ld.Where(n => n.Name == "ALBCode").Select(v => v.Data).DefaultIfEmpty("0").First()),
                          ALBSupportPayment = decimal.Parse(ld.Where(n => n.Name == "ALBSupportPayment").Select(v => v.Data).First(), Culture),
                          AreaUpliftBalPayment = decimal.Parse(ld.Where(n => n.Name == "AreaUpliftBalPayment").Select(v => v.Data).First(), Culture),
-                         AreaUpliftOnProgPayment = decimal.Parse(ld.Where(n => n.Name == "AreaUpliftOnProgPayment").Select(v => v.Data).First(), Culture)
+                         AreaUpliftOnProgPayment = decimal.Parse(ld.Where(n => n.Name == "AreaUpliftOnProgPayment").Select(v => v.Data).First(), Culture),
                      }).ToArray();
 
             return output;
@@ -288,7 +288,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
                                 LearnRefNumber = l.LearnRefNumber,
                                 Period = GetPeriodNumber(p.Value),
                                 Name = la,
-                                Data = l.Attributes[la].Value.ToString()
+                                Data = l.Attributes[la].Value.ToString(),
                             };
 
                             outputAtt.Add(learnerToStage);

@@ -441,7 +441,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
 
         #endregion
 
-        #region Retrieve Valid Learners Tests
+        #region Valid Learners Tests
 
         /// <summary>
         /// Return Valid Learners from KeyValuePersistanceService

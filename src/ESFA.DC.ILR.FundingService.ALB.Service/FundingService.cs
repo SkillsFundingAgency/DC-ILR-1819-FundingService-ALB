@@ -63,12 +63,5 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service
 
             _referenceDataCachePopulationService.Populate(learnAimRefs, postcodesList);
         }
-
-        //protected internal IEnumerable<string> ValidLearners()
-        //{
-        //    var valid = _keyValuePersistenceService.GetAsync(ValidLearnRefNumbersKey).Result;
-
-        //    return valid;
-        //}
     }
 }

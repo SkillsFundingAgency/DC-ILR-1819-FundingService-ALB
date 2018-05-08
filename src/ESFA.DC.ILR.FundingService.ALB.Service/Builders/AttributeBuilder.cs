@@ -60,7 +60,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Builders
             {
                 { UKPRN,  new AttributeData(UKPRN, ukprn) },
                 { LARSVersion, new AttributeData(LARSVersion, larsVersion) },
-                { PostcodeAreaCostVersion,  new AttributeData(PostcodeAreaCostVersion, postcodeAreaCostVersion) }
+                { PostcodeAreaCostVersion,  new AttributeData(PostcodeAreaCostVersion, postcodeAreaCostVersion) },
             };
         }
 
@@ -68,7 +68,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Builders
         {
             return new Dictionary<string, IAttributeData>
             {
-                { LearnRefNumber, new AttributeData(LearnRefNumber, learnRefNumber) }
+                { LearnRefNumber, new AttributeData(LearnRefNumber, learnRefNumber) },
             };
         }
 
@@ -103,7 +103,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Builders
                 { OtherFundAdj, new AttributeData(OtherFundAdj, otherFundAdj) },
                 { Outcome, new AttributeData(Outcome, outcome) },
                 { PriorLearnFundAdj, new AttributeData(PriorLearnFundAdj, priorLearnFundAdj) },
-                { RegulatedCreditValue, new AttributeData(RegulatedCreditValue, regulatedCreditValue) }
+                { RegulatedCreditValue, new AttributeData(RegulatedCreditValue, regulatedCreditValue) },
             };
         }
 
@@ -114,7 +114,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Builders
                 { LearnDelFAMCode, new AttributeData(LearnDelFAMCode, learnDelFAMCode) },
                 { LearnDelFAMDateFrom, new AttributeData(LearnDelFAMDateFrom, learnDelFAMDateFrom) },
                 { LearnDelFAMDateTo, new AttributeData(LearnDelFAMDateTo, learnDelFAMDateTo) },
-                { LearnDelFAMType, new AttributeData(LearnDelFAMType, learnDelFAMType) }
+                { LearnDelFAMType, new AttributeData(LearnDelFAMType, learnDelFAMType) },
             };
         }
 
@@ -124,7 +124,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Builders
             {
                 { AreaCosEffectiveFrom, new AttributeData(AreaCosEffectiveFrom, areaCosEffectiveFrom) },
                 { AreaCosEffectiveTo, new AttributeData(AreaCosEffectiveTo, areaCosEffectiveTo) },
-                { AreaCosFactor, new AttributeData(AreaCosFactor, areaCosFactor) }
+                { AreaCosFactor, new AttributeData(AreaCosFactor, areaCosFactor) },
             };
         }
 
@@ -141,7 +141,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Builders
                 { LARSFundEffectiveFrom, new AttributeData(LARSFundEffectiveFrom, larsFundEffectiveFrom) },
                 { LARSFundEffectiveTo, new AttributeData(LARSFundEffectiveTo, larsFundEffectiveTo) },
                 { LARSFundWeightedRate, new AttributeData(LARSFundWeightedRate, larsFundWeightedRate) },
-                { LARSFundWeightingFactor, new AttributeData(LARSFundWeightingFactor, larsFundWeightingFactor) }
+                { LARSFundWeightingFactor, new AttributeData(LARSFundWeightingFactor, larsFundWeightingFactor) },
             };
         }
     }

@@ -25,8 +25,6 @@ namespace ESFA.DC.ILR.FundingService.ALB.Stubs
             if (learnRefNumbers != null)
             {
                 _keyValuePersistenceService.SaveAsync(_fundingContext.ValidLearnRefNumbersKey, _serializationService.Serialize(learnRefNumbers)).Wait();
-
-                var valid = _keyValuePersistenceService.GetAsync(_fundingContext.ValidLearnRefNumbersKey).Result;
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Autofac;
 using ESFA.DC.Data.LARS.Model;
 using ESFA.DC.Data.LARS.Model.Interfaces;
@@ -12,8 +13,11 @@ using ESFA.DC.ILR.FundingService.ALB.Service.Builders;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Rulebase;
+using ESFA.DC.ILR.FundingService.ALB.Stubs;
 using ESFA.DC.ILR.Model;
 using ESFA.DC.ILR.Model.Interface;
+using ESFA.DC.IO.Dictionary;
+using ESFA.DC.IO.Interfaces;
 using ESFA.DC.OPA.Model.Interface;
 using ESFA.DC.OPA.Service;
 using ESFA.DC.OPA.Service.Builders;
@@ -29,27 +33,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
     {
         private static Stream stream;
 
+        private static IMessage message;
+
         public static void Main(string[] args)
         {
             var stopwatch = new Stopwatch();
 
-            try
-            {
-                System.Console.WriteLine("Loading file..");
-
-                // stream = new FileStream(@"Files\ILR-10006341-1819-20180118-023456-01.xml", FileMode.Open);
-                stream = new FileStream(@"Files\ILR-10006341-1819-20180118-023456-02.xml", FileMode.Open);
-            }
-            catch (Exception ex)
-            {
-                System.Console.WriteLine("File Load Error: Problem loading file... {0}", ex);
-            }
-
-            ISerializationService serializationService = new XmlSerializationService();
-
-            IMessage message = serializationService.Deserialize<Message>(stream);
-
-            stream.Close();
+            GetILRFile();
 
             System.Console.WriteLine("Executing Funding Service...");
 
@@ -75,6 +65,26 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
             }
         }
 
+        public static void GetILRFile()
+        {
+            try
+            {
+                System.Console.WriteLine("Loading file..");
+
+                // stream = new FileStream(@"Files\ILR-10006341-1819-20180118-023456-01.xml", FileMode.Open);
+                stream = new FileStream(@"Files\ILR-10006341-1819-20180118-023456-02.xml", FileMode.Open);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine("File Load Error: Problem loading file... {0}", ex);
+            }
+
+            ISerializationService serializationService = new XmlSerializationService();
+            message = serializationService.Deserialize<Message>(stream);
+
+            stream.Close();
+        }
+
         private static ContainerBuilder ConfigureBuilder()
         {
             var builder = new ContainerBuilder();
@@ -89,9 +99,23 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
             builder.RegisterType<OPAService>().As<IOPAService>().InstancePerLifetimeScope();
             builder.RegisterType<AttributeBuilder>().As<IAttributeBuilder<IAttributeData>>().InstancePerLifetimeScope();
             builder.RegisterType<DataEntityBuilder>().As<IDataEntityBuilder>().InstancePerLifetimeScope();
-            builder.RegisterType<Service.FundingService>().As<IFundingSevice>();
+            builder.RegisterType<XmlSerializationService>().As<ISerializationService>().InstancePerLifetimeScope();
+            builder.RegisterType<FundingContextStub>().As<IFundingContext>().WithProperty("ValidLearnRefNumbersKey", "ValidLearnRefNumbers").InstancePerLifetimeScope();
+            builder.RegisterType<Service.FundingService>().As<IFundingSevice>().InstancePerLifetimeScope();
+            builder.Register(ctx => BuildKeyValueDictionary()).As<IKeyValuePersistenceService>().InstancePerLifetimeScope();
 
             return builder;
+        }
+
+        private static DictionaryKeyValuePersistenceService BuildKeyValueDictionary()
+        {
+            var learnRefNumbers = message.Learners.Select(l => l.LearnRefNumber).ToList();
+            var list = new DictionaryKeyValuePersistenceService();
+            var serializer = new XmlSerializationService();
+
+            list.SaveAsync("ValidLearnRefNumbers", serializer.Serialize(learnRefNumbers)).Wait();
+
+            return list;
         }
     }
 }
