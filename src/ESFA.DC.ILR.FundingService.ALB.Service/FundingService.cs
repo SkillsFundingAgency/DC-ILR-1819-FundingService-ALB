@@ -4,6 +4,7 @@ using System.Linq;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
+using ESFA.DC.ILR.FundingService.ALB.Service.Interface.Contexts;
 using ESFA.DC.ILR.Model.Interface;
 using ESFA.DC.IO.Interfaces;
 using ESFA.DC.OPA.Model.Interface;
@@ -15,17 +16,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service
     public class FundingService : IFundingSevice
     {
         private readonly IReferenceDataCachePopulationService _referenceDataCachePopulationService;
-        private readonly IKeyValuePersistenceService _keyValuePersistenceService;
-        private readonly ISerializationService _serializationService;
         private readonly IFundingContext _fundingContext;
         private readonly IDataEntityBuilder _dataEntityBuilder;
         private readonly IOPAService _opaService;
 
-        public FundingService(IReferenceDataCachePopulationService referenceDataCachePopulationService, IKeyValuePersistenceService keyValuePersistenceService, ISerializationService serializationService, IFundingContext fundingContext, IDataEntityBuilder dataEntityBuilder, IOPAService opaService)
+        public FundingService(IReferenceDataCachePopulationService referenceDataCachePopulationService, IFundingContext fundingContext, IDataEntityBuilder dataEntityBuilder, IOPAService opaService)
         {
             _referenceDataCachePopulationService = referenceDataCachePopulationService;
-            _keyValuePersistenceService = keyValuePersistenceService;
-            _serializationService = serializationService;
             _fundingContext = fundingContext;
             _dataEntityBuilder = dataEntityBuilder;
             _opaService = opaService;
@@ -35,8 +32,8 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service
         {
             int ukprn = message.LearningProviderEntity.UKPRN;
 
-            var validLearners = _serializationService.Deserialize<List<string>>(_keyValuePersistenceService.GetAsync(_fundingContext.ValidLearnRefNumbersKey).Result);
-            var learners = message.Learners.Where(l => l.LearningDeliveries.Any(fm => fm.FundModel == 99 && validLearners.Contains(l.LearnRefNumber)));
+            var learners = message.Learners.Where(l =>
+                l.LearningDeliveries.Any(fm => fm.FundModel == 99 && _fundingContext.ValidLearnRefNumbers.Contains(l.LearnRefNumber)));
 
             PopulateReferenceData(learners);
 
