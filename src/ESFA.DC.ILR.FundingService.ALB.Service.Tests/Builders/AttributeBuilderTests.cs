@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Implementation;
+using ESFA.DC.ILR.FundingService.ALB.Service.Builders;
 using Xunit;
 using FluentAssertions;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Interface;

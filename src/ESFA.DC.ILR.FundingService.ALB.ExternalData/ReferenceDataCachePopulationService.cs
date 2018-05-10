@@ -50,7 +50,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData
                     LearnAimRef = ld.LearnAimRef,
                     LearnAimRefType = ld.LearnAimRefType,
                     NotionalNVQLevelv2 = ld.NotionalNVQLevelv2,
-                    RegulatedCreditValue = ld.RegulatedCreditValue
+                    RegulatedCreditValue = ld.RegulatedCreditValue,
                 });
         }
 
@@ -66,7 +66,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData
                     EffectiveFrom = lf.EffectiveFrom,
                     EffectiveTo = lf.EffectiveTo,
                     RateWeighted = lf.RateWeighted,
-                    WeightingFactor = lf.WeightingFactor
+                    WeightingFactor = lf.WeightingFactor,
                 }).ToList() as IEnumerable<LARSFunding>);
         }
 
@@ -89,7 +89,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData
                     Postcode = sac.Postcode,
                     AreaCostFactor = sac.AreaCostFactor,
                     EffectiveFrom = sac.EffectiveFrom,
-                    EffectiveTo = sac.EffectiveTo
+                    EffectiveTo = sac.EffectiveTo,
                 }).ToList() as IEnumerable<SfaAreaCost>);
         }
 

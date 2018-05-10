@@ -4,30 +4,39 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
+using ESFA.DC.Data.LARS.Model;
 using ESFA.DC.Data.LARS.Model.Interfaces;
+using ESFA.DC.Data.Postcodes.Model;
 using ESFA.DC.Data.Postcodes.Model.Interfaces;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.LARS.Model;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Postcodes.Model;
-using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Implementation;
+using ESFA.DC.ILR.FundingService.ALB.Service.Builders;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Interface;
+using ESFA.DC.ILR.FundingService.ALB.Service.Contexts;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
+using ESFA.DC.ILR.FundingService.ALB.Service.Interface.Contexts;
+using ESFA.DC.ILR.FundingService.ALB.Stubs;
 using ESFA.DC.ILR.Model;
+using ESFA.DC.ILR.Model.Interface;
+using ESFA.DC.IO.Dictionary;
+using ESFA.DC.IO.Interfaces;
+using ESFA.DC.JobContext;
+using ESFA.DC.JobContext.Interface;
 using ESFA.DC.OPA.Model.Interface;
-using FluentAssertions;
-using Xunit;
-using Moq;
 using ESFA.DC.OPA.Service;
 using ESFA.DC.OPA.Service.Builders;
 using ESFA.DC.OPA.Service.Interface;
 using ESFA.DC.OPA.Service.Interface.Builders;
-using ESFA.DC.TestHelpers.Mocks;
-using ESFA.DC.Data.LARS.Model;
-using ESFA.DC.Data.Postcodes.Model;
-using ESFA.DC.ILR.Model.Interface;
 using ESFA.DC.OPA.Service.Interface.Rulebase;
 using ESFA.DC.OPA.Service.Rulebase;
+using ESFA.DC.Serialization.Interfaces;
+using ESFA.DC.Serialization.Xml;
+using ESFA.DC.TestHelpers.Mocks;
+using FluentAssertions;
+using Moq;
+using Xunit;
 
 namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
 {
@@ -299,10 +308,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             //ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
-            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache);
+            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache, message);
 
             //ACT
-            fundingService.PopulateReferenceData(message.Learners);
+            fundingService.PopulateData(message);
 
             //ASSERT
             referenceDataCache.LARSCurrentVersion.Should().Be("Version_005");
@@ -317,10 +326,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             //ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
-            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache);
+            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache, message);
 
             //ACT
-            fundingService.PopulateReferenceData(message.Learners);
+            fundingService.PopulateData(message);
 
             //ASSERT
             var expectedOutput1 = new LARSLearningDelivery
@@ -355,10 +364,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             //ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
-            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache);
+            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache, message);
 
             //ACT
-            fundingService.PopulateReferenceData(message.Learners);
+            fundingService.PopulateData(message);
 
             //ASSERT
             var expectedOutput1 = new LARSFunding
@@ -397,10 +406,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             //ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
-            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache);
+            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache, message);
 
             //ACT
-            fundingService.PopulateReferenceData(message.Learners);
+            fundingService.PopulateData(message);
 
             //ASSERT
             referenceDataCache.PostcodeCurrentVersion.Should().Be("Version_002");
@@ -415,10 +424,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             //ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
-            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache);
+            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache, message);
 
             //ACT
-            fundingService.PopulateReferenceData(message.Learners);
+            fundingService.PopulateData(message);
 
             //ASSERT
             var expectedOutput1 = new SfaAreaCost
@@ -432,6 +441,104 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             var output = referenceDataCache.SfaAreaCost.Where(k => k.Key == "CV1 2WT").SelectMany(o => o.Value).FirstOrDefault();
 
             output.Should().BeEquivalentTo(expectedOutput1);
+        }
+
+        #endregion
+
+        #region Valid Learners Tests
+
+        /// <summary>
+        /// Return Valid Learners from KeyValuePersistanceService
+        /// </summary>
+        [Fact(DisplayName = "Valid Learners - Learners Exist"), Trait("Funding Service", "Unit")]
+        public void ValidLearners_LearnersExist()
+        {
+            // ARRANGE
+            IKeyValuePersistenceService keyValuePersistenceService = new DictionaryKeyValuePersistenceService();
+            ISerializationService serializationService = new XmlSerializationService();
+
+            var validationOutput = new ValidationOutputStub(keyValuePersistenceService, serializationService);
+
+            var validLearnersList = new List<string> { "22v237", "16v224" };
+
+            //ACT
+            validationOutput.ValidLearners(validLearnersList);
+
+            //ASSERT
+            var result = keyValuePersistenceService.GetAsync("ValidLearnRefNumbers").Result;
+
+            result.Should().NotBeNull();
+        }
+
+        /// <summary>
+        /// Return Valid Learners from KeyValuePersistanceService
+        /// </summary>
+        [Fact(DisplayName = "Valid Learners - Learners Correct"), Trait("Funding Service", "Unit")]
+        public void ValidLearners_LearnersCorrect()
+        {
+            // ARRANGE
+            IKeyValuePersistenceService keyValuePersistenceService = new DictionaryKeyValuePersistenceService();
+            ISerializationService serializationService = new XmlSerializationService();
+
+            var validationOutput = new ValidationOutputStub(keyValuePersistenceService, serializationService);
+
+            var validLearnersList = new List<string> { "22v237", "16v224" };
+
+            //ACT
+            validationOutput.ValidLearners(validLearnersList);
+
+            //ASSERT
+            var result = keyValuePersistenceService.GetAsync("ValidLearnRefNumbers").Result;
+
+            serializationService.Deserialize<List<string>>(result).Should().BeEquivalentTo(validLearnersList);
+        }
+
+        /// <summary>
+        /// Return Valid Learners from KeyValuePersistanceService
+        /// </summary>
+        [Fact(DisplayName = "Valid Learners - Run Funding Service - Learner Count"), Trait("Funding Service", "Unit")]
+        public void ValidLearners_FundingServiceLearnersCount()
+        {
+            // ARRANGE        
+            var validLearnersList = new List<string> { "16v224" };
+
+            //ACT
+            var dataEntity = RunFundingServiceForValidLearners(@"Files\ILR-10006341-1819-20180118-023456-02.xml", validLearnersList);
+
+            //ASSERT
+            dataEntity.Count().Should().Be(1);
+        }
+
+        /// <summary>
+        /// Return Valid Learners from KeyValuePersistanceService
+        /// </summary>
+        [Fact(DisplayName = "Valid Learners - Run Funding Service - Learner Correct"), Trait("Funding Service", "Unit")]
+        public void ValidLearners_FundingServiceLearnersCorrect()
+        {
+            // ARRANGE        
+            var validLearnersList = new List<string> { "16v224" };
+
+            //ACT
+            var dataEntity = RunFundingServiceForValidLearners(@"Files\ILR-10006341-1819-20180118-023456-02.xml", validLearnersList);
+
+            //ASSERT
+            dataEntity.Select(g => g.Children.Select(l => l.LearnRefNumber)).Single().Should().BeEquivalentTo("16v224");
+        }
+
+        /// <summary>
+        /// Return Valid Learners from KeyValuePersistanceService
+        /// </summary>
+        [Fact(DisplayName = "Valid Learners - Run Funding Service Job Context - Learner Correct"), Trait("Funding Service", "Unit")]
+        public void ValidLearners_FundingServicejobContext()
+        {
+            // ARRANGE        
+            var validLearnersList = new List<string> { "16v224" };
+
+            //ACT
+            var dataEntity = RunFundingServiceForValidLearners(@"Files\ILR-10006341-1819-20180118-023456-02.xml", validLearnersList);
+
+            //ASSERT
+            dataEntity.Select(g => g.Children.Select(l => l.LearnRefNumber)).Single().Should().BeEquivalentTo("16v224");
         }
 
         #endregion
@@ -599,14 +706,16 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
         private static readonly Mock<ILARS> larsContextMock = new Mock<ILARS>();
         private static readonly Mock<IPostcodes> postcodesContextMock = new Mock<IPostcodes>();
 
-        private Implementation.FundingService FundingServicePopulationReferenceDataMock(IReferenceDataCache referenceDataCache)
+        private FundingService FundingServicePopulationReferenceDataMock(IReferenceDataCache referenceDataCache, IMessage message)
         {
+            IFundingContext fundingContext = SetupFundingContext(message);
+
             IAttributeBuilder<IAttributeData> attributeBuilder = new AttributeBuilder();
             var dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
 
             var referenceDataCachePopulationService = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock().Object, PostcodesMock().Object);
 
-            return new Implementation.FundingService(referenceDataCachePopulationService, dataEntityBuilder, opaService);
+            return new FundingService(referenceDataCachePopulationService, fundingContext, dataEntityBuilder, opaService);
         }
 
         private Mock<ILARS> LARSMock()
@@ -635,15 +744,58 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
 
         private IEnumerable<IDataEntity> RunFundingService(string filePath)
         {
-            Message message = ILRFile(filePath);
+            IMessage message = ILRFile(filePath);
+
+            IFundingContext fundingContext = SetupFundingContext(message);
+
+            IReferenceDataCache referenceDataCache = new ReferenceDataCache();
+            IAttributeBuilder<IAttributeData> attributeBuilder = new AttributeBuilder();
+            IReferenceDataCachePopulationService referenceDataCachePopulationService = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock().Object, PostcodesMock().Object);
+            IDataEntityBuilder dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
+
+            IFundingSevice fundingService = new FundingService(referenceDataCachePopulationService, fundingContext, dataEntityBuilder, opaService);
+
+            return fundingService.ProcessFunding(message);
+        }
+
+        private IEnumerable<IDataEntity> RunFundingServiceForValidLearners(string filePath, IList<string> validLearners)
+        {
+            IMessage message = ILRFile(filePath);
+
+            IFundingContext fundingContext = SetupFundingContext(validLearners);
 
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
             IReferenceDataCachePopulationService referenceDataCachePopulationService = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock().Object, PostcodesMock().Object);
             IAttributeBuilder<IAttributeData> attributeBuilder = new AttributeBuilder();
-            var dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
-            IFundingSevice fundingService = new Implementation.FundingService(referenceDataCachePopulationService, dataEntityBuilder, opaService);
+            IDataEntityBuilder dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
+
+            IFundingSevice fundingService = new FundingService(referenceDataCachePopulationService, fundingContext, dataEntityBuilder, opaService);
 
             return fundingService.ProcessFunding(message);
+        }
+
+        private IFundingContext SetupFundingContext(IMessage message)
+        {
+            IKeyValuePersistenceService keyValuePersistenceService = new DictionaryKeyValuePersistenceService();
+            ISerializationService serializationService = new XmlSerializationService();
+            IFundingContextManager fundingContextManager = new FundingContextManager(keyValuePersistenceService, serializationService);
+
+            var validationOutput = new ValidationOutputStub(keyValuePersistenceService, serializationService);
+            validationOutput.ValidLearners(message.Learners.Select(l => l.LearnRefNumber).ToList());
+
+            return new FundingContext(JobContextMessage, fundingContextManager);
+        }
+
+        private IFundingContext SetupFundingContext(IList<string> validLearners)
+        {
+            IKeyValuePersistenceService keyValuePersistenceService = new DictionaryKeyValuePersistenceService();
+            ISerializationService serializationService = new XmlSerializationService();
+            IFundingContextManager fundingContextManager = new FundingContextManager(keyValuePersistenceService, serializationService);
+
+            var validationOutput = new ValidationOutputStub(keyValuePersistenceService, serializationService);
+            validationOutput.ValidLearners(validLearners);
+
+            return new FundingContext(JobContextMessage, fundingContextManager);
         }
 
         private static IRulebaseProvider RulebaseProviderMock()
@@ -659,6 +811,22 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
 
             return mock.Object;
         }
+
+        private static IJobContextMessage JobContextMessage => new JobContextMessage
+        {
+            JobId = 1,
+            SubmissionDateTimeUtc = DateTime.Parse("2018-08-01").ToUniversalTime(),
+            Topics = Topics,
+            TopicPointer = 1,
+            KeyValuePairs = KeyValuePairsDictionary,
+        };
+
+        private static IReadOnlyList<ITopicItem> Topics => new List<TopicItem>();
+
+        private static IDictionary<JobContextMessageKey, object> KeyValuePairsDictionary => new Dictionary<JobContextMessageKey, object>()
+        {
+            { JobContextMessageKey.ValidLearnRefNumbers, "ValidLearnRefNumbers" }
+        };
 
         #endregion
 
