@@ -308,10 +308,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             //ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
-            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache);
+            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache, message);
 
             //ACT
-            fundingService.PopulateReferenceData(message.Learners);
+            fundingService.PopulateData(message);
 
             //ASSERT
             referenceDataCache.LARSCurrentVersion.Should().Be("Version_005");
@@ -326,10 +326,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             //ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
-            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache);
+            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache, message);
 
             //ACT
-            fundingService.PopulateReferenceData(message.Learners);
+            fundingService.PopulateData(message);
 
             //ASSERT
             var expectedOutput1 = new LARSLearningDelivery
@@ -364,10 +364,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             //ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
-            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache);
+            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache, message);
 
             //ACT
-            fundingService.PopulateReferenceData(message.Learners);
+            fundingService.PopulateData(message);
 
             //ASSERT
             var expectedOutput1 = new LARSFunding
@@ -406,10 +406,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             //ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
-            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache);
+            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache, message);
 
             //ACT
-            fundingService.PopulateReferenceData(message.Learners);
+            fundingService.PopulateData(message);
 
             //ASSERT
             referenceDataCache.PostcodeCurrentVersion.Should().Be("Version_002");
@@ -424,10 +424,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             //ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
-            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache);
+            var fundingService = FundingServicePopulationReferenceDataMock(referenceDataCache, message);
 
             //ACT
-            fundingService.PopulateReferenceData(message.Learners);
+            fundingService.PopulateData(message);
 
             //ASSERT
             var expectedOutput1 = new SfaAreaCost
@@ -706,13 +706,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
         private static readonly Mock<ILARS> larsContextMock = new Mock<ILARS>();
         private static readonly Mock<IPostcodes> postcodesContextMock = new Mock<IPostcodes>();
 
-        private FundingService FundingServicePopulationReferenceDataMock(IReferenceDataCache referenceDataCache)
+        private FundingService FundingServicePopulationReferenceDataMock(IReferenceDataCache referenceDataCache, IMessage message)
         {
-            IKeyValuePersistenceService keyValuePersistenceService = new DictionaryKeyValuePersistenceService();
-            ISerializationService serializationService = new XmlSerializationService();
-            IFundingContextManager fundingContextManager = new FundingContextManager(keyValuePersistenceService, serializationService);
-            IFundingContext fundingContext = new FundingContext(JobContextMessage, fundingContextManager);
-            
+            IFundingContext fundingContext = SetupFundingContext(message);
+
             IAttributeBuilder<IAttributeData> attributeBuilder = new AttributeBuilder();
             var dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
 
@@ -752,15 +749,15 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             IFundingContext fundingContext = SetupFundingContext(message);
 
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
-            IAttributeBuilder<IAttributeData> attributeBuilder = new AttributeBuilder();           
+            IAttributeBuilder<IAttributeData> attributeBuilder = new AttributeBuilder();
             IReferenceDataCachePopulationService referenceDataCachePopulationService = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock().Object, PostcodesMock().Object);
             IDataEntityBuilder dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
 
             IFundingSevice fundingService = new FundingService(referenceDataCachePopulationService, fundingContext, dataEntityBuilder, opaService);
-            
+
             return fundingService.ProcessFunding(message);
         }
-             
+
         private IEnumerable<IDataEntity> RunFundingServiceForValidLearners(string filePath, IList<string> validLearners)
         {
             IMessage message = ILRFile(filePath);
@@ -776,7 +773,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
 
             return fundingService.ProcessFunding(message);
         }
-             
+
         private IFundingContext SetupFundingContext(IMessage message)
         {
             IKeyValuePersistenceService keyValuePersistenceService = new DictionaryKeyValuePersistenceService();

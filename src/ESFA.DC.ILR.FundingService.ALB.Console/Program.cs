@@ -79,8 +79,8 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
             {
                 System.Console.WriteLine("Loading file..");
 
-                stream = new FileStream(@"Files\ILR-10006341-1819-20180118-023456-01.xml", FileMode.Open);
-               // stream = new FileStream(@"Files\ILR-10006341-1819-20180118-023456-02.xml", FileMode.Open);
+               // stream = new FileStream(@"Files\ILR-10006341-1819-20180118-023456-01.xml", FileMode.Open);
+                stream = new FileStream(@"Files\ILR-10006341-1819-20180118-023456-02.xml", FileMode.Open);
             }
             catch (Exception ex)
             {

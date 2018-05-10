@@ -6,10 +6,8 @@ using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface.Contexts;
 using ESFA.DC.ILR.Model.Interface;
-using ESFA.DC.IO.Interfaces;
 using ESFA.DC.OPA.Model.Interface;
 using ESFA.DC.OPA.Service.Interface;
-using ESFA.DC.Serialization.Interfaces;
 
 namespace ESFA.DC.ILR.FundingService.ALB.Service
 {
@@ -19,6 +17,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service
         private readonly IFundingContext _fundingContext;
         private readonly IDataEntityBuilder _dataEntityBuilder;
         private readonly IOPAService _opaService;
+        private readonly IList<ILearner> learnerList = new List<ILearner>();
+        private readonly HashSet<string> postcodesList = new HashSet<string>();
+        private readonly HashSet<string> learnAimRefsList = new HashSet<string>();
+        private bool added = false;
 
         public FundingService(IReferenceDataCachePopulationService referenceDataCachePopulationService, IFundingContext fundingContext, IDataEntityBuilder dataEntityBuilder, IOPAService opaService)
         {
@@ -30,15 +32,14 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service
 
         public IEnumerable<IDataEntity> ProcessFunding(IMessage message)
         {
+            // Get the UKPRN
             int ukprn = message.LearningProviderEntity.UKPRN;
 
-            var learners = message.Learners.Where(l =>
-                l.LearningDeliveries.Any(fm => fm.FundModel == 99 && _fundingContext.ValidLearnRefNumbers.Contains(l.LearnRefNumber)));
-
-            PopulateReferenceData(learners);
+            // Populate Learner and Reference Data
+            PopulateData(message);
 
             // Generate Funding Inputs
-            var inputDataEntities = _dataEntityBuilder.EntityBuilder(ukprn, learners);
+            var inputDataEntities = _dataEntityBuilder.EntityBuilder(ukprn, learnerList);
 
             // Execute OPA
             var outputDataEntities = new ConcurrentBag<IDataEntity>();
@@ -53,12 +54,32 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service
             return outputDataEntities;
         }
 
-        protected internal void PopulateReferenceData(IEnumerable<ILearner> learners)
+        protected internal void PopulateData(IMessage message)
         {
-            var postcodesList = learners.SelectMany(l => l.LearningDeliveries.Select(ld => ld.DelLocPostCode)).Distinct().ToList();
-            var learnAimRefs = learners.SelectMany(l => l.LearningDeliveries.Select(ld => ld.LearnAimRef)).Distinct().ToList();
+            foreach (var learner in message.Learners)
+            {
+                foreach (var learningDelivery in learner.LearningDeliveries.Where(ld => ld.FundModel == 99).ToList())
+                {
+                    if (!added && _fundingContext.ValidLearnRefNumbers.Contains(learner.LearnRefNumber))
+                    {
+                        if (!added)
+                        {
+                            learnerList.Add(learner);
+                            added = true;
+                        }
+                    }
 
-            _referenceDataCachePopulationService.Populate(learnAimRefs, postcodesList);
+                    if (added)
+                    {
+                        postcodesList.Add(learningDelivery.DelLocPostCode);
+                        learnAimRefsList.Add(learningDelivery.LearnAimRef);
+                    }
+                }
+
+                added = false;
+            }
+
+            _referenceDataCachePopulationService.Populate(learnAimRefsList.ToList(), postcodesList.ToList());
         }
     }
 }
