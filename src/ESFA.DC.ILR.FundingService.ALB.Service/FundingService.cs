@@ -60,12 +60,16 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service
             {
                 foreach (var learningDelivery in learner.LearningDeliveries.Where(ld => ld.FundModel == 99).ToList())
                 {
-                    if (!added && _fundingContext.ValidLearnRefNumbers.Contains(learner.LearnRefNumber))
+                    if (!added)
                     {
-                        if (!added)
+                        if (_fundingContext.ValidLearnRefNumbers.Contains(learner.LearnRefNumber))
                         {
                             learnerList.Add(learner);
                             added = true;
+                        }
+                        else
+                        {
+                            break;
                         }
                     }
 

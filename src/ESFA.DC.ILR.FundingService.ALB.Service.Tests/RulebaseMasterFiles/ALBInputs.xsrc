@@ -1,0 +1,343 @@
+<root schema-version="1" product-version="10.4.1.60">
+  <entities>
+    <entity ref="global">
+      <attribute name="p312" type="number" public-name="UKPRN">
+        <text>
+          <base>the provider's UKPRN</base>
+          <parse />
+        </text>
+        <props>
+          <prop name="PassThrough">True</prop>
+          <prop name="KeySequence">1</prop>
+          <prop name="Size">8</prop>
+          <prop name="DecimalPlaces">0</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">1</prop>
+        </props>
+      </attribute>
+      <attribute name="p313" type="text" public-name="LARSVersion">
+        <text>
+          <base>the LARS reference data version</base>  
+        </text>
+        <props>
+          <prop name="PassThrough">True</prop>
+          <prop name="KeySequence">0</prop>
+          <prop name="Size">100</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">Ver1</prop>
+        </props>
+      </attribute>
+      <attribute name="p315" type="text" public-name="PostcodeAreaCostVersion">
+        <text>
+          <base>the postcode area cost reference data version</base>
+        </text>
+        <props>
+          <prop name="PassThrough">True</prop>
+          <prop name="KeySequence">0</prop>
+          <prop name="Size">20</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">Ver2</prop>
+        </props>
+      </attribute>
+    </entity>
+    <entity id="learner" name="the learner" containment-relationship-id="learners" containment-parent-id="global" public-id="Learner">
+      <attribute name="p307" type="text" public-name="LearnRefNumber">
+        <text>
+          <base>the learner's learner reference number</base>
+          <parse />
+        </text>
+        <props>
+          <prop name="KeySequence">1</prop>
+          <prop name="Size">12</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="IntegrationTestValue">1</prop>
+        </props>
+      </attribute>
+    </entity>
+    <entity id="learningdelivery" name="the learning delivery" containment-relationship-id="learnerslearningdeliveries" containment-parent-id="learner" public-id="LearningDelivery">
+      <attribute name="p9" type="date" public-name="LearnActEndDate">
+        <text>
+          <base>the learning delivery's learning actual end date</base>
+          <parse />
+        </text>
+        <props>
+          <prop name="KeySequence">0</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">01/08/2014</prop>
+        </props>
+      </attribute>
+      <attribute name="p11" type="date" public-name="LearnPlanEndDate">
+        <text>
+          <base>the learning delivery's learning planned end date</base>
+          <parse />
+        </text>
+        <props>
+          <prop name="KeySequence">0</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">02/08/2014</prop>
+        </props>
+      </attribute>
+      <attribute name="p12" type="date" public-name="LearnStartDate">
+        <text>
+          <base>the learning delivery's learning start date</base>
+          <parse />
+        </text>
+        <props>
+          <prop name="KeySequence">0</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">01/08/2014</prop>
+        </props>
+      </attribute>
+      <attribute name="p19" type="number" public-name="AimSeqNumber">
+        <text>
+          <base>the learning delivery's aim sequence number</base>
+        </text>
+        <props>
+          <prop name="KeySequence">1</prop>
+          <prop name="Size">2</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">2</prop>
+        </props>
+      </attribute>
+      <attribute name="p298" type="date" public-name="OrigLearnStartDate">
+        <text>
+          <base>the learning delivery's original learning start date</base>
+        </text>
+        <props>
+          <prop name="KeySequence">0</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">01/08/2014</prop>
+        </props>
+      </attribute>
+      <attribute name="p299" type="number" public-name="CompStatus">
+        <text>
+          <base>the learning delivery's completion status</base>
+        </text>
+        <props>
+          <prop name="KeySequence">0</prop>
+          <prop name="Size">1</prop>
+          <prop name="DecimalPlaces">0</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">4</prop>
+        </props>
+      </attribute>
+      <attribute name="p300" type="number" public-name="Outcome">
+        <text>
+          <base>the learning delivery's outcome</base>
+        </text>
+        <props>
+          <prop name="KeySequence">0</prop>
+          <prop name="Size">1</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">2</prop>
+        </props>
+      </attribute>
+      <attribute name="p302" type="text" public-name="LearnAimRefType">
+        <text>
+          <base>the learning delivery's learning aim reference type</base>
+          <parse />
+        </text>
+        <props>
+          <prop name="KeySequence">0</prop>
+          <prop name="Size">4</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">TYPE</prop>
+        </props>
+      </attribute>
+      <attribute name="p303" type="text" public-name="NotionalNVQLevelv2">
+        <text>
+          <base>the learning delivery's notional NVQ level v2</base>
+        </text>
+        <props>
+          <prop name="KeySequence">0</prop>
+          <prop name="Size">10</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">NVQ</prop>
+        </props>
+      </attribute>
+      <attribute name="p304" type="number" public-name="RegulatedCreditValue">
+        <text>
+          <base>the learning delivery's regulated credit value</base>
+        </text>
+        <props>
+          <prop name="KeySequence">0</prop>
+          <prop name="Size">3</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">9</prop>
+        </props>
+      </attribute>
+      <attribute name="p306" type="number" public-name="PriorLearnFundAdj">
+        <text>
+          <base>the learning delivery's funding adjustment for prior learning</base>
+        </text>
+        <props>
+          <prop name="KeySequence">0</prop>
+          <prop name="Size">3</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">45</prop>
+        </props>
+      </attribute>
+      <attribute name="p311" type="number" public-name="OtherFundAdj">
+        <text>
+          <base>the learning delivery's other funding adjustment</base>
+        </text>
+        <props>
+          <prop name="KeySequence">0</prop>
+          <prop name="Size">3</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">2</prop>
+        </props>
+      </attribute>
+      <attribute name="p316" type="number" public-name="LrnDelFAM_ADL">
+        <text>
+          <base>the learning delivery's ADL FAM code</base>
+        </text>
+        <props>
+          <prop name="KeySequence">0</prop>
+          <prop name="Size">3</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">61</prop>
+        </props>
+      </attribute>
+      <attribute name="p317" type="number" public-name="LrnDelFAM_RES">
+        <text>
+          <base>the learning delivery's RES FAM code</base>
+        </text>
+        <props>
+          <prop name="KeySequence">0</prop>
+          <prop name="Size">3</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">62</prop>
+        </props>
+      </attribute>
+    </entity>
+    <entity id="learningdeliveryfam" name="the learning delivery FAM" containment-relationship-id="learningdeliverysfams" containment-parent-id="learningdelivery" public-id="LearningDeliveryFAM">
+      <attribute name="p1" type="text" public-name="LearnDelFAMCode">
+        <text>
+          <base>the learning delivery FAM's code</base>
+          <parse>
+          </parse>
+        </text>
+        <props>
+          <prop name="KeySequence">0</prop>
+          <prop name="Size">10</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">FAMCode</prop>
+        </props>
+      </attribute>
+      <attribute name="p2" type="text" public-name="LearnDelFAMType">
+        <text>
+          <base>the learning delivery FAM's type</base>
+          <parse>
+          </parse>
+        </text>
+        <props>
+          <prop name="KeySequence">0</prop>
+          <prop name="Size">10</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">FAMType</prop>
+        </props>
+      </attribute>
+      <attribute name="p288" type="date" public-name="LearnDelFAMDateFrom">
+        <text>
+          <base>the learning delivery FAM's date applies from</base>
+        </text>
+        <props>
+          <prop name="KeySequence">0</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">15/08/2014</prop>
+        </props>
+      </attribute>
+      <attribute name="p289" type="date" public-name="LearnDelFAMDateTo">
+        <text>
+          <base>the learning delivery FAM's date applies to</base>
+        </text>
+        <props>
+          <prop name="KeySequence">0</prop>
+          <prop name="Temporal">False</prop>
+          <prop name="UncertainDerivation">null</prop>
+          <prop name="IntegrationTestValue">15/10/2014</prop>
+        </props>
+      </attribute>
+    </entity>
+    <entity id="learningdeliverypostcodeareacostreferencedata" name="the learning delivery postcode area cost reference data" containment-relationship-id="learningdeliveryspostcodeareacostreferencedata" containment-parent-id="learningdelivery" public-id="SFA_PostcodeAreaCost">
+      <attribute name="p324" type="date" public-name="AreaCosEffectiveFrom">
+        <text>
+          <base>the learning delivery postcode area cost reference data's effective from date</base>
+        </text>
+      </attribute>
+      <attribute name="p325" type="date" public-name="AreaCosEffectiveTo">
+        <text>
+          <base>the learning delivery postcode area cost reference data's effective to date</base>
+        </text>
+      </attribute>
+      <attribute name="p326" type="number" public-name="AreaCosFactor">
+        <text>
+          <base>the learning delivery postcode area cost reference data's area cost factor</base>
+        </text>
+      </attribute>
+    </entity>
+    <entity id="learningdeliverylarsfunding" name="the learning delivery LARS funding" containment-relationship-id="learningdeliveryslarsfundingrates" containment-parent-id="learningdelivery" public-id="LearningDeliveryLARS_Funding">
+      <attribute name="p328" type="text" public-name="LARSFundCategory">
+        <text>
+          <base>the learning delivery's LARS funding category</base>
+        </text>
+      </attribute>
+      <attribute name="p329" type="date" public-name="LARSFundEffectiveFrom">
+        <text>
+          <base>the learning delivery's LARS funding effective from date</base>
+        </text>
+      </attribute>
+      <attribute name="p330" type="date" public-name="LARSFundEffectiveTo">
+        <text>
+          <base>the learning delivery's LARS effective to date</base>
+        </text>
+      </attribute>
+      <attribute name="p332" type="currency" public-name="LARSFundWeightedRate">
+        <text>
+          <base>the learning delivery's LARS funding weighted rate</base>
+        </text>
+      </attribute>
+      <attribute name="p333" type="text" public-name="LARSFundWeightingFactor">
+        <text>
+          <base>the learning delivery's LARS funding weighting factor</base>
+        </text>
+      </attribute>
+    </entity>
+  </entities>
+  <rules />
+  <interactive-items>
+    <folders />
+    <screens />
+    <documents />
+  </interactive-items>
+  <relationships>
+    <relationship source="global" target="learner" text="the learners" relationship-id="learners" reverse-text="" reverse-relationship-id="global_learners_rev" type="OneToMany" is-computed="false" is-containment="true" />
+    <relationship source="learner" target="learningdelivery" text="the learner's learning deliveries" relationship-id="learnerslearningdeliveries" reverse-text="the learner associated with the learning delivery" reverse-relationship-id="learnerassociatedwiththelearningdelivery" type="OneToMany" is-computed="false" is-containment="true" />
+    <relationship source="learningdelivery" target="learningdeliveryfam" text="the learning delivery's FAMs" relationship-id="learningdeliverysfams" reverse-text="the learning delivery associated with the learning delivery FAM" reverse-relationship-id="learningdeliveryassociatedwiththelearningdeliveryfam" type="OneToMany" is-computed="false" is-containment="true" />
+    <relationship source="learningdelivery" target="learningdeliverypostcodeareacostreferencedata" text="the learning delivery's postcode area cost reference data" relationship-id="learningdeliveryspostcodeareacostreferencedata" reverse-relationship-id="learningdelivery_learningdeliveryspostcodeareacostreferencedata_rev" reverse-text="" type="OneToMany" is-computed="false" is-containment="true" public-id="" reverse-public-id="" />
+    <relationship source="learningdelivery" target="learningdeliverylarsfunding" text="the learning delivery's LARS funding rates" relationship-id="learningdeliveryslarsfundingrates" reverse-relationship-id="learningdelivery_learningdeliveryslarsfundingrates_rev" reverse-text="" type="OneToMany" is-computed="false" is-containment="true" public-id="" reverse-public-id="" />
+    <relationship source="learningdelivery" target="learningdeliverylarsfunding" is-containment="false" public-id="" reverse-public-id="" text="the learning delivery's LARS Funding Matrix funding categories" relationship-id="learningdeliveryslarsfundingmatrixfundingcategories" reverse-relationship-id="learningdelivery_learningdeliveryslarsfundingmatrixfundingcategories_rev" reverse-text="" type="ManyToMany" is-computed="false" />
+  </relationships>
+  <rule-folders />
+</root>

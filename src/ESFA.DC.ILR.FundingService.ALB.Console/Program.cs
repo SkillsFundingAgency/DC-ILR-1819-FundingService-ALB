@@ -79,8 +79,9 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
             {
                 System.Console.WriteLine("Loading file..");
 
-               // stream = new FileStream(@"Files\ILR-10006341-1819-20180118-023456-01.xml", FileMode.Open);
-                stream = new FileStream(@"Files\ILR-10006341-1819-20180118-023456-02.xml", FileMode.Open);
+                stream = new FileStream(@"Files\ILR-10006341-1819-20180118-023456-01.xml", FileMode.Open);
+
+                // stream = new FileStream(@"Files\ILR-10006341-1819-20180118-023456-02.xml", FileMode.Open);
             }
             catch (Exception ex)
             {
@@ -152,7 +153,8 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
         private static DictionaryKeyValuePersistenceService BuildKeyValueDictionary()
         {
             var learnRefNumbers = message.Learners.Select(l => l.LearnRefNumber).ToList();
-            //var learnRefNumbers = new List<string> { "16v224" };
+
+            // var learnRefNumbers = new List<string> { "16v224" };
             var list = new DictionaryKeyValuePersistenceService();
             var serializer = new XmlSerializationService();
 
