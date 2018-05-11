@@ -86,8 +86,20 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ESFA.DC.OPA.Service.Interface.0.1.2-beta0001\lib\netstandard2.0\ESFA.DC.OPA.Service.Interface.dll</HintPath>
     </Reference>
-    <Reference Include="ESFA.DC.Serialization.Interfaces, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ESFA.DC.Serialization.Interfaces.0.1.0-beta0001\lib\netstandard2.0\ESFA.DC.Serialization.Interfaces.dll</HintPath>
+    <Reference Include="ESFA.DC.OPA.XSRC.Model, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ESFA.DC.OPA.XSRC.Model.0.1.0-beta0001\lib\netstandard2.0\ESFA.DC.OPA.XSRC.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="ESFA.DC.OPA.XSRC.Model.Interface, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ESFA.DC.OPA.XSRC.Model.Interface.0.1.0-beta0001\lib\netstandard2.0\ESFA.DC.OPA.XSRC.Model.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="ESFA.DC.OPA.XSRC.Service, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ESFA.DC.OPA.XSRC.Service.0.1.0-beta0001\lib\netstandard2.0\ESFA.DC.OPA.XSRC.Service.dll</HintPath>
+    </Reference>
+    <Reference Include="ESFA.DC.OPA.XSRC.Service.Interface, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ESFA.DC.OPA.XSRC.Service.Interface.0.1.0-beta0001\lib\netstandard2.0\ESFA.DC.OPA.XSRC.Service.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="ESFA.DC.Serialization.Interfaces, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ESFA.DC.Serialization.Interfaces.0.1.1-beta0001\lib\netstandard2.0\ESFA.DC.Serialization.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="ESFA.DC.Serialization.Xml, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ESFA.DC.Serialization.Xml.0.1.1-beta0001\lib\netstandard2.0\ESFA.DC.Serialization.Xml.dll</HintPath>
@@ -140,6 +152,7 @@
     <Compile Include="FundingContextTests.cs" />
     <Compile Include="FundingServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rulebase\RulebaseInterfaceTests.cs" />
     <Compile Include="Rulebase\RulebaseProviderFactoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
