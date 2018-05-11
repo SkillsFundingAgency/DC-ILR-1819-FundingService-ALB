@@ -156,6 +156,7 @@
     <Compile Include="Rulebase\RulebaseProviderFactoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="RulebaseMasterFiles\ReadMe.txt" />
     <EmbeddedResource Include="..\ESFA.DC.ILR.FundingService.ALB.Service\Rulebase\Loans Bursary 17_18.zip">
       <Link>Rulebase\Loans Bursary 17_18.zip</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -166,6 +167,12 @@
     </Content>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <Content Include="RulebaseMasterFiles\ALBInputs.xsrc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="RulebaseMasterFiles\Loans Bursary 17_18.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
