@@ -10,6 +10,8 @@ using ESFA.DC.Data.Postcodes.Model;
 using ESFA.DC.Data.Postcodes.Model.Interfaces;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
+using ESFA.DC.ILR.FundingService.ALB.OrchestrationService;
+using ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Contexts;
@@ -17,7 +19,6 @@ using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface.Contexts;
 using ESFA.DC.ILR.FundingService.ALB.Service.Rulebase;
 using ESFA.DC.ILR.Model;
-using ESFA.DC.ILR.Model.Interface;
 using ESFA.DC.IO.Dictionary;
 using ESFA.DC.IO.Interfaces;
 using ESFA.DC.JobContext;
@@ -35,9 +36,12 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
 {
     public static class Program
     {
+        private static string fileName = "ILR-10006341-1819-20180118-023456-01.xml";
+        //private static string fileName = "ILR-10006341-1819-20180118-023456-02.xml";
+
         private static Stream stream;
 
-        private static IMessage message;
+        private static Message message;
 
         public static void Main(string[] args)
         {
@@ -52,11 +56,11 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
 
             using (var scope = container.BeginLifetimeScope())
             {
-                var fundingService = container.Resolve<IFundingSevice>();
+                var preFundingOrchestration = container.Resolve<IPreFundingOrchestrationService>();
 
                 stopwatch.Start();
 
-                var fundingOutputs = fundingService.ProcessFunding(message);
+                var fundingOutputs = preFundingOrchestration.FundingServiceInitilise();
 
                 var fundingCreateTime = stopwatch.Elapsed;
                 System.Console.WriteLine("Funding Complete in " + fundingCreateTime.ToString());
@@ -79,9 +83,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
             {
                 System.Console.WriteLine("Loading file..");
 
-                stream = new FileStream(@"Files\ILR-10006341-1819-20180118-023456-01.xml", FileMode.Open);
-
-                // stream = new FileStream(@"Files\ILR-10006341-1819-20180118-023456-02.xml", FileMode.Open);
+                stream = new FileStream(@"Files\" + fileName, FileMode.Open);
             }
             catch (Exception ex)
             {
@@ -100,19 +102,20 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
 
             builder.RegisterType<LARS>().As<ILARS>().InstancePerLifetimeScope();
             builder.RegisterType<Postcodes>().As<IPostcodes>().InstancePerLifetimeScope();
-            builder.RegisterType<ReferenceDataCache>().As<IReferenceDataCache>().InstancePerLifetimeScope();
-            builder.RegisterType<ReferenceDataCachePopulationService>().As<IReferenceDataCachePopulationService>().InstancePerLifetimeScope();
             builder.RegisterType<SessionBuilder>().As<ISessionBuilder>().InstancePerLifetimeScope();
             builder.RegisterType<OPADataEntityBuilder>().As<IOPADataEntityBuilder>().WithParameter("yearStartDate", new DateTime(2017, 8, 1)).InstancePerLifetimeScope();
             builder.RegisterType<RulebaseProviderFactory>().As<IRulebaseProviderFactory>().InstancePerLifetimeScope();
             builder.RegisterType<OPAService>().As<IOPAService>().InstancePerLifetimeScope();
             builder.RegisterType<AttributeBuilder>().As<IAttributeBuilder<IAttributeData>>().InstancePerLifetimeScope();
             builder.RegisterType<DataEntityBuilder>().As<IDataEntityBuilder>().InstancePerLifetimeScope();
-            builder.RegisterType<FundingContext>().As<IFundingContext>().InstancePerLifetimeScope();
-            builder.RegisterType<FundingContextManager>().As<IFundingContextManager>().InstancePerLifetimeScope();
             builder.RegisterType<Service.FundingService>().As<IFundingSevice>().InstancePerLifetimeScope();
+            builder.RegisterType<ReferenceDataCache>().As<IReferenceDataCache>().InstancePerLifetimeScope();
+            builder.RegisterType<ReferenceDataCachePopulationService>().As<IReferenceDataCachePopulationService>().InstancePerLifetimeScope();
+            builder.RegisterType<PreFundingOrchestrationService>().As<IPreFundingOrchestrationService>().InstancePerLifetimeScope();
             builder.RegisterType<XmlSerializationService>().As<ISerializationService>().InstancePerLifetimeScope();
             builder.Register(ctx => BuildKeyValueDictionary()).As<IKeyValuePersistenceService>().InstancePerLifetimeScope();
+            builder.RegisterType<FundingContext>().As<IFundingContext>().InstancePerLifetimeScope();
+            builder.RegisterType<FundingContextManager>().As<IFundingContextManager>().InstancePerLifetimeScope();
             builder.Register(ctx => BuildJobContext()).As<IJobContextMessage>().InstancePerLifetimeScope();
 
             return builder;
@@ -145,6 +148,8 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
                 TopicPointer = 1,
                 KeyValuePairs = new Dictionary<JobContextMessageKey, object>
                 {
+                    { JobContextMessageKey.Filename, fileName },
+                    { JobContextMessageKey.UkPrn, 10006341 },
                     { JobContextMessageKey.ValidLearnRefNumbers, "ValidLearnRefNumbers" },
                 },
             };
@@ -152,13 +157,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
 
         private static DictionaryKeyValuePersistenceService BuildKeyValueDictionary()
         {
-            var learnRefNumbers = message.Learners.Select(l => l.LearnRefNumber).ToList();
+            var learners = message.Learner.ToList();
 
             // var learnRefNumbers = new List<string> { "16v224" };
             var list = new DictionaryKeyValuePersistenceService();
             var serializer = new XmlSerializationService();
 
-            list.SaveAsync("ValidLearnRefNumbers", serializer.Serialize(learnRefNumbers)).Wait();
+            list.SaveAsync("ValidLearnRefNumbers", serializer.Serialize(learners)).Wait();
 
             return list;
         }
