@@ -105,18 +105,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataPersister.cs" />
-    <Compile Include="Model\Attribute\GlobalAttribute.cs" />
-    <Compile Include="Model\Attribute\LearnerPeriodAttribute.cs" />
-    <Compile Include="Model\Attribute\LearningDeliveryAttribute.cs" />
-    <Compile Include="Model\Attribute\LearningDeliveryPeriodAttribute.cs" />
-    <Compile Include="Model\Output\FundingOutput.cs" />
-    <Compile Include="Model\Output\GlobalOutput.cs" />
-    <Compile Include="Model\Output\LearnerPeriodisedValuesOutput.cs" />
-    <Compile Include="Model\Output\LearnerPeriodOutput.cs" />
-    <Compile Include="Model\Output\LearningDeliveryOutput.cs" />
-    <Compile Include="Model\Output\LearningDeliveryPeriodisedValuesOutput.cs" />
-    <Compile Include="Model\Output\LearningDeliveryPeriodOutput.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,12 +1,12 @@
-﻿namespace ESFA.DC.ILR.FundingService.ALB.Console.Model.Attribute
+﻿namespace ESFA.DC.ILR.FundingService.ALB.Stubs.Persistance.Model.Attribute
 {
-    public class LearnerPeriodAttribute
+    public class LearningDeliveryAttribute
     {
         public string Ukprn { get; set; }
 
         public string LearnRefNumber { get; set; }
 
-        public int Period { get; set; }
+        public string AimSeqNumber { get; set; }
 
         public string Name { get; set; }
 

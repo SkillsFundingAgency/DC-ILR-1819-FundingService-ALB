@@ -5,11 +5,11 @@ using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-using ESFA.DC.ILR.FundingService.ALB.Console.Model.Attribute;
-using ESFA.DC.ILR.FundingService.ALB.Console.Model.Output;
+using ESFA.DC.ILR.FundingService.ALB.Stubs.Persistance.Model.Attribute;
+using ESFA.DC.ILR.FundingService.ALB.Stubs.Persistance.Model.Output;
 using ESFA.DC.OPA.Model.Interface;
 
-namespace ESFA.DC.ILR.FundingService.ALB.Console
+namespace ESFA.DC.ILR.FundingService.ALB.Stubs.Persistance
 {
     public class DataPersister
     {

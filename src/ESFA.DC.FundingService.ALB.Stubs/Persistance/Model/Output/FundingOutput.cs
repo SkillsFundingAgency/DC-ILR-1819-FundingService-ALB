@@ -1,6 +1,6 @@
 ﻿using ESFA.DC.OPA.Model.Interface;
 
-namespace ESFA.DC.ILR.FundingService.ALB.Console.Model.Output
+namespace ESFA.DC.ILR.FundingService.ALB.Stubs.Persistance.Model.Output
 {
     public class FundingOutput
     {
