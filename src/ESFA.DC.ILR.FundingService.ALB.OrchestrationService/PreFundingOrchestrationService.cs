@@ -14,9 +14,9 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService
     {
         private readonly IReferenceDataCachePopulationService _referenceDataCachePopulationService;
         private readonly IFundingContext _fundingContext;
-        private readonly IFundingSevice _fundingService;
+        private readonly IFundingService _fundingService;
 
-        public PreFundingOrchestrationService(IReferenceDataCachePopulationService referenceDataCachePopulationService, IFundingContext fundingContext, IFundingSevice fundingService)
+        public PreFundingOrchestrationService(IReferenceDataCachePopulationService referenceDataCachePopulationService, IFundingContext fundingContext, IFundingService fundingService)
         {
             _referenceDataCachePopulationService = referenceDataCachePopulationService;
             _fundingContext = fundingContext;

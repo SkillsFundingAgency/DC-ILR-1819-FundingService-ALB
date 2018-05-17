@@ -109,7 +109,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
             builder.RegisterType<OPAService>().As<IOPAService>().InstancePerLifetimeScope();
             builder.RegisterType<AttributeBuilder>().As<IAttributeBuilder<IAttributeData>>().InstancePerLifetimeScope();
             builder.RegisterType<DataEntityBuilder>().As<IDataEntityBuilder>().InstancePerLifetimeScope();
-            builder.RegisterType<Service.FundingService>().As<IFundingSevice>().InstancePerLifetimeScope();
+            builder.RegisterType<Service.FundingService>().As<IFundingService>().InstancePerLifetimeScope();
             builder.RegisterType<ReferenceDataCache>().As<IReferenceDataCache>().InstancePerLifetimeScope();
             builder.RegisterType<ReferenceDataCachePopulationService>().As<IReferenceDataCachePopulationService>().InstancePerLifetimeScope();
             builder.RegisterType<PreFundingOrchestrationService>().As<IPreFundingOrchestrationService>().InstancePerLifetimeScope();
@@ -150,7 +150,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
                 KeyValuePairs = new Dictionary<JobContextMessageKey, object>
                 {
                     { JobContextMessageKey.Filename, fileName },
-                    { JobContextMessageKey.UkPrn, 10006341 },
+                    { JobContextMessageKey.UkPrn, "UKPRN" },
                     { JobContextMessageKey.ValidLearnRefNumbers, "ValidLearnRefNumbers" },
                 },
             };
@@ -164,6 +164,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
             var list = new DictionaryKeyValuePersistenceService();
             var serializer = new XmlSerializationService();
 
+            list.SaveAsync("UKPRN", "10006341").Wait();
             list.SaveAsync("ValidLearnRefNumbers", serializer.Serialize(learners)).Wait();
 
             return list;

@@ -29,12 +29,14 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Contexts
 
         public int MapUKPRN()
         {
-            return (int)_jobContextMessage.KeyValuePairs.Where(k => k.Key.ToString() == UKPRNKey).Select(v => v.Value).Single();
+            var key = _jobContextMessage.KeyValuePairs.Where(k => k.Key.ToString() == UKPRNKey).Select(v => v.Value.ToString()).FirstOrDefault();
+
+            return int.Parse(_keyValuePersistenceService.GetAsync(key).Result);
         }
 
         public IList<ILearner> MapValidLearners()
         {
-            return MapTo(_jobContextMessage);
+           return MapTo(_jobContextMessage);
         }
 
         public IList<ILearner> MapTo(IJobContextMessage jobContextMessage)

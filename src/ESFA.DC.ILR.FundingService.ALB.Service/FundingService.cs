@@ -11,7 +11,7 @@ using ESFA.DC.OPA.Service.Interface;
 
 namespace ESFA.DC.ILR.FundingService.ALB.Service
 {
-    public class FundingService : IFundingSevice
+    public class FundingService : IFundingService
     {
         private readonly IDataEntityBuilder _dataEntityBuilder;
         private readonly IOPAService _opaService;
