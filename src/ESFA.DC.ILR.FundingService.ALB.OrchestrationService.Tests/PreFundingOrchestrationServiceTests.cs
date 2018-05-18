@@ -64,20 +64,50 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
         }
 
         /// <summary>
-        /// Initialise Funding Service
+        /// Return PreFundingOrchestrationService
         /// </summary>
-        [Fact(DisplayName = "FundingServiceInitialise - Postcodes SFA AreaCost Correct"), Trait("Funding Service", "Unit")]
-        public void FundingInit()
+        [Fact(DisplayName = "PreFundingOrchestration - FundingServiceInitialise - DataEntity Count"), Trait("PreFundingOrchestration", "Unit")]
+        public void PreFundingOrchestrationService_FundingServiceInitialise_DataEntityCount()
         {
             // ARRANGE
+            IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
+            IReferenceDataCache referenceDataCache = new ReferenceDataCache();
 
             // ACT
+            var preFundingOrchestrationService = SetupPreFundingOrchestrationService(message, referenceDataCache);
+            var dataEntities = preFundingOrchestrationService.FundingServiceInitilise();
 
             // ASSERT
-            // assert somethin
+            dataEntities.Count().Should().Be(2);
         }
 
-            #region Populate Data Tests
+        /// <summary>
+        /// Return PreFundingOrchestrationService
+        /// </summary>
+        [Fact(DisplayName = "PreFundingOrchestration - FundingServiceInitialise - LearnRefNumbers Correct"), Trait("PreFundingOrchestration", "Unit")]
+        public void PreFundingOrchestrationService_FundingServiceInitialise_LearnRefNumbersCorrect()
+        {
+            // ARRANGE
+            IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
+            IReferenceDataCache referenceDataCache = new ReferenceDataCache();
+
+            var learnersExpected = new List<string>()
+            {
+                "22v237",
+                "16v224"
+            };
+
+            // ACT
+            var preFundingOrchestrationService = SetupPreFundingOrchestrationService(message, referenceDataCache);
+            var dataEntities = preFundingOrchestrationService.FundingServiceInitilise();
+
+            // ASSERT
+            var learnersActual = dataEntities.SelectMany(g => g.Children.Select(l => l.LearnRefNumber)).ToList();
+
+            learnersExpected.Should().BeEquivalentTo(learnersActual);
+        }
+
+        #region Populate Data Tests
 
         /// <summary>
         /// Populate reference data cache and check values
@@ -393,7 +423,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
         private static IDictionary<JobContextMessageKey, object> KeyValuePairsDictionary => new Dictionary<JobContextMessageKey, object>()
         {
             { JobContextMessageKey.Filename, "FileName" },
-            { JobContextMessageKey.UkPrn, 10006341 },
+            { JobContextMessageKey.UkPrn, "UKPRN" },
             { JobContextMessageKey.ValidLearnRefNumbers, "ValidLearnRefNumbers" },
         };
 
@@ -411,6 +441,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
             IFundingContext fundingContext = SetupFundingContext(message);
 
             IAttributeBuilder<IAttributeData> attributeBuilder = new AttributeBuilder();
+
             var dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
 
             var referenceDataCachePopulationService = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock().Object, PostcodesMock().Object);
@@ -480,7 +511,6 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
         {
             var learners = message.Learners.ToList();
 
-            // var learnRefNumbers = new List<string> { "16v224" };
             var list = new DictionaryKeyValuePersistenceService();
             var serializer = new JsonSerializationService();
 
