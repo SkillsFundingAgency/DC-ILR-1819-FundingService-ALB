@@ -1,12 +1,11 @@
-﻿using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
+﻿using System;
+using System.Collections.Generic;
+using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Postcodes;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Postcodes.Interface;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Postcodes.Model;
 using FluentAssertions;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.Postcodes
@@ -16,17 +15,17 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.Postcodes
         /// <summary>
         /// Return PostcodeFactors Version
         /// </summary>
-        [Fact(DisplayName ="PostcodeFactorsVersion - Does exist"),Trait("PostcodeFactors", "Unit")]
+        [Fact(DisplayName ="PostcodeFactorsVersion - Does exist"), Trait("PostcodeFactors", "Unit")]
         public void PostcodeFactorsCurrentVersion_Exists()
         {
-            //ARRANGE
+            // ARRANGE
             var postcodeFactorsVersionExistsVersion = postcodeFactorsVersionTestValue;
             var postcodeFactorsServiceMock = PostcodeFactorsCurrentVersionTestRun(postcodeFactorsVersionExistsVersion);
 
-            //ACT
+            // ACT
             var postcodeFactorsVersionExists = postcodeFactorsServiceMock.PostcodesCurrentVersion();
 
-            //ASSERT
+            // ASSERT
             postcodeFactorsVersionExists.Should().NotBeNull();
         }
 
@@ -36,14 +35,14 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.Postcodes
         [Fact(DisplayName = "PostcodeFactorsVersion - Correct values"), Trait("PostcodeFactors", "Unit")]
         public void PostcodeFactorsCurrentVersion_Correct()
         {
-            //ARRANGE
+            // ARRANGE
             var postcodeFactorsVersionCorrectVersion = postcodeFactorsVersionTestValue;
             var postcodeFactorsServiceMock = PostcodeFactorsCurrentVersionTestRun(postcodeFactorsVersionCorrectVersion);
 
-            //ACT
+            // ACT
             var postcodeFactorsVersionCorrect = postcodeFactorsServiceMock.PostcodesCurrentVersion();
 
-            //ASSERT
+            // ASSERT
             postcodeFactorsVersionCorrect.Should().BeEquivalentTo(postcodeFactorsVersionTestValue);
         }
 
@@ -53,14 +52,14 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.Postcodes
         [Fact(DisplayName = "PostcodeFactorsVersion - Incorrect values"), Trait("PostcodeFactors", "Unit")]
         public void PostcodeFactorsCurrentVersion_NotCorrect()
         {
-            //ARRANGE
+            // ARRANGE
             var postcodeFactorsVersionNotCorrectVersion = "Version_001";
             var postcodeFactorsServiceMock = PostcodeFactorsCurrentVersionTestRun(postcodeFactorsVersionNotCorrectVersion);
 
-            //ACT
+            // ACT
             var postcodeFactorsVersionNotCorrect = postcodeFactorsServiceMock.PostcodesCurrentVersion();
 
-            //ASSERT
+            // ASSERT
             postcodeFactorsVersionNotCorrect.Should().NotBeSameAs(postcodeFactorsVersionTestValue);
         }
 
@@ -70,7 +69,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.Postcodes
         [Fact(DisplayName = "SFA AreaCost - Does exist"), Trait("PostcodeFactors", "Unit")]
         public void SFA_AreaCost_Exists()
         {
-            //ARRANGE
+            // ARRANGE
             string sfaAreaCostExistsPostcode = postcodeTestValue;
             IList<SfaAreaCost> sfaAreaCostExistsList = new List<SfaAreaCost>()
             {
@@ -78,10 +77,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.Postcodes
             };
             var postcodeFactorsServiceMock = PostcodesSFAAreaCostTestRun(sfaAreaCostExistsList);
 
-            //ACT
+            // ACT
             var sfaAreaCostExists = postcodeFactorsServiceMock.SFAAreaCostsForPostcode(sfaAreaCostExistsPostcode);
 
-            //ASSERT
+            // ASSERT
             sfaAreaCostExists.Should().NotBeNull();
         }
 
@@ -91,7 +90,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.Postcodes
         [Fact(DisplayName = "SFA AreaCost - Does not exist"), Trait("PostcodeFactors", "Unit")]
         public void SFA_AreaCost_NotExists()
         {
-            //ARRANGE
+            // ARRANGE
             string sfaAreaCostNotExistsPostcode = "NW1 1AB";
             IList<SfaAreaCost> sfaAreaCostNotExistsList = new List<SfaAreaCost>()
             {
@@ -99,11 +98,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.Postcodes
             };
             var postcodeFactorsServiceMock = PostcodesSFAAreaCostTestRun(sfaAreaCostNotExistsList);
 
-            //ACT
-
+            // ACT
             Action sfaAreaCostNotExists = () => { postcodeFactorsServiceMock.SFAAreaCostsForPostcode(sfaAreaCostNotExistsPostcode); };
 
-            //ASSERT
+            // ASSERT
             sfaAreaCostNotExists.Should().Throw<KeyNotFoundException>();
         }
 
@@ -113,7 +111,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.Postcodes
         [Fact(DisplayName = "SFA AreaCost - Correct values (Single)"), Trait("PostcodeFactors", "Unit")]
         public void SFA_AreaCost_Correct_Single()
         {
-            //ARRANGE
+            // ARRANGE
             string sfaAreaCostCorrectSinglePostcode = postcodeTestValue;
             IList<SfaAreaCost> sfaAreaCostCorrectSingleList = new List<SfaAreaCost>()
             {
@@ -121,10 +119,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.Postcodes
             };
             var postcodeFactorsServiceMock = PostcodesSFAAreaCostTestRun(sfaAreaCostCorrectSingleList);
 
-            //ACT             
+            // ACT
             var sfaAreaCostExists = postcodeFactorsServiceMock.SFAAreaCostsForPostcode(postcodeTestValue);
 
-            //ASSERT
+            // ASSERT
             sfaAreaCostExists.Should().BeEquivalentTo(sfaAreaCostTestValue);
         }
 
@@ -134,7 +132,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.Postcodes
         [Fact(DisplayName = "SFA AreaCost - Correct values (Many)"), Trait("PostcodeFactors", "Unit")]
         public void SFA_AreaCost_Correct_Many()
         {
-            //ARRANGE
+            // ARRANGE
             string sfaAreaCostCorrectManyPostcode = postcodeTestValue;
             IList<SfaAreaCost> sfaAreaCostCorrectManyList = new List<SfaAreaCost>()
             {
@@ -143,10 +141,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.Postcodes
             };
             var postcodeFactorsServiceMock = PostcodesSFAAreaCostTestRun(sfaAreaCostCorrectManyList);
 
-            //ACT
+            // ACT
             var sfaAreaCostExists = postcodeFactorsServiceMock.SFAAreaCostsForPostcode(postcodeTestValue);
-            
-            //ASSERT
+
+            // ASSERT
             var expectedListCorrect = new List<SfaAreaCost>
             {
                 sfaAreaCostTestValue,
@@ -162,7 +160,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.Postcodes
         [Fact(DisplayName = "SFA AreaCost - Incorrect values (Single)"), Trait("PostcodeFactors", "Unit")]
         public void SFA_AreaCost_NotCorrect_Many()
         {
-            //ARRANGE
+            // ARRANGE
             string sfaAreaCostNotCorrectManyPostcode = postcodeTestValue;
             IList<SfaAreaCost> sfaAreaCostNotCorrectManyList = new List<SfaAreaCost>()
             {
@@ -170,9 +168,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.Postcodes
             };
             var postcodeFactorsServiceMock = PostcodesSFAAreaCostTestRun(sfaAreaCostNotCorrectManyList);
 
-            //ACT
+            // ACT
             var sfaAreaCostNotExists = postcodeFactorsServiceMock.SFAAreaCostsForPostcode(sfaAreaCostNotCorrectManyPostcode);
-            //ASSERT
+
+            // ASSERT
             IList<SfaAreaCost> expectedListNotCorrect = new List<SfaAreaCost>
             {
                 sfaAreaCostTestValue,
@@ -210,12 +209,12 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.Postcodes
             return postcodeFactorsReferenceDataService;
         }
 
-        readonly Mock<IReferenceDataCache> referenceDataCacheMock = new Mock<IReferenceDataCache>();
+        private readonly Mock<IReferenceDataCache> referenceDataCacheMock = new Mock<IReferenceDataCache>();
 
-        readonly public string postcodeTestValue = "SW3 5DN";
-        readonly public string postcodeFactorsVersionTestValue = "Version_002";
+        private readonly string postcodeTestValue = "SW3 5DN";
+        private readonly string postcodeFactorsVersionTestValue = "Version_002";
 
-        readonly SfaAreaCost sfaAreaCostTestValue =
+        private readonly SfaAreaCost sfaAreaCostTestValue =
             new SfaAreaCost()
             {
                 Postcode = "SW3 5DN",
@@ -223,7 +222,6 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.Postcodes
                 EffectiveFrom = DateTime.Parse("2000-01-01"),
                 EffectiveTo = null
             };
-        
 
         #endregion
     }

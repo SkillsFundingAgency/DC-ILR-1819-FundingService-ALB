@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Moq;
-using Xunit;
-using FluentAssertions;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.LARS;
-using ESFA.DC.ILR.FundingService.ALB.ExternalData.LARS.Model;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.LARS.Interface;
+using ESFA.DC.ILR.FundingService.ALB.ExternalData.LARS.Model;
+using FluentAssertions;
+using Moq;
+using Xunit;
 
 namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.LARS
 {
@@ -16,17 +15,17 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.LARS
         /// <summary>
         /// Return LARS Version
         /// </summary>
-        [Fact(DisplayName = "LARSVersion - Does exist"), Trait("LARS", "Unit")]   
+        [Fact(DisplayName = "LARSVersion - Does exist"), Trait("LARS", "Unit")]
         public void LARSCurrentVersion_Exists()
         {
-            //ARRANGE
-            var larsCurrentVersionValue = larsCurrentVersionTestValue;
+            // ARRANGE
+            var larsCurrentVersionValue = LarsCurrentVersionTestValue;
             var larsServiceMock = LARSCurrentVersionTestRun(larsCurrentVersionValue);
 
-            //ACT            
+            // ACT
             var larsCurrentVersionExists = larsServiceMock.LARSCurrentVersion();
 
-            //ASSERT
+            // ASSERT
             larsCurrentVersionExists.Should().NotBeNull();
         }
 
@@ -36,15 +35,15 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.LARS
         [Fact(DisplayName = "LARSVersion - Correct values"), Trait("LARS", "Unit")]
         public void LARSCurrentVersion_Correct()
         {
-            //ARRANGE
-            var larsCurrentVersionValue = larsCurrentVersionTestValue;
+            // ARRANGE
+            var larsCurrentVersionValue = LarsCurrentVersionTestValue;
             var larsServiceMock = LARSCurrentVersionTestRun(larsCurrentVersionValue);
 
-            //ACT            
+            // ACT
             var larsCurrentVersionCorrect = larsServiceMock.LARSCurrentVersion();
 
-            //ASSERT
-            larsCurrentVersionCorrect.Should().BeEquivalentTo(larsCurrentVersionTestValue);
+            // ASSERT
+            larsCurrentVersionCorrect.Should().BeEquivalentTo(LarsCurrentVersionTestValue);
         }
 
         /// <summary>
@@ -53,15 +52,15 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.LARS
         [Fact(DisplayName = "LARSVersion - Incorrect values"), Trait("LARS", "Unit")]
         public void LARSCurrentVersion_NotCorrect()
         {
-            //ARRANGE
+            // ARRANGE
             var larsCurrentVersionValue = "Version_002";
             var larsServiceMock = LARSCurrentVersionTestRun(larsCurrentVersionValue);
 
-            //ACT
+            // ACT
             var larsCurrentVersionNotCorrect = larsServiceMock.LARSCurrentVersion();
 
-            //ASSERT
-            larsCurrentVersionNotCorrect.Should().NotBeSameAs(larsCurrentVersionTestValue);
+            // ASSERT
+            larsCurrentVersionNotCorrect.Should().NotBeSameAs(LarsCurrentVersionTestValue);
         }
 
         /// <summary>
@@ -70,31 +69,31 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.LARS
         [Fact(DisplayName = "LARSLearningDelivery - Does exist"), Trait("LARS", "Unit")]
         public void LARSLearningDelivery_Exists()
         {
-            //ARRANGE
-            var learnAimRef = learnAimRefTestValue;
+            // ARRANGE
+            var learnAimRef = LearnAimRefTestValue;
             var larsServiceMock = LARSLearningDeliveryTestRun();
 
-            //ACT
+            // ACT
             var larsLearningDeliveryCorrect = larsServiceMock.LARSLearningDeliveriesForLearnAimRef(learnAimRef);
 
-            //ASSERT
+            // ASSERT
             larsLearningDeliveryCorrect.Should().NotBeNull();
         }
-    
+
         /// <summary>
         /// Return LARS LearningDelivery
         /// </summary>
         [Fact(DisplayName = "LARSLearningDelivery - Does not exist"), Trait("LARS", "Unit")]
         public void LARSLearningDelivery_NotExist()
         {
-            //ARRANGE
+            // ARRANGE
             var larsLearningDeliveryNotExistsAimRef = "456";
             var larsServiceMock = LARSLearningDeliveryTestRun();
 
-            //ACT
+            // ACT
             Action learningDeliveryNotExist = () => { larsServiceMock.LARSLearningDeliveriesForLearnAimRef(larsLearningDeliveryNotExistsAimRef); };
 
-            //ASSERT
+            // ASSERT
             learningDeliveryNotExist.Should().Throw<KeyNotFoundException>();
         }
 
@@ -104,14 +103,14 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.LARS
         [Fact(DisplayName = "LARSLearningDelivery - Correct values"), Trait("LARS", "Unit")]
         public void LARSLearningDelivery_Correct()
         {
-            //ARRANGE
+            // ARRANGE
             var larsServiceMock = LARSLearningDeliveryTestRun();
 
-            //ACT
-            var larsLearningDeliveryCorrect = larsServiceMock.LARSLearningDeliveriesForLearnAimRef(learnAimRefTestValue);
+            // ACT
+            var larsLearningDeliveryCorrect = larsServiceMock.LARSLearningDeliveriesForLearnAimRef(LearnAimRefTestValue);
 
-            //ASSERT
-            larsLearningDeliveryCorrect.Should().BeEquivalentTo(larsLearningDeliveryTestValue);
+            // ASSERT
+            larsLearningDeliveryCorrect.Should().BeEquivalentTo(LarsLearningDeliveryTestValue);
         }
 
         /// <summary>
@@ -120,18 +119,18 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.LARS
         [Fact(DisplayName = "LARSFunding - Does exist"), Trait("LARS", "Unit")]
         public void LARSFunding_Exists()
         {
-            //ARRANGE
-            string larsFundingExistsAimRef = learnAimRefTestValue;
+            // ARRANGE
+            string larsFundingExistsAimRef = LearnAimRefTestValue;
             List<LARSFunding> larsFundingExistsTestList = new List<LARSFunding>
             {
-                larsFundingTestValue
+                LarsFundingTestValue
             };
             var larsServiceMock = LARSFundingTestRun(larsFundingExistsTestList);
 
-            //ACT
+            // ACT
             var larsFundingExists = larsServiceMock.LARSFundingsForLearnAimRef(larsFundingExistsAimRef);
 
-            //ASSERT
+            // ASSERT
             larsFundingExists.Should().NotBeNull();
         }
 
@@ -141,18 +140,18 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.LARS
         [Fact(DisplayName = "LARSFunding - Does not exist"), Trait("LARS", "Unit")]
         public void LARSFunding_NotExists()
         {
-            //ARRANGE
+            // ARRANGE
             string larsFundingExistsAimRef = "456";
             List<LARSFunding> larsFundingNotExistsTestList = new List<LARSFunding>
             {
-                larsFundingTestValue
+                LarsFundingTestValue
             };
             var larsServiceMock = LARSFundingTestRun(larsFundingNotExistsTestList);
 
-            //ACT
+            // ACT
             Action larsFundingNotExist = () => { larsServiceMock.LARSFundingsForLearnAimRef(larsFundingExistsAimRef); };
 
-            //ASSERT
+            // ASSERT
             larsFundingNotExist.Should().Throw<KeyNotFoundException>();
         }
 
@@ -162,19 +161,19 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.LARS
         [Fact(DisplayName = "LARSFunding - Correct values (Single)"), Trait("LARS", "Unit")]
         public void LARSFunding_Correct_Single()
         {
-            //ARRANGE
-            string larsFundingExistsAimRef = learnAimRefTestValue;
+            // ARRANGE
+            string larsFundingExistsAimRef = LearnAimRefTestValue;
             List<LARSFunding> larsFundingCorrectSingleTestList = new List<LARSFunding>
             {
-                larsFundingTestValue
+                LarsFundingTestValue
             };
             var larsServiceMock = LARSFundingTestRun(larsFundingCorrectSingleTestList);
 
-            //ACT
+            // ACT
             var larsFundingCorrectSingle = larsServiceMock.LARSFundingsForLearnAimRef(larsFundingExistsAimRef);
 
-            //ASSERT
-            larsFundingCorrectSingle.Should().BeEquivalentTo(larsFundingTestValue);
+            // ASSERT
+            larsFundingCorrectSingle.Should().BeEquivalentTo(LarsFundingTestValue);
         }
 
         /// <summary>
@@ -183,23 +182,23 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.LARS
         [Fact(DisplayName = "LARSFunding - Correct values (Many)"), Trait("LARS", "Unit")]
         public void LARSFunding_Correct_Many()
         {
-            //ARRANGE
-            string larsFundingExistsAimRef = learnAimRefTestValue;
+            // ARRANGE
+            string larsFundingExistsAimRef = LearnAimRefTestValue;
             List<LARSFunding> larsFundingCorrectManyTestList = new List<LARSFunding>
             {
-                larsFundingTestValue,
-                larsFundingTestValue
+                LarsFundingTestValue,
+                LarsFundingTestValue
             };
             var larsServiceMock = LARSFundingTestRun(larsFundingCorrectManyTestList);
-            
-            //ACT
+
+            // ACT
             var larsFundingCorrectMany = larsServiceMock.LARSFundingsForLearnAimRef(larsFundingExistsAimRef);
 
-            //ASSERT
+            // ASSERT
             var expectedListCorrect = new List<LARSFunding>
             {
-                larsFundingTestValue,
-                larsFundingTestValue
+                LarsFundingTestValue,
+                LarsFundingTestValue
             };
 
             larsFundingCorrectMany.Should().BeEquivalentTo(expectedListCorrect);
@@ -211,22 +210,22 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.LARS
         [Fact(DisplayName = "LARSFunding - Incorrect values (Many)"), Trait("LARS", "Unit")]
         public void LARSFunding_NotCorrect_Many()
         {
-            //ARRANGE
-            string larsFundingExistsAimRef = learnAimRefTestValue;
+            // ARRANGE
+            string larsFundingExistsAimRef = LearnAimRefTestValue;
             List<LARSFunding> larsFundingNotCorrectManyTestList = new List<LARSFunding>
             {
-                larsFundingTestValue
+                LarsFundingTestValue
             };
             var larsServiceMock = LARSFundingTestRun(larsFundingNotCorrectManyTestList);
 
-            //ACT
+            // ACT
             var larsFundingNotCorrectMany = larsServiceMock.LARSFundingsForLearnAimRef(larsFundingExistsAimRef);
 
-            //ASSERT
+            // ASSERT
             var expectedListNotCorrect = new List<LARSFunding>
             {
-                larsFundingTestValue,
-                larsFundingTestValue
+                LarsFundingTestValue,
+                LarsFundingTestValue
             };
 
             larsFundingNotCorrectMany.Should().NotBeSameAs(expectedListNotCorrect);
@@ -247,7 +246,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.LARS
             var larsLearningDeliveryMock = referenceDataCacheMock;
             larsLearningDeliveryMock.SetupGet(rdc => rdc.LARSLearningDelivery).Returns(new Dictionary<string, LARSLearningDelivery>()
              {
-                { learnAimRefTestValue, larsLearningDeliveryTestValue }
+                { LearnAimRefTestValue, LarsLearningDeliveryTestValue }
             });
 
             return MockTestObject(larsLearningDeliveryMock.Object);
@@ -258,7 +257,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.LARS
             var larsFundingMock = referenceDataCacheMock;
             larsFundingMock.SetupGet(rdc => rdc.LARSFunding).Returns(new Dictionary<string, IEnumerable<LARSFunding>>()
             {
-                { learnAimRefTestValue, larsFundingList }
+                { LearnAimRefTestValue, larsFundingList }
             });
 
             return MockTestObject(larsFundingMock.Object);
@@ -271,12 +270,12 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.LARS
             return larsReferenceDataService;
         }
 
-        readonly Mock<IReferenceDataCache> referenceDataCacheMock = new Mock<IReferenceDataCache>();
+        private readonly Mock<IReferenceDataCache> referenceDataCacheMock = new Mock<IReferenceDataCache>();
 
-        readonly static string larsCurrentVersionTestValue = "Version_005";
-        readonly static string learnAimRefTestValue = "123456";
+        private static readonly string LarsCurrentVersionTestValue = "Version_005";
+        private static readonly string LearnAimRefTestValue = "123456";
 
-        readonly static LARSLearningDelivery larsLearningDeliveryTestValue =
+        private static readonly LARSLearningDelivery LarsLearningDeliveryTestValue =
              new LARSLearningDelivery()
              {
                  LearnAimRef = "123456",
@@ -284,8 +283,8 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests.LARS
                  NotionalNVQLevelv2 = "2",
                  RegulatedCreditValue = 180
              };
-        
-        readonly static LARSFunding larsFundingTestValue =
+
+        private static readonly LARSFunding LarsFundingTestValue =
             new LARSFunding()
             {
                 LearnAimRef = "123456",

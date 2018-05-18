@@ -17,13 +17,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "LARSFunding - Does exist"), Trait("LARS", "Unit")]
         public void LARSFunding_Exists()
         {
-            //ARRANGE
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT            
+            // ACT
             var referenceDataCache = SetupReferenceDataCache();
 
-            //ASSERT
+            // ASSERT
             referenceDataCache.LARSFunding.Should().NotBeNull();
         }
 
@@ -33,14 +33,14 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "LARSFunding - Value is Correct"), Trait("LARS", "Unit")]
         public void LARSFunding_Correct()
         {
-            //ARRANGE
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT            
+            // ACT
             var referenceDataCache = SetupReferenceDataCache();
 
-            //ASSERT
-            referenceDataCache.LARSFunding.Values.Single().Should().BeEquivalentTo(larsFundingTestValue);
+            // ASSERT
+            referenceDataCache.LARSFunding.Values.Single().Should().BeEquivalentTo(LarsFundingTestValue);
         }
 
         /// <summary>
@@ -49,13 +49,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "LARSLearningDelivery - Does exist"), Trait("LARS", "Unit")]
         public void LARSLearningDelivery_Exists()
         {
-            //ARRANGE
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT            
+            // ACT
             var referenceDataCache = SetupReferenceDataCache();
 
-            //ASSERT
+            // ASSERT
             referenceDataCache.LARSLearningDelivery.Should().NotBeNull();
         }
 
@@ -65,14 +65,14 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "LARSLearningDelivery - Value is Correct"), Trait("LARS", "Unit")]
         public void LARSLearningDelivery_Correct()
         {
-            //ARRANGE
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT            
+            // ACT
             var referenceDataCache = SetupReferenceDataCache();
 
-            //ASSERT
-            referenceDataCache.LARSLearningDelivery.Values.Single().Should().BeEquivalentTo(larsLearningDeliveryTestValue);
+            // ASSERT
+            referenceDataCache.LARSLearningDelivery.Values.Single().Should().BeEquivalentTo(LarsLearningDeliveryTestValue);
         }
 
         /// <summary>
@@ -81,13 +81,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "LARSCurrentVersion - Does exist"), Trait("LARS", "Unit")]
         public void LARSCurrentVersion_Exists()
         {
-            //ARRANGE
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT            
+            // ACT
             var referenceDataCache = SetupReferenceDataCache();
 
-            //ASSERT
+            // ASSERT
             referenceDataCache.LARSCurrentVersion.Should().NotBeNull();
         }
 
@@ -97,13 +97,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "LARSCurrentVersion - Value is Correct"), Trait("LARS", "Unit")]
         public void LARSCurrentVersion_Correct()
         {
-            //ARRANGE
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT            
+            // ACT
             var referenceDataCache = SetupReferenceDataCache();
 
-            //ASSERT
+            // ASSERT
             referenceDataCache.LARSCurrentVersion.Should().BeEquivalentTo(LARSCurrentVersion);
         }
 
@@ -113,13 +113,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "PostcodesCurrentVersion - Does exist"), Trait("LARS", "Unit")]
         public void PostcodesCurrentVersion_Exists()
         {
-            //ARRANGE
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT            
+            // ACT
             var referenceDataCache = SetupReferenceDataCache();
 
-            //ASSERT
+            // ASSERT
             referenceDataCache.PostcodeCurrentVersion.Should().NotBeNull();
         }
 
@@ -129,13 +129,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "PostcodesCurrentVersion - Value is Correct"), Trait("LARS", "Unit")]
         public void PostcodesCurrentVersion_Correct()
         {
-            //ARRANGE
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT            
+            // ACT
             var referenceDataCache = SetupReferenceDataCache();
 
-            //ASSERT
+            // ASSERT
             referenceDataCache.PostcodeCurrentVersion.Should().BeEquivalentTo(PostcodesCurrentVersion);
         }
 
@@ -145,13 +145,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "SfaAreaCost - Does exist"), Trait("LARS", "Unit")]
         public void SfaAreaCost_Exists()
         {
-            //ARRANGE
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT            
+            // ACT
             var referenceDataCache = SetupReferenceDataCache();
 
-            //ASSERT
+            // ASSERT
             referenceDataCache.SfaAreaCost.Should().NotBeNull();
         }
 
@@ -161,16 +161,16 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "SfaAreaCost - Value is Correct"), Trait("LARS", "Unit")]
         public void SfaAreaCost_Correct()
         {
-            //ARRANGE
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT            
+            // ACT
             var referenceDataCache = SetupReferenceDataCache();
 
-            //ASSERT
-            referenceDataCache.SfaAreaCost.Values.Single().Should().BeEquivalentTo(sfaAreaCostTestValue);
+            // ASSERT
+            referenceDataCache.SfaAreaCost.Values.Single().Should().BeEquivalentTo(SfaAreaCostTestValue);
         }
-        
+
         #region Test Helpers
 
         private IReferenceDataCache SetupReferenceDataCache()
@@ -180,19 +180,18 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
             {
                 LARSFunding = new Dictionary<string, IEnumerable<LARSFunding>>
                 {
-                    { "123456",  LARSFundingList(larsFundingTestValue) }
+                    { "123456",  LARSFundingList(LarsFundingTestValue) }
                 },
                 LARSCurrentVersion = LARSCurrentVersion,
                 LARSLearningDelivery = new Dictionary<string, LARSLearningDelivery>
                 {
-                    { "123456", larsLearningDeliveryTestValue }
+                    { "123456", LarsLearningDeliveryTestValue }
                 },
                 PostcodeCurrentVersion = PostcodesCurrentVersion,
                 SfaAreaCost = new Dictionary<string, IEnumerable<SfaAreaCost>>
                 {
-                    { "CV1 2WT", SFAAreaCostList(sfaAreaCostTestValue) }
+                    { "CV1 2WT", SFAAreaCostList(SfaAreaCostTestValue) }
                 }
-
             };
 
             referenceDataCache = referenceData;
@@ -200,10 +199,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
             return referenceDataCache;
         }
 
-        readonly static string LARSCurrentVersion = "Version_005";
-        readonly static string PostcodesCurrentVersion = "Version_002";
+        private static readonly string LARSCurrentVersion = "Version_005";
+        private static readonly string PostcodesCurrentVersion = "Version_002";
 
-        private IList<LARSFunding>LARSFundingList(LARSFunding larsFundingData)
+        private IList<LARSFunding> LARSFundingList(LARSFunding larsFundingData)
         {
             return new List<LARSFunding>
             {
@@ -211,7 +210,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
             };
         }
 
-        readonly static LARSFunding larsFundingTestValue =
+        private static readonly LARSFunding LarsFundingTestValue =
            new LARSFunding()
            {
                EffectiveFrom = DateTime.Parse("2000-01-01"),
@@ -219,10 +218,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
                FundingCategory = "Matrix",
                LearnAimRef = "123456",
                RateWeighted = 1.5m,
-               WeightingFactor = "W-Factor"               
+               WeightingFactor = "W-Factor"
            };
 
-        readonly static LARSLearningDelivery larsLearningDeliveryTestValue =
+        private static readonly LARSLearningDelivery LarsLearningDeliveryTestValue =
              new LARSLearningDelivery()
              {
                  LearnAimRef = "123456",
@@ -230,6 +229,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
                  NotionalNVQLevelv2 = "2",
                  RegulatedCreditValue = 180
              };
+
         private IList<SfaAreaCost> SFAAreaCostList(SfaAreaCost sfaAreaCostData)
         {
             return new List<SfaAreaCost>
@@ -238,7 +238,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
             };
         }
 
-        readonly static SfaAreaCost sfaAreaCostTestValue =
+        private static readonly SfaAreaCost SfaAreaCostTestValue =
            new SfaAreaCost()
            {
                Postcode = "CV1 2WT",

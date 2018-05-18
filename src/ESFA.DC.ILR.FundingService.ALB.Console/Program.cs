@@ -37,8 +37,8 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
 {
     public static class Program
     {
-        private static string fileName = "ILR-10006341-1819-20180118-023456-01.xml";
-        //private static string fileName = "ILR-10006341-1819-20180118-023456-02.xml";
+        // sprivate static string fileName = "ILR-10006341-1819-20180118-023456-01.xml";
+        private static string fileName = "ILR-10006341-1819-20180118-023456-02.xml";
 
         private static Stream stream;
 

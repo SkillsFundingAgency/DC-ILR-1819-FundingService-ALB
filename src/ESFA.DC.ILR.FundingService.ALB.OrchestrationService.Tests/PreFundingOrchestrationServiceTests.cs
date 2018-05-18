@@ -47,25 +47,37 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
     public class PreFundingOrchestrationServiceTests
     {
         /// <summary>
-        /// Return FundingContextManager
+        /// Return PreFundingOrchestrationService
         /// </summary>
         [Fact(DisplayName = "PreFundingOrchestration - Instance Exists"), Trait("PreFundingOrchestration", "Unit")]
-        public void FundingContext_Exists()
+        public void PreFundingOrchestrationService_Exists()
         {
             // ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
+
+            // ACT
             var preFundingOrchestrationService = SetupPreFundingOrchestrationService(message, referenceDataCache);
 
-            //ACT
-
-
-            //ASSERT
+            // ASSERT
             preFundingOrchestrationService.Should().NotBeNull();
         }
 
+        /// <summary>
+        /// Initialise Funding Service
+        /// </summary>
+        [Fact(DisplayName = "FundingServiceInitialise - Postcodes SFA AreaCost Correct"), Trait("Funding Service", "Unit")]
+        public void FundingInit()
+        {
+            // ARRANGE
 
-        #region Populate Data Tests
+            // ACT
+
+            // ASSERT
+            // assert somethin
+        }
+
+            #region Populate Data Tests
 
         /// <summary>
         /// Populate reference data cache and check values
@@ -73,15 +85,15 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
         [Fact(DisplayName = "PopulateReferenceData - LARS Version Correct"), Trait("Funding Service", "Unit")]
         public void PopulateReferenceData_LARSVersion_Correct()
         {
-            //ARRANGE
+            // ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
             var preFundingOrchestrationService = SetupPreFundingOrchestrationService(message, referenceDataCache);
 
-            //ACT
+            // ACT
             preFundingOrchestrationService.PopulateData(message.Learners.ToList());
 
-            //ASSERT
+            // ASSERT
             referenceDataCache.LARSCurrentVersion.Should().Be("Version_005");
         }
 
@@ -91,15 +103,15 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
         [Fact(DisplayName = "PopulateReferenceData - LARS LearningDelivery Correct"), Trait("Funding Service", "Unit")]
         public void PopulateReferenceData_LARSVLearningDelivery_Correct()
         {
-            //ARRANGE
+            // ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
             var preFundingOrchestrationService = SetupPreFundingOrchestrationService(message, referenceDataCache);
 
-            //ACT
+            // ACT
             preFundingOrchestrationService.PopulateData(message.Learners.ToList());
 
-            //ASSERT
+            // ASSERT
             var expectedOutput1 = new LARSLearningDelivery
             {
                 LearnAimRef = "50094488",
@@ -129,15 +141,15 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
         [Fact(DisplayName = "PopulateReferenceData - LARS Funding Correct"), Trait("Funding Service", "Unit")]
         public void PopulateReferenceData_LARSFunding_Correct()
         {
-            //ARRANGE
+            // ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
             var preFundingOrchestrationService = SetupPreFundingOrchestrationService(message, referenceDataCache);
 
-            //ACT
+            // ACT
             preFundingOrchestrationService.PopulateData(message.Learners.ToList());
 
-            //ASSERT
+            // ASSERT
             var expectedOutput1 = new LARSFunding
             {
                 LearnAimRef = "50094488",
@@ -171,15 +183,15 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
         [Fact(DisplayName = "PopulateReferenceData - Postcodes Version Correct"), Trait("Funding Service", "Unit")]
         public void PopulateReferenceData_Postcodes_Correct()
         {
-            //ARRANGE
+            // ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
             var preFundingOrchestrationService = SetupPreFundingOrchestrationService(message, referenceDataCache);
 
-            //ACT
+            // ACT
             preFundingOrchestrationService.PopulateData(message.Learners.ToList());
 
-            //ASSERT
+            // ASSERT
             referenceDataCache.PostcodeCurrentVersion.Should().Be("Version_002");
         }
 
@@ -189,15 +201,15 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
         [Fact(DisplayName = "PopulateReferenceData - Postcodes SFA AreaCost Correct"), Trait("Funding Service", "Unit")]
         public void PopulateReferenceData_PostcodesSFAAreaCost_Correct()
         {
-            //ARRANGE
+            // ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
             var preFundingOrchestrationService = SetupPreFundingOrchestrationService(message, referenceDataCache);
 
-            //ACT
+            // ACT
             preFundingOrchestrationService.PopulateData(message.Learners.ToList());
 
-            //ASSERT
+            // ASSERT
             var expectedOutput1 = new SfaAreaCost
             {
                 Postcode = "CV1 2WT",
@@ -213,104 +225,6 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
 
         #endregion
 
-        #region Valid Learners Tests
-
-        ///// <summary>
-        ///// Return Valid Learners from KeyValuePersistanceService
-        ///// </summary>
-        //[Fact(DisplayName = "Valid Learners - Learners Exist"), Trait("Funding Service", "Unit")]
-        //public void ValidLearners_LearnersExist()
-        //{
-        //    // ARRANGE
-        //    IKeyValuePersistenceService keyValuePersistenceService = new DictionaryKeyValuePersistenceService();
-        //    ISerializationService serializationService = new XmlSerializationService();
-
-        //    var validationOutput = new ValidationOutputStub(keyValuePersistenceService, serializationService);
-
-        //    var validLearnersList = new List<string> { "22v237", "16v224" };
-
-        //    //ACT
-        //    validationOutput.ValidLearners(validLearnersList);
-
-        //    //ASSERT
-        //    var result = keyValuePersistenceService.GetAsync("ValidLearnRefNumbers").Result;
-
-        //    result.Should().NotBeNull();
-        //}
-
-        ///// <summary>
-        ///// Return Valid Learners from KeyValuePersistanceService
-        ///// </summary>
-        //[Fact(DisplayName = "Valid Learners - Learners Correct"), Trait("Funding Service", "Unit")]
-        //public void ValidLearners_LearnersCorrect()
-        //{
-        //    // ARRANGE
-        //    IKeyValuePersistenceService keyValuePersistenceService = new DictionaryKeyValuePersistenceService();
-        //    ISerializationService serializationService = new XmlSerializationService();
-
-        //    var validationOutput = new ValidationOutputStub(keyValuePersistenceService, serializationService);
-
-        //    var validLearnersList = new List<string> { "22v237", "16v224" };
-
-        //    //ACT
-        //    validationOutput.ValidLearners(validLearnersList);
-
-        //    //ASSERT
-        //    var result = keyValuePersistenceService.GetAsync("ValidLearnRefNumbers").Result;
-
-        //    serializationService.Deserialize<List<string>>(result).Should().BeEquivalentTo(validLearnersList);
-        //}
-
-        ///// <summary>
-        ///// Return Valid Learners from KeyValuePersistanceService
-        ///// </summary>
-        //[Fact(DisplayName = "Valid Learners - Run Funding Service - Learner Count"), Trait("Funding Service", "Unit")]
-        //public void ValidLearners_FundingServiceLearnersCount()
-        //{
-        //    // ARRANGE        
-        //    var validLearnersList = new List<string> { "16v224" };
-
-        //    //ACT
-        //    var dataEntity = RunFundingServiceForValidLearners(@"Files\ILR-10006341-1819-20180118-023456-02.xml", validLearnersList);
-
-        //    //ASSERT
-        //    dataEntity.Count().Should().Be(1);
-        //}
-
-        ///// <summary>
-        ///// Return Valid Learners from KeyValuePersistanceService
-        ///// </summary>
-        //[Fact(DisplayName = "Valid Learners - Run Funding Service - Learner Correct"), Trait("Funding Service", "Unit")]
-        //public void ValidLearners_FundingServiceLearnersCorrect()
-        //{
-        //    // ARRANGE        
-        //    var validLearnersList = new List<string> { "16v224" };
-
-        //    //ACT
-        //    var dataEntity = RunFundingServiceForValidLearners(@"Files\ILR-10006341-1819-20180118-023456-02.xml", validLearnersList);
-
-        //    //ASSERT
-        //    dataEntity.Select(g => g.Children.Select(l => l.LearnRefNumber)).Single().Should().BeEquivalentTo("16v224");
-        //}
-
-        ///// <summary>
-        ///// Return Valid Learners from KeyValuePersistanceService
-        ///// </summary>
-        //[Fact(DisplayName = "Valid Learners - Run Funding Service Job Context - Learner Correct"), Trait("Funding Service", "Unit")]
-        //public void ValidLearners_FundingServicejobContext()
-        //{
-        //    // ARRANGE        
-        //    var validLearnersList = new List<string> { "16v224" };
-
-        //    //ACT
-        //    var dataEntity = RunFundingServiceForValidLearners(@"Files\ILR-10006341-1819-20180118-023456-02.xml", validLearnersList);
-
-        //    //ASSERT
-        //    dataEntity.Select(g => g.Children.Select(l => l.LearnRefNumber)).Single().Should().BeEquivalentTo("16v224");
-        //}
-
-        #endregion
-
         #region Test Helpers
 
         #region Test Data
@@ -319,11 +233,11 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
         {
             return new LARS_Version[]
             {
-                larsVersionTestValue,
+                LarsVersionTestValue,
             };
         }
 
-        readonly static LARS_Version larsVersionTestValue =
+        private static readonly LARS_Version LarsVersionTestValue =
             new LARS_Version()
             {
                 MajorNumber = 5,
@@ -345,12 +259,12 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
         {
             return new LARS_LearningDelivery[]
             {
-                larsLearningDeliveryTestValue1,
-                larsLearningDeliveryTestValue2
+                LarsLearningDeliveryTestValue1,
+                LarsLearningDeliveryTestValue2
             };
         }
 
-        readonly static LARS_LearningDelivery larsLearningDeliveryTestValue1 =
+        private static readonly LARS_LearningDelivery LarsLearningDeliveryTestValue1 =
             new LARS_LearningDelivery()
             {
                 LearnAimRef = "50094488",
@@ -370,7 +284,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
                 Modified_By = "TestUser"
             };
 
-        readonly static LARS_LearningDelivery larsLearningDeliveryTestValue2 =
+        private static readonly LARS_LearningDelivery LarsLearningDeliveryTestValue2 =
            new LARS_LearningDelivery()
            {
                LearnAimRef = "60005415",
@@ -394,12 +308,12 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
         {
             return new LARS_Funding[]
             {
-                larsFundingTestValue1,
-                larsFundingTestValue2
+                LarsFundingTestValue1,
+                LarsFundingTestValue2
             };
         }
 
-        readonly static LARS_Funding larsFundingTestValue1 =
+        private static readonly LARS_Funding LarsFundingTestValue1 =
             new LARS_Funding()
             {
                 LearnAimRef = "50094488",
@@ -415,7 +329,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
                 Modified_By = "TestUser"
             };
 
-        readonly static LARS_Funding larsFundingTestValue2 =
+        private static readonly LARS_Funding LarsFundingTestValue2 =
           new LARS_Funding()
           {
               LearnAimRef = "60005415",
@@ -439,7 +353,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
             };
         }
 
-        readonly static VersionInfo PostcodesVersionTestValue =
+        private static readonly VersionInfo PostcodesVersionTestValue =
             new VersionInfo
             {
                 VersionNumber = "Version_002",
@@ -457,7 +371,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
             };
         }
 
-        readonly static SFA_PostcodeAreaCost SFAAreaCostTestValue1 =
+        private static readonly SFA_PostcodeAreaCost SFAAreaCostTestValue1 =
           new SFA_PostcodeAreaCost()
           {
               MasterPostcode = new MasterPostcode { Postcode = "CV1 2WT" },
@@ -471,8 +385,26 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
 
         #region Mocks
 
-        private static readonly Mock<ILARS> larsContextMock = new Mock<ILARS>();
-        private static readonly Mock<IPostcodes> postcodesContextMock = new Mock<IPostcodes>();
+        private static readonly Mock<ILARS> LarsContextMock = new Mock<ILARS>();
+        private static readonly Mock<IPostcodes> PostcodesContextMock = new Mock<IPostcodes>();
+
+        private static IReadOnlyList<ITopicItem> Topics => new List<TopicItem>();
+
+        private static IDictionary<JobContextMessageKey, object> KeyValuePairsDictionary => new Dictionary<JobContextMessageKey, object>()
+        {
+            { JobContextMessageKey.Filename, "FileName" },
+            { JobContextMessageKey.UkPrn, 10006341 },
+            { JobContextMessageKey.ValidLearnRefNumbers, "ValidLearnRefNumbers" },
+        };
+
+        private static IJobContextMessage JobContextMessage => new JobContextMessage
+        {
+            JobId = 1,
+            SubmissionDateTimeUtc = DateTime.Parse("2018-08-01").ToUniversalTime(),
+            Topics = Topics,
+            TopicPointer = 1,
+            KeyValuePairs = KeyValuePairsDictionary,
+        };
 
         private PreFundingOrchestrationService SetupPreFundingOrchestrationService(IMessage message, IReferenceDataCache referenceDataCache)
         {
@@ -494,11 +426,11 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
             var larsLearningDeliveryMock = MockDBSetHelper.GetQueryableMockDbSet(MockLARSLearningDeliveryArray());
             var larsFundingMock = MockDBSetHelper.GetQueryableMockDbSet(MockLARSFundingArray());
 
-            larsContextMock.Setup(x => x.LARS_Version).Returns(larsVersionMock);
-            larsContextMock.Setup(x => x.LARS_LearningDelivery).Returns(larsLearningDeliveryMock);
-            larsContextMock.Setup(x => x.LARS_Funding).Returns(larsFundingMock);
+            LarsContextMock.Setup(x => x.LARS_Version).Returns(larsVersionMock);
+            LarsContextMock.Setup(x => x.LARS_LearningDelivery).Returns(larsLearningDeliveryMock);
+            LarsContextMock.Setup(x => x.LARS_Funding).Returns(larsFundingMock);
 
-            return larsContextMock;
+            return LarsContextMock;
         }
 
         private Mock<IPostcodes> PostcodesMock()
@@ -506,10 +438,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
             var postcodesVersionMock = MockDBSetHelper.GetQueryableMockDbSet(MockPostcodesVersionArray());
             var sfaAreaCostMock = MockDBSetHelper.GetQueryableMockDbSet(MockSFAAreaCostArray());
 
-            postcodesContextMock.Setup(x => x.SFA_PostcodeAreaCost).Returns(sfaAreaCostMock);
-            postcodesContextMock.Setup(x => x.VersionInfos).Returns(postcodesVersionMock);
+            PostcodesContextMock.Setup(x => x.SFA_PostcodeAreaCost).Returns(sfaAreaCostMock);
+            PostcodesContextMock.Setup(x => x.VersionInfos).Returns(postcodesVersionMock);
 
-            return postcodesContextMock;
+            return PostcodesContextMock;
         }
 
         private IFundingContext SetupFundingContext(IMessage message)
@@ -543,24 +475,6 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
 
             return mock.Object;
         }
-
-        private static IJobContextMessage JobContextMessage => new JobContextMessage
-        {
-            JobId = 1,
-            SubmissionDateTimeUtc = DateTime.Parse("2018-08-01").ToUniversalTime(),
-            Topics = Topics,
-            TopicPointer = 1,
-            KeyValuePairs = KeyValuePairsDictionary,
-        };
-
-        private static IReadOnlyList<ITopicItem> Topics => new List<TopicItem>();
-
-        private static IDictionary<JobContextMessageKey, object> KeyValuePairsDictionary => new Dictionary<JobContextMessageKey, object>()
-        {
-            { JobContextMessageKey.Filename, "FileName" },
-            { JobContextMessageKey.UkPrn, 10006341 },
-            { JobContextMessageKey.ValidLearnRefNumbers, "ValidLearnRefNumbers" },
-        };
 
         private static DictionaryKeyValuePersistenceService BuildKeyValueDictionary(IMessage message)
         {
@@ -600,10 +514,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
             return message;
         }
 
-        public int DecimalStrToInt(string value)
+        private int DecimalStrToInt(string value)
         {
             var valueInt = value.Substring(0, value.IndexOf('.', 0));
-            return Int32.Parse(valueInt);
+            return int.Parse(valueInt);
         }
 
         #endregion

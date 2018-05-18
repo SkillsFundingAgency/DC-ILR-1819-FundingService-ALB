@@ -1,178 +1,417 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using ESFA.DC.ILR.FundingService.ALB.Service.Contexts;
-//using ESFA.DC.ILR.FundingService.ALB.Service.Interface.Contexts;
-//using ESFA.DC.IO.Dictionary;
-//using ESFA.DC.IO.Interfaces;
-//using ESFA.DC.JobContext;
-//using ESFA.DC.JobContext.Interface;
-//using ESFA.DC.Mapping.Interface;
-//using ESFA.DC.Serialization.Interfaces;
-//using ESFA.DC.Serialization.Xml;
-//using FluentAssertions;
-//using Xunit;
+﻿using System;
+using System.Collections.Generic;
+using ESFA.DC.ILR.FundingService.ALB.Service.Contexts;
+using ESFA.DC.ILR.FundingService.ALB.Service.Interface.Contexts;
+using ESFA.DC.ILR.Model;
+using ESFA.DC.ILR.Model.Interface;
+using ESFA.DC.IO.Dictionary;
+using ESFA.DC.IO.Interfaces;
+using ESFA.DC.JobContext;
+using ESFA.DC.JobContext.Interface;
+using ESFA.DC.Serialization.Interfaces;
+using ESFA.DC.Serialization.Json;
+using FluentAssertions;
+using Xunit;
 
-//namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
-//{
-//    public class FundingContextManagerTests
-//    {
-//        /// <summary>
-//        /// Return FundingContextManager
-//        /// </summary>
-//        [Fact(DisplayName = "FundingContextManager - IMapper - Mapper Instance Exists"), Trait("Funding Context Manager", "Unit")]
-//        public void FundingContextMapper_IMapper_InstanceExist()
-//        {
-//            // ARRANGE
-//            // Use Test Helpers
+namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
+{
+    public class FundingContextManagerTests
+    {
+        /// <summary>
+        /// Return FundingContextManager
+        /// </summary>
+        [Fact(DisplayName = "FundingContextManager - Instance Exists"), Trait("Funding Context Manager", "Unit")]
+        public void FundingContextManager_InstanceExist()
+        {
+            // ARRANGE
+            // Use Test Helpers
 
-//            //ACT
-//            var mapper = Mapper;
+            //ACT
+            var fundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
 
-//            //ASSERT
-//            mapper.Should().NotBeNull();
-//        }
+            //ASSERT
+            fundingContextManager.Should().NotBeNull();
+        }
 
-//        /// <summary>
-//        /// Return FundingContextManager
-//        /// </summary>
-//        [Fact(DisplayName = "FundingContextManager - IMapper - MapTo Exists"), Trait("Funding Context Manager", "Unit")]
-//        public void FundingContextMapper_IMapper_MapToExist()
-//        {
-//            // ARRANGE
-//            // Use Test Helpers
+        /// <summary>
+        /// Return FundingContextManager
+        /// </summary>
+        [Fact(DisplayName = "FundingContextManager - MapUKPRN - Exists"), Trait("Funding Context Manager", "Unit")]
+        public void FundingContextMapper_MapUKPRN_Exist()
+        {
+            // ARRANGE
+            // Use Test Helpers
 
-//            //ACT
-//            var mapTo = Mapper.MapTo(JobContextMessage);
+            //ACT
+            var ukprn = TestFundingContextManager.MapUKPRN();
 
-//            //ASSERT
-//            mapTo.Should().NotBeNull();
-//        }
+            //ASSERT
+            ukprn.Should().NotBe(null);
+        }
 
-//        /// <summary>
-//        /// Return FundingContextManager
-//        /// </summary>
-//        [Fact(DisplayName = "FundingContextManager - IMapper - MapTo Correct"), Trait("Funding Context Manager", "Unit")]
-//        public void FundingContextMapper_IMapper_MapToCorrect()
-//        {
-//            // ARRANGE
-//            // Use Test Helpers
+        /// <summary>
+        /// Return FundingContextManager
+        /// </summary>
+        [Fact(DisplayName = "FundingContextManager - MapUKPRN - Correct"), Trait("Funding Context Manager", "Unit")]
+        public void FundingContextMapper_MapUKPRN_Correct()
+        {
+            // ARRANGE
+            // Use Test Helpers
 
-//            //ACT
-//            var mapTo = Mapper.MapTo(JobContextMessage);
+            //ACT
+            var ukprn = TestFundingContextManager.MapUKPRN();
 
-//            //ASSERT
-//            mapTo.Should().BeEquivalentTo(FundingContext());
-//        }
+            //ASSERT
+            ukprn.Should().Be(10006341);
+        }
 
-//        /// <summary>
-//        /// Return FundingContextManager
-//        /// </summary>
-//        [Fact(DisplayName = "FundingContextManager - ContextManager - Exists"), Trait("Funding Context Manager", "Unit")]
-//        public void FundingContextMapper_ContextManager_Exists()
-//        {
-//            // ARRANGE
-//            // Use Test Helpers
+        /// <summary>
+        /// Return FundingContextManager
+        /// </summary>
+        [Fact(DisplayName = "FundingContextManager - MapUKPRN - CorrectType"), Trait("Funding Context Manager", "Unit")]
+        public void FundingContextMapper_MapUKPRN_CorrectType()
+        {
+            // ARRANGE
+            // Use Test Helpers
 
-//            //ACT
-//            var fundingContextManager = FundingContextManager;
+            //ACT
+            var ukprn = TestFundingContextManager.MapUKPRN();
 
-//            //ASSERT
-//            fundingContextManager.Should().NotBeNull();
-//        }
+            //ASSERT
+            ukprn.Should().NotBeOfType(typeof(string));
+        }
 
-//        /// <summary>
-//        /// Return FundingContextManager
-//        /// </summary>
-//        [Fact(DisplayName = "FundingContextManager - ContextManager - MapFundingContext Exists"), Trait("Funding Context Manager", "Unit")]
-//        public void FundingContextMapper_ContextManager_MapFundingContextExists()
-//        {
-//            // ARRANGE
-//            // Use Test Helpers
+        /// <summary>
+        /// Return FundingContextManager
+        /// </summary>
+        [Fact(DisplayName = "FundingContextManager - MapValidLearners - Exists"), Trait("Funding Context Manager", "Unit")]
+        public void FundingContextMapper_MapValidLearners_Exist()
+        {
+            // ARRANGE
+            // Use Test Helpers
 
-//            //ACT
-//            var fundingContextManager = FundingContextManager.MapValidLearners(JobContextMessage);
+            //ACT
+            var learners = TestFundingContextManager.MapValidLearners();
 
-//            //ASSERT
-//            fundingContextManager.Should().NotBeNull();
-//        }
+            //ASSERT
+            learners.Should().NotBeNullOrEmpty();
+        }
 
-//        /// <summary>
-//        /// Return FundingContextManager
-//        /// </summary>
-//        [Fact(DisplayName = "FundingContextManager - ContextManager - MapFundingContext Count Correct"), Trait("Funding Context Manager", "Unit")]
-//        public void FundingContextMapper_ContextManager_MapFundingContextCountCorrect()
-//        {
-//            // ARRANGE
-//            // Use Test Helpers
+        /// <summary>
+        /// Return FundingContextManager
+        /// </summary>
+        [Fact(DisplayName = "FundingContextManager - MapValidLearners - Correct"), Trait("Funding Context Manager", "Unit")]
+        public void FundingContextMapper_MapValidLearners_Correct()
+        {
+            // ARRANGE
+            // Use Test Helpers
 
-//            //ACT
-//            var fundingContextManager = FundingContextManager.MapValidLearners(JobContextMessage);
+            //ACT
+            var learners = TestFundingContextManager.MapValidLearners();
 
-//            //ASSERT
-//            fundingContextManager.Count.Should().Be(2);
-//        }
+            //ASSERT
+            learners.Should().BeEquivalentTo(TestLearners());
+        }
 
-//        /// <summary>
-//        /// Return FundingContextManager
-//        /// </summary>
-//        [Fact(DisplayName = "FundingContextManager - ContextManager - MapFundingContext Correct"), Trait("Funding Context Manager", "Unit")]
-//        public void FundingContextMapper_ContextManager_MapFundingContextCorrect()
-//        {
-//            // ARRANGE
-//            // Use Test Helpers
+        /// <summary>
+        /// Return FundingContextManager
+        /// </summary>
+        [Fact(DisplayName = "FundingContextManager - MapValidLearners - Correct Count"), Trait("Funding Context Manager", "Unit")]
+        public void FundingContextMapper_MapValidLearners_CorrectCount()
+        {
+            // ARRANGE
+            // Use Test Helpers
 
-//            //ACT
-//            var fundingContextManager = FundingContextManager.MapValidLearners(JobContextMessage);
+            //ACT
+            var learners = TestFundingContextManager.MapValidLearners();
 
-//            //ASSERT
-//            fundingContextManager.Should().BeEquivalentTo(LearnRefNumbers);
-//        }
+            //ASSERT
+            learners.Count.Should().Be(2);
+        }
+
+        /// <summary>
+        /// Return FundingContextManager
+        /// </summary>
+        [Fact(DisplayName = "FundingContextManager - Mapto - Exists"), Trait("Funding Context Manager", "Unit")]
+        public void FundingContextMapper_Mapto_Exist()
+        {
+            // ARRANGE
+            var fundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
+
+            //ACT
+            var mapTo = fundingContextManager.MapTo(JobContextMessage);
+
+            //ASSERT
+            mapTo.Should().NotBeNullOrEmpty();
+        }
+
+        /// <summary>
+        /// Return FundingContextManager
+        /// </summary>
+        [Fact(DisplayName = "FundingContextManager - Mapto - Correct"), Trait("Funding Context Manager", "Unit")]
+        public void FundingContextMapper_Mapto_Correct()
+        {
+            // ARRANGE
+            var fundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
+
+            //ACT
+            var mapTo = fundingContextManager.MapTo(JobContextMessage);
+
+            //ASSERT
+            mapTo.Should().BeEquivalentTo(TestLearners());
+        }
+
+        /// <summary>
+        /// Return FundingContextManager
+        /// </summary>
+        [Fact(DisplayName = "FundingContextManager - MapTo - Correct Count"), Trait("Funding Context Manager", "Unit")]
+        public void FundingContextMapper_Mapto_CorrectCount()
+        {
+            // ARRANGE
+            var fundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
+
+            //ACT
+            var mapTo = fundingContextManager.MapTo(JobContextMessage);
+
+            //ASSERT
+            mapTo.Count.Should().Be(2);
+        }
+
+        /// <summary>
+        /// Return FundingContextManager
+        /// </summary>
+        [Fact(DisplayName = "FundingContextManager - MapFrom - NotImpelemented"), Trait("Funding Context Manager", "Unit")]
+        public void FundingContextMapper_MapFrom_Correct()
+        { 
+            // ARRANGE
+            var fundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
+
+            //ACT
+            Action mapFrom = () => fundingContextManager.MapFrom(TestLearners());
+
+            //ASSERT
+            mapFrom.Should().Throw<NotImplementedException>();
+        }
+
+        #region KeyValuePersistanceService Tests
+
+        /// <summary>
+        /// Return UKPRN from KeyValuePersistanceService
+        /// </summary>
+        [Fact(DisplayName = "KeyValuePersistanceService - UKPRN Exists"), Trait("Funding Service", "Unit")]
+        public void KeyValuePersistanceService()
+        {
+            // ARRANGE
+            var testUKPRNString = SerializationService.Serialize(10006341);
+
+            //ACT
+            var ukprn = KeyValuePersistenceService.GetAsync("UKPRN").Result;
+
+            //ASSERT
+            testUKPRNString.Should().NotBeNullOrEmpty();
+        }
+
+        /// <summary>
+        /// Return UKPRN from KeyValuePersistanceService
+        /// </summary>
+        [Fact(DisplayName = "KeyValuePersistanceService - UKPRN Correct"), Trait("Funding Service", "Unit")]
+        public void KeyValuePersistanceService_UKPRN_Correct()
+        {
+            // ARRANGE
+            var testUKPRNString = SerializationService.Serialize(10006341);
+
+            //ACT
+            var ukprn = KeyValuePersistenceService.GetAsync("UKPRN").Result;
+
+            //ASSERT
+            testUKPRNString.Should().BeEquivalentTo(testUKPRNString);
+        }
 
 
-//        #region Test Helpers
+        /// <summary>
+        /// Return Valid Learners from KeyValuePersistanceService
+        /// </summary>
+        [Fact(DisplayName = "KeyValuePersistanceService - Learners Exist"), Trait("Funding Service", "Unit")]
+        public void KeyValuePersistanceService_Learners_Exist()
+        {
+            // ARRANGE
+            var testLearnerString = SerializationService.Serialize(TestLearners());
 
-//        private IFundingContextManager FundingContextManager = new FundingContextManager(keyValuePersistenceService, serializationService);
+            //ACT
+            var learners = KeyValuePersistenceService.GetAsync("ValidLearnRefNumbers").Result;
 
-//        private IMapper<IJobContextMessage, IList<string>> Mapper = new FundingContextManager(keyValuePersistenceService, serializationService);
+            //ASSERT
+            learners.Should().NotBeNullOrEmpty();
+        }
 
-//        private static IJobContextMessage JobContextMessage => new JobContextMessage
-//        {
-//            JobId = 1,
-//            SubmissionDateTimeUtc = DateTime.Parse("2018-08-01").ToUniversalTime(),
-//            Topics = Topics,
-//            TopicPointer = 1,
-//            KeyValuePairs = KeyValuePairsDictionary,
-//        };
+        /// <summary>
+        /// Return Valid Learners from KeyValuePersistanceService
+        /// </summary>
+        [Fact(DisplayName = "KeyValuePersistanceService - Learners Correct"), Trait("Funding Service", "Unit")]
+        public void KeyValuePersistanceService_Learners_Correct()
+        {
+            // ARRANGE
+            var testLearnerString = SerializationService.Serialize(TestLearners());
 
-//        private static IReadOnlyList<ITopicItem> Topics => new List<TopicItem>();
+            //ACT
+            var learners = KeyValuePersistenceService.GetAsync("ValidLearnRefNumbers").Result;
 
-//        private static IDictionary<JobContextMessageKey, object> KeyValuePairsDictionary => new Dictionary<JobContextMessageKey, object>()
-//        {
-//            { JobContextMessageKey.ValidLearnRefNumbers, "ValidLearnRefNumbers" }
-//        };
+            //ASSERT
+            testLearnerString.Should().BeEquivalentTo(learners);
+        }
 
-//        private IList<string> FundingContext()
-//        {
-//            return Mapper.MapTo(JobContextMessage);
-//        }
+        #endregion
 
-//        private static IKeyValuePersistenceService keyValuePersistenceService => BuildKeyValueDictionary();
+        #region Test Helpers
 
-//        private static ISerializationService serializationService => new XmlSerializationService();
+        private IFundingContextManager TestFundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
 
-//        private static DictionaryKeyValuePersistenceService BuildKeyValueDictionary()
-//        {
-//            var learnRefNumbers = LearnRefNumbers;
-//            var list = new DictionaryKeyValuePersistenceService();
-//            var serializer = new XmlSerializationService();
+        private static IJobContextMessage JobContextMessage => new JobContextMessage
+        {
+            JobId = 1,
+            SubmissionDateTimeUtc = DateTime.Parse("2018-08-01").ToUniversalTime(),
+            Topics = Topics,
+            TopicPointer = 1,
+            KeyValuePairs = KeyValuePairsDictionary,
+        };
 
-//            list.SaveAsync("ValidLearnRefNumbers", serializer.Serialize(learnRefNumbers)).Wait();
+        private static IReadOnlyList<ITopicItem> Topics => new List<TopicItem>();
 
-//            return list;
-//        }
+        private static IDictionary<JobContextMessageKey, object> KeyValuePairsDictionary => new Dictionary<JobContextMessageKey, object>()
+        {
+            { JobContextMessageKey.Filename, "FileName" },
+            { JobContextMessageKey.UkPrn, "UKPRN" },
+            { JobContextMessageKey.ValidLearnRefNumbers, "ValidLearnRefNumbers" },
+        };
+              
+        private static IKeyValuePersistenceService KeyValuePersistenceService => BuildKeyValueDictionary();
 
-//        private static IList<string> LearnRefNumbers => new List<string> { "Learner1", "Learner2" };
+        private static ISerializationService SerializationService => new JsonSerializationService();
 
-//        #endregion
-//    }
-//}
+        private static DictionaryKeyValuePersistenceService BuildKeyValueDictionary()
+        {
+            var list = new DictionaryKeyValuePersistenceService();
+            var serializer = new JsonSerializationService();
+
+            list.SaveAsync("UKPRN", "10006341").Wait();
+            list.SaveAsync("ValidLearnRefNumbers", serializer.Serialize(TestLearners())).Wait();
+
+            return list;
+        }
+
+        private static IList<ILearner> TestLearners()
+        {
+            return new[]
+            {
+                new MessageLearner
+                {
+                    LearnRefNumber = "Learner1",
+                    LearningDelivery = new[]
+                    {
+                        new MessageLearnerLearningDelivery
+                        {
+                            LearnAimRef = "123456",
+                            AimSeqNumber = 1,
+                            CompStatus = 1,
+                            DelLocPostCode = "CV1 2WT",
+                            LearnActEndDateSpecified = true,
+                            LearnActEndDate = DateTime.Parse("2018-06-30"),
+                            LearnStartDate = DateTime.Parse("2017-08-30"),
+                            LearnPlanEndDate = DateTime.Parse("2018-07-30"),
+                            OrigLearnStartDateSpecified = true,
+                            OrigLearnStartDate = DateTime.Parse("2017-08-30"),
+                            OtherFundAdjSpecified = false,
+                            OutcomeSpecified = false,
+                            PriorLearnFundAdjSpecified = false,
+                            LearningDeliveryFAM = new[]
+                            {
+                                new MessageLearnerLearningDeliveryLearningDeliveryFAM
+                                {
+                                    LearnDelFAMCode = "1",
+                                    LearnDelFAMType = "ADL",
+                                    LearnDelFAMDateFromSpecified = true,
+                                    LearnDelFAMDateFrom = DateTime.Parse("2017-08-30"),
+                                    LearnDelFAMDateToSpecified = true,
+                                    LearnDelFAMDateTo =  DateTime.Parse("2017-10-31")
+
+                                },
+                                new MessageLearnerLearningDeliveryLearningDeliveryFAM
+                                {
+                                    LearnDelFAMCode = "100",
+                                    LearnDelFAMType = "SOF",
+                                    LearnDelFAMDateFromSpecified = true,
+                                    LearnDelFAMDateFrom = DateTime.Parse("2017-10-31"),
+                                    LearnDelFAMDateToSpecified = true,
+                                    LearnDelFAMDateTo =  DateTime.Parse("2017-11-30")
+                                },
+                                new MessageLearnerLearningDeliveryLearningDeliveryFAM
+                                {
+                                    LearnDelFAMCode = "1",
+                                    LearnDelFAMType = "RES",
+                                    LearnDelFAMDateFromSpecified = true,
+                                    LearnDelFAMDateFrom = DateTime.Parse("2017-12-01"),
+                                    LearnDelFAMDateToSpecified = false
+                                }
+                            }
+                        }
+                    }
+                },
+                new MessageLearner
+                {
+                    LearnRefNumber = "Learner2",
+                    LearningDelivery = new[]
+                    {
+                        new MessageLearnerLearningDelivery
+                        {
+                            LearnAimRef = "123456",
+                            AimSeqNumber = 1,
+                            CompStatus = 1,
+                            DelLocPostCode = "CV1 2WT",
+                            LearnActEndDateSpecified = true,
+                            LearnActEndDate = DateTime.Parse("2018-06-30"),
+                            LearnStartDate = DateTime.Parse("2017-08-30"),
+                            LearnPlanEndDate = DateTime.Parse("2018-07-30"),
+                            OrigLearnStartDateSpecified = true,
+                            OrigLearnStartDate = DateTime.Parse("2017-08-30"),
+                            OtherFundAdjSpecified = false,
+                            OutcomeSpecified = false,
+                            PriorLearnFundAdjSpecified = false,
+                            LearningDeliveryFAM = new[]
+                            {
+                                new MessageLearnerLearningDeliveryLearningDeliveryFAM
+                                {
+                                    LearnDelFAMCode = "1",
+                                    LearnDelFAMType = "ADL",
+                                    LearnDelFAMDateFromSpecified = true,
+                                    LearnDelFAMDateFrom = DateTime.Parse("2017-08-30"),
+                                    LearnDelFAMDateToSpecified = true,
+                                    LearnDelFAMDateTo =  DateTime.Parse("2017-10-31")
+
+                                },
+                                new MessageLearnerLearningDeliveryLearningDeliveryFAM
+                                {
+                                    LearnDelFAMCode = "100",
+                                    LearnDelFAMType = "SOF",
+                                    LearnDelFAMDateFromSpecified = true,
+                                    LearnDelFAMDateFrom = DateTime.Parse("2017-10-31"),
+                                    LearnDelFAMDateToSpecified = true,
+                                    LearnDelFAMDateTo =  DateTime.Parse("2017-11-30")
+                                },
+                                new MessageLearnerLearningDeliveryLearningDeliveryFAM
+                                {
+                                    LearnDelFAMCode = "1",
+                                    LearnDelFAMType = "RES",
+                                    LearnDelFAMDateFromSpecified = true,
+                                    LearnDelFAMDateFrom = DateTime.Parse("2017-12-01"),
+                                    LearnDelFAMDateToSpecified = false
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        #endregion
+    }
+}

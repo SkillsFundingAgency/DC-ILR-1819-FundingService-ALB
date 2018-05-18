@@ -528,39 +528,39 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             return mock.Object;
         }
 
-        private static IJobContextMessage JobContextMessage => new JobContextMessage
-        {
-            JobId = 1,
-            SubmissionDateTimeUtc = DateTime.Parse("2018-08-01").ToUniversalTime(),
-            Topics = Topics,
-            TopicPointer = 1,
-            KeyValuePairs = KeyValuePairsDictionary,
-        };
+            private static IJobContextMessage JobContextMessage => new JobContextMessage
+            {
+                JobId = 1,
+                SubmissionDateTimeUtc = DateTime.Parse("2018-08-01").ToUniversalTime(),
+                Topics = Topics,
+                TopicPointer = 1,
+                KeyValuePairs = KeyValuePairsDictionary,
+            };
 
-        private static IReadOnlyList<ITopicItem> Topics => new List<TopicItem>();
+            private static IReadOnlyList<ITopicItem> Topics => new List<TopicItem>();
 
-        private static IDictionary<JobContextMessageKey, object> KeyValuePairsDictionary => new Dictionary<JobContextMessageKey, object>()
-        {
-            { JobContextMessageKey.Filename, "FileName" },
-            { JobContextMessageKey.UkPrn, "UKPRN" },
-            { JobContextMessageKey.ValidLearnRefNumbers, "ValidLearnRefNumbers" },
-        };
+            private static IDictionary<JobContextMessageKey, object> KeyValuePairsDictionary => new Dictionary<JobContextMessageKey, object>()
+            {
+                { JobContextMessageKey.Filename, "FileName" },
+                { JobContextMessageKey.UkPrn, "UKPRN" },
+                { JobContextMessageKey.ValidLearnRefNumbers, "ValidLearnRefNumbers" },
+            };
 
-        private static DictionaryKeyValuePersistenceService BuildKeyValueDictionary(IMessage message)
-        {
-            var messageNew = (Message)message;
+            private static DictionaryKeyValuePersistenceService BuildKeyValueDictionary(IMessage message)
+            {
+                var messageNew = (Message)message;
 
-            var learners = messageNew.Learner.ToList();
+                var learners = messageNew.Learner.ToList();
 
-            // var learnRefNumbers = new List<string> { "16v224" };
-            var list = new DictionaryKeyValuePersistenceService();
-            var serializer = new JsonSerializationService();
+                // var learnRefNumbers = new List<string> { "16v224" };
+                var list = new DictionaryKeyValuePersistenceService();
+                var serializer = new JsonSerializationService();
 
-            list.SaveAsync("UKPRN", "10006341").Wait();
-            list.SaveAsync("ValidLearnRefNumbers", serializer.Serialize(learners)).Wait();
+                list.SaveAsync("UKPRN", "10006341").Wait();
+                list.SaveAsync("ValidLearnRefNumbers", serializer.Serialize(learners)).Wait();
 
-            return list;
-        }
+                return list;
+            }
 
         #endregion
 

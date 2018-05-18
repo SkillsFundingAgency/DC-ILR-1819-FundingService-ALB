@@ -18,7 +18,7 @@
     <PackageReference Include="ESFA.DC.JobContext.Interface" Version="0.1.2-beta0001" />
     <PackageReference Include="ESFA.DC.Mapping.Interface" Version="0.1.0-beta0001" />
     <PackageReference Include="ESFA.DC.Serialization.Interfaces" Version="0.1.1-beta0001" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta006" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
