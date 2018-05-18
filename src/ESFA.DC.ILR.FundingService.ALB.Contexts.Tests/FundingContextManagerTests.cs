@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using ESFA.DC.ILR.FundingService.ALB.Service.Contexts;
-using ESFA.DC.ILR.FundingService.ALB.Service.Interface.Contexts;
+using ESFA.DC.ILR.FundingService.ALB.Contexts;
+using ESFA.DC.ILR.FundingService.ALB.Contexts.Interface;
 using ESFA.DC.ILR.Model;
 using ESFA.DC.ILR.Model.Interface;
 using ESFA.DC.IO.Dictionary;
@@ -13,7 +13,7 @@ using ESFA.DC.Serialization.Json;
 using FluentAssertions;
 using Xunit;
 
-namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
+namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
 {
     public class FundingContextManagerTests
     {
@@ -26,10 +26,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             // Use Test Helpers
 
-            //ACT
+            // ACT
             var fundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
 
-            //ASSERT
+            // ASSERT
             fundingContextManager.Should().NotBeNull();
         }
 
@@ -42,10 +42,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             // Use Test Helpers
 
-            //ACT
+            // ACT
             var ukprn = TestFundingContextManager.MapUKPRN();
 
-            //ASSERT
+            // ASSERT
             ukprn.Should().NotBe(null);
         }
 
@@ -58,10 +58,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             // Use Test Helpers
 
-            //ACT
+            // ACT
             var ukprn = TestFundingContextManager.MapUKPRN();
 
-            //ASSERT
+            // ASSERT
             ukprn.Should().Be(10006341);
         }
 
@@ -74,10 +74,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             // Use Test Helpers
 
-            //ACT
+            // ACT
             var ukprn = TestFundingContextManager.MapUKPRN();
 
-            //ASSERT
+            // ASSERT
             ukprn.Should().NotBeOfType(typeof(string));
         }
 
@@ -90,10 +90,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             // Use Test Helpers
 
-            //ACT
+            // ACT
             var learners = TestFundingContextManager.MapValidLearners();
 
-            //ASSERT
+            // ASSERT
             learners.Should().NotBeNullOrEmpty();
         }
 
@@ -106,10 +106,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             // Use Test Helpers
 
-            //ACT
+            // ACT
             var learners = TestFundingContextManager.MapValidLearners();
 
-            //ASSERT
+            // ASSERT
             learners.Should().BeEquivalentTo(TestLearners());
         }
 
@@ -122,10 +122,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             // Use Test Helpers
 
-            //ACT
+            // ACT
             var learners = TestFundingContextManager.MapValidLearners();
 
-            //ASSERT
+            // ASSERT
             learners.Count.Should().Be(2);
         }
 
@@ -138,10 +138,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             var fundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
 
-            //ACT
+            // ACT
             var mapTo = fundingContextManager.MapTo(JobContextMessage);
 
-            //ASSERT
+            // ASSERT
             mapTo.Should().NotBeNullOrEmpty();
         }
 
@@ -154,10 +154,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             var fundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
 
-            //ACT
+            // ACT
             var mapTo = fundingContextManager.MapTo(JobContextMessage);
 
-            //ASSERT
+            // ASSERT
             mapTo.Should().BeEquivalentTo(TestLearners());
         }
 
@@ -170,10 +170,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             var fundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
 
-            //ACT
+            // ACT
             var mapTo = fundingContextManager.MapTo(JobContextMessage);
 
-            //ASSERT
+            // ASSERT
             mapTo.Count.Should().Be(2);
         }
 
@@ -182,14 +182,14 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
         /// </summary>
         [Fact(DisplayName = "FundingContextManager - MapFrom - NotImpelemented"), Trait("Funding Context Manager", "Unit")]
         public void FundingContextMapper_MapFrom_Correct()
-        { 
+        {
             // ARRANGE
             var fundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
 
-            //ACT
+            // ACT
             Action mapFrom = () => fundingContextManager.MapFrom(TestLearners());
 
-            //ASSERT
+            // ASSERT
             mapFrom.Should().Throw<NotImplementedException>();
         }
 
@@ -204,10 +204,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             var testUKPRNString = SerializationService.Serialize(10006341);
 
-            //ACT
+            // ACT
             var ukprn = KeyValuePersistenceService.GetAsync("UKPRN").Result;
 
-            //ASSERT
+            // ASSERT
             testUKPRNString.Should().NotBeNullOrEmpty();
         }
 
@@ -220,13 +220,12 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             var testUKPRNString = SerializationService.Serialize(10006341);
 
-            //ACT
+            // ACT
             var ukprn = KeyValuePersistenceService.GetAsync("UKPRN").Result;
 
-            //ASSERT
+            // ASSERT
             testUKPRNString.Should().BeEquivalentTo(testUKPRNString);
         }
-
 
         /// <summary>
         /// Return Valid Learners from KeyValuePersistanceService
@@ -237,10 +236,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             var testLearnerString = SerializationService.Serialize(TestLearners());
 
-            //ACT
+            // ACT
             var learners = KeyValuePersistenceService.GetAsync("ValidLearnRefNumbers").Result;
 
-            //ASSERT
+            // ASSERT
             learners.Should().NotBeNullOrEmpty();
         }
 
@@ -253,10 +252,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             var testLearnerString = SerializationService.Serialize(TestLearners());
 
-            //ACT
+            // ACT
             var learners = KeyValuePersistenceService.GetAsync("ValidLearnRefNumbers").Result;
 
-            //ASSERT
+            // ASSERT
             testLearnerString.Should().BeEquivalentTo(learners);
         }
 
@@ -283,7 +282,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             { JobContextMessageKey.UkPrn, "UKPRN" },
             { JobContextMessageKey.ValidLearnRefNumbers, "ValidLearnRefNumbers" },
         };
-              
+
         private static IKeyValuePersistenceService KeyValuePersistenceService => BuildKeyValueDictionary();
 
         private static ISerializationService SerializationService => new JsonSerializationService();
@@ -332,8 +331,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
                                     LearnDelFAMDateFromSpecified = true,
                                     LearnDelFAMDateFrom = DateTime.Parse("2017-08-30"),
                                     LearnDelFAMDateToSpecified = true,
-                                    LearnDelFAMDateTo =  DateTime.Parse("2017-10-31")
-
+                                    LearnDelFAMDateTo = DateTime.Parse("2017-10-31")
                                 },
                                 new MessageLearnerLearningDeliveryLearningDeliveryFAM
                                 {
@@ -342,7 +340,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
                                     LearnDelFAMDateFromSpecified = true,
                                     LearnDelFAMDateFrom = DateTime.Parse("2017-10-31"),
                                     LearnDelFAMDateToSpecified = true,
-                                    LearnDelFAMDateTo =  DateTime.Parse("2017-11-30")
+                                    LearnDelFAMDateTo = DateTime.Parse("2017-11-30")
                                 },
                                 new MessageLearnerLearningDeliveryLearningDeliveryFAM
                                 {
@@ -385,8 +383,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
                                     LearnDelFAMDateFromSpecified = true,
                                     LearnDelFAMDateFrom = DateTime.Parse("2017-08-30"),
                                     LearnDelFAMDateToSpecified = true,
-                                    LearnDelFAMDateTo =  DateTime.Parse("2017-10-31")
-
+                                    LearnDelFAMDateTo = DateTime.Parse("2017-10-31")
                                 },
                                 new MessageLearnerLearningDeliveryLearningDeliveryFAM
                                 {
@@ -395,7 +392,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
                                     LearnDelFAMDateFromSpecified = true,
                                     LearnDelFAMDateFrom = DateTime.Parse("2017-10-31"),
                                     LearnDelFAMDateToSpecified = true,
-                                    LearnDelFAMDateTo =  DateTime.Parse("2017-11-30")
+                                    LearnDelFAMDateTo = DateTime.Parse("2017-11-30")
                                 },
                                 new MessageLearnerLearningDeliveryLearningDeliveryFAM
                                 {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using ESFA.DC.ILR.FundingService.ALB.Service.Interface.Contexts;
+using ESFA.DC.ILR.FundingService.ALB.Contexts.Interface;
 using ESFA.DC.ILR.Model.Interface;
 
-namespace ESFA.DC.ILR.FundingService.ALB.Service.Contexts
+namespace ESFA.DC.ILR.FundingService.ALB.Contexts
 {
     public class FundingContext : IFundingContext
     {

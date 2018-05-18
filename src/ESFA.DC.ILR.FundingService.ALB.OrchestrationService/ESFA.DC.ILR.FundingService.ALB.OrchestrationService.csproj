@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.Contexts\ESFA.DC.ILR.FundingService.ALB.Contexts.csproj" />
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.ExternalData\ESFA.DC.ILR.FundingService.ALB.ExternalData.csproj" />
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface\ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface.csproj" />
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.Service.Interface\ESFA.DC.ILR.FundingService.ALB.Service.Interface.csproj" />

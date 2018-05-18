@@ -25,6 +25,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESFA.DC.ILR.FundingService.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests", "ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests\ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests.csproj", "{07767876-18A0-4D1A-819E-AB54434F89B6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.FundingService.ALB.Contexts", "ESFA.DC.ILR.FundingService.ALB.Contexts\ESFA.DC.ILR.FundingService.ALB.Contexts.csproj", "{253EACDE-E617-4A4F-BB83-075170E65211}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.FundingService.ALB.Contexts.Tests", "ESFA.DC.ILR.FundingService.ALB.Contexts.Tests\ESFA.DC.ILR.FundingService.ALB.Contexts.Tests.csproj", "{188F210E-8C99-4D9A-99DD-47BA87B7B054}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +79,14 @@ Global
 		{07767876-18A0-4D1A-819E-AB54434F89B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07767876-18A0-4D1A-819E-AB54434F89B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07767876-18A0-4D1A-819E-AB54434F89B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{253EACDE-E617-4A4F-BB83-075170E65211}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{253EACDE-E617-4A4F-BB83-075170E65211}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{253EACDE-E617-4A4F-BB83-075170E65211}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{253EACDE-E617-4A4F-BB83-075170E65211}.Release|Any CPU.Build.0 = Release|Any CPU
+		{188F210E-8C99-4D9A-99DD-47BA87B7B054}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{188F210E-8C99-4D9A-99DD-47BA87B7B054}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{188F210E-8C99-4D9A-99DD-47BA87B7B054}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{188F210E-8C99-4D9A-99DD-47BA87B7B054}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

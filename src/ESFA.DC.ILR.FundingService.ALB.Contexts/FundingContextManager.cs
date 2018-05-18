@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ESFA.DC.ILR.FundingService.ALB.Service.Interface.Contexts;
+using ESFA.DC.ILR.FundingService.ALB.Contexts.Interface;
 using ESFA.DC.ILR.Model;
 using ESFA.DC.ILR.Model.Interface;
 using ESFA.DC.IO.Interfaces;
@@ -9,7 +9,7 @@ using ESFA.DC.JobContext.Interface;
 using ESFA.DC.Mapping.Interface;
 using ESFA.DC.Serialization.Interfaces;
 
-namespace ESFA.DC.ILR.FundingService.ALB.Service.Contexts
+namespace ESFA.DC.ILR.FundingService.ALB.Contexts
 {
     public class FundingContextManager : IFundingContextManager, IMapper<IJobContextMessage, IList<ILearner>>
     {

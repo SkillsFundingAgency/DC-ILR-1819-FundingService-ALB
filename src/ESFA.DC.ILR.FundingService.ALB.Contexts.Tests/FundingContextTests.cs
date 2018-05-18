@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using ESFA.DC.ILR.FundingService.ALB.Service.Contexts;
-using ESFA.DC.ILR.FundingService.ALB.Service.Interface.Contexts;
+using ESFA.DC.ILR.FundingService.ALB.Contexts;
+using ESFA.DC.ILR.FundingService.ALB.Contexts.Interface;
 using ESFA.DC.ILR.Model;
 using ESFA.DC.ILR.Model.Interface;
 using ESFA.DC.IO.Dictionary;
@@ -13,7 +13,7 @@ using ESFA.DC.Serialization.Json;
 using FluentAssertions;
 using Xunit;
 
-namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
+namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
 {
     public class FundingContextTests
     {
@@ -26,10 +26,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             // Use Test Helpers
 
-            //ACT
+            // ACT
             var fundingContext = new FundingContext(TestFundingContextManager);
 
-            //ASSERT
+            // ASSERT
             fundingContext.Should().NotBeNull();
         }
 
@@ -42,10 +42,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             // Use Test Helpers
 
-            //ACT
+            // ACT
             var ukprn = FundngContext.UKPRN;
 
-            //ASSERT
+            // ASSERT
             ukprn.Should().NotBe(null);
         }
 
@@ -58,10 +58,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             // Use Test Helpers
 
-            //ACT
+            // ACT
             var ukprn = FundngContext.UKPRN;
 
-            //ASSERT
+            // ASSERT
             ukprn.Should().Be(10006341);
         }
 
@@ -74,10 +74,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             // Use Test Helpers
 
-            //ACT
+            // ACT
             var ukprn = FundngContext.UKPRN;
 
-            //ASSERT
+            // ASSERT
             ukprn.Should().BeOfType(typeof(int));
             ukprn.Should().NotBeOfType(typeof(string));
         }
@@ -91,10 +91,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             // Use Test Helpers
 
-            //ACT
+            // ACT
             var validLearners = FundngContext.ValidLearners;
 
-            //ASSERT
+            // ASSERT
             validLearners.Should().NotBeNull();
         }
 
@@ -107,10 +107,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             // Use Test Helpers
 
-            //ACT
+            // ACT
             var validLearners = FundngContext.ValidLearners;
 
-            //ASSERT
+            // ASSERT
             validLearners.Count.Should().Be(2);
         }
 
@@ -123,10 +123,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ARRANGE
             // Use Test Helpers
 
-            //ACT
+            // ACT
             var validLearners = FundngContext.ValidLearners;
 
-            //ASSERT
+            // ASSERT
             validLearners.Should().BeEquivalentTo(TestLearners());
         }
 
@@ -202,8 +202,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
                                     LearnDelFAMDateFromSpecified = true,
                                     LearnDelFAMDateFrom = DateTime.Parse("2017-08-30"),
                                     LearnDelFAMDateToSpecified = true,
-                                    LearnDelFAMDateTo =  DateTime.Parse("2017-10-31")
-
+                                    LearnDelFAMDateTo = DateTime.Parse("2017-10-31")
                                 },
                                 new MessageLearnerLearningDeliveryLearningDeliveryFAM
                                 {
@@ -212,7 +211,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
                                     LearnDelFAMDateFromSpecified = true,
                                     LearnDelFAMDateFrom = DateTime.Parse("2017-10-31"),
                                     LearnDelFAMDateToSpecified = true,
-                                    LearnDelFAMDateTo =  DateTime.Parse("2017-11-30")
+                                    LearnDelFAMDateTo = DateTime.Parse("2017-11-30")
                                 },
                                 new MessageLearnerLearningDeliveryLearningDeliveryFAM
                                 {
@@ -255,8 +254,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
                                     LearnDelFAMDateFromSpecified = true,
                                     LearnDelFAMDateFrom = DateTime.Parse("2017-08-30"),
                                     LearnDelFAMDateToSpecified = true,
-                                    LearnDelFAMDateTo =  DateTime.Parse("2017-10-31")
-
+                                    LearnDelFAMDateTo = DateTime.Parse("2017-10-31")
                                 },
                                 new MessageLearnerLearningDeliveryLearningDeliveryFAM
                                 {
@@ -265,7 +263,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
                                     LearnDelFAMDateFromSpecified = true,
                                     LearnDelFAMDateFrom = DateTime.Parse("2017-10-31"),
                                     LearnDelFAMDateToSpecified = true,
-                                    LearnDelFAMDateTo =  DateTime.Parse("2017-11-30")
+                                    LearnDelFAMDateTo = DateTime.Parse("2017-11-30")
                                 },
                                 new MessageLearnerLearningDeliveryLearningDeliveryFAM
                                 {
