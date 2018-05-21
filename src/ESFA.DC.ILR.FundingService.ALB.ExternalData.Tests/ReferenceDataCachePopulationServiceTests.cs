@@ -19,36 +19,36 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
     public class ReferenceDataCachePopulationServiceTests
     {
         #region Mock DBSet Tests
-        
+
         /// <summary>
         /// Return LARS Version Data from LARS database
         /// </summary>
         [Fact(DisplayName = "MockDB - LARS Version Data - Does exist"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_LARSVersionData_Exists()
         {
-            //ARRANGE           
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             output.LARSCurrentVersion.Should().NotBeNull();
         }
-             
+
         /// <summary>
         /// Return LARS Version Data from LARS database
         /// </summary>
         [Fact(DisplayName = "MockDB - LARS Version Data - Value Correct"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_LARSVersionData_ValueCorrect()
         {
-            //ARRANGE           
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             output.LARSCurrentVersion.Should().Be("Version_005");
         }
 
@@ -58,13 +58,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "MockDB - LARS LearningDelivery Data - Does exist"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_LARSLearningDelivery_Exists()
         {
-            //ARRANGE           
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             output.LARSLearningDelivery.Should().NotBeNull();
         }
 
@@ -74,13 +74,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "MockDB - LARS LearningDelivery Data - Count Correct"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_LARSLearningDelivery_CountCorrect()
         {
-            //ARRANGE           
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             output.LARSLearningDelivery.Count.Should().Be(2);
         }
 
@@ -90,13 +90,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "MockDB - LARS LearningDelivery Data - Keys Correct"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_LARSLearningDelivery_KeysCorrect()
         {
-            //ARRANGE           
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             output.LARSLearningDelivery.Where(k => k.Key == "123456").Select(o => o.Key).Should().BeEquivalentTo("123456");
             output.LARSLearningDelivery.Where(k => k.Key == "7890").Select(o => o.Key).Should().BeEquivalentTo("7890");
             output.LARSLearningDelivery.Where(k => k.Key == "999").Select(o => o.Key).Should().BeNullOrEmpty();
@@ -108,16 +108,16 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "MockDB - LARS LearningDelivery Data - Keys Not Found"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_LARSLARSLearningDelivery_KeysNotFound()
         {
-            //ARRANGE           
+            // ARRANGE
             var learnAimRef = new List<string>
             {
                 "99999"
             };
 
-            //ACT           
-            var output = MockDBOutput(learnAimRef, postcodesList);
+            // ACT
+            var output = MockDBOutput(learnAimRef, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             output.LARSLearningDelivery.Where(k => k.Key == "123456").Select(o => o.Key).Should().BeNullOrEmpty();
             output.LARSLearningDelivery.Where(k => k.Key == "99999").Select(o => o.Key).Should().BeNullOrEmpty();
         }
@@ -128,13 +128,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "MockDB - LARS LearningDelivery Data - Data Count Correct"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_LARSLearningDelivery_DataCountCorrect()
         {
-            //ARRANGE           
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             output.LARSLearningDelivery.Where(k => k.Key == "123456").Select(o => o.Value).Count().Should().Be(1);
             output.LARSLearningDelivery.Where(k => k.Key == "7890").Select(o => o.Value).Count().Should().Be(1);
         }
@@ -145,13 +145,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "MockDB - LARS LearningDelivery Data - Data Values Correct"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_LARSLearningDelivery_DataValuesCorrect()
         {
-            //ARRANGE           
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             var expectedOutput1 = new LARSLearningDelivery
             {
                 LearnAimRef = "123456",
@@ -159,7 +159,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
                 NotionalNVQLevelv2 = "2",
                 RegulatedCreditValue = 180
             };
-                        
+
             var expectedOutput2 = new LARSLearningDelivery
             {
                 LearnAimRef = "7890",
@@ -181,13 +181,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "MockDB - LARS Funding Data - Does exist"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_LARSFundingData_Exists()
         {
-            //ARRANGE           
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             output.LARSFunding.Should().NotBeNull();
         }
 
@@ -197,13 +197,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "MockDB - LARS Funding Data - Count Correct"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_LARSFundingData_CountCorrect()
         {
-            //ARRANGE           
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             output.LARSFunding.Count.Should().Be(2);
         }
 
@@ -213,13 +213,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "MockDB - LARS Funding Data - Keys Correct"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_LARSFundingData_KeysCorrect()
         {
-            //ARRANGE           
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             output.LARSFunding.Where(k => k.Key == "123456").Select(o => o.Key).Should().BeEquivalentTo("123456");
             output.LARSFunding.Where(k => k.Key == "7890").Select(o => o.Key).Should().BeEquivalentTo("7890");
             output.LARSFunding.Where(k => k.Key == "999").Select(o => o.Key).Should().BeNullOrEmpty();
@@ -231,33 +231,33 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "MockDB - LARS Funding Data - Keys Not Found"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_LARSFundingData_KeysNotFound()
         {
-            //ARRANGE           
+            // ARRANGE
             var learnAimRef = new List<string>
             {
                 "99999"
             };
 
-            //ACT           
-            var output = MockDBOutput(learnAimRef, postcodesList);
+            // ACT
+            var output = MockDBOutput(learnAimRef, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             output.LARSFunding.Where(k => k.Key == "123456").Select(o => o.Key).Should().BeNullOrEmpty();
             output.LARSFunding.Where(k => k.Key == "99999").Select(o => o.Key).Should().BeNullOrEmpty();
         }
-    
+
         /// <summary>
         /// Return LARS Funding Data from LARS database
         /// </summary>
         [Fact(DisplayName = "MockDB - LARS Funding Data - Data Count Correct"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_LARSFundingData_DataCountCorrect()
         {
-            //ARRANGE           
+            // ARRANGE
             // Use Test Helpers
-            
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
 
-            //ASSERT
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
+
+            // ASSERT
             output.LARSFunding.Where(k => k.Key == "123456").Select(o => o.Value).Count().Should().Be(1);
             output.LARSFunding.Where(k => k.Key == "123456").SelectMany(o => o.Value).Count().Should().Be(2);
             output.LARSFunding.Where(k => k.Key == "7890").Select(o => o.Value).Count().Should().Be(1);
@@ -270,13 +270,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "MockDB - LARS Funding Data - Data Values Correct"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_LARSFundingData_DataValuesCorrect()
         {
-            //ARRANGE           
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             var expectedOutput1 = new LARSFunding
             {
                 LearnAimRef = "123456",
@@ -321,13 +321,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "MockDB - Postcodes Version Data - Does exist"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_PostcodesVersionData_Exists()
         {
-            //ARRANGE           
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             output.PostcodeCurrentVersion.Should().NotBeNull();
         }
 
@@ -337,13 +337,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "MockDB - Postcodes Version Data - Value Correct"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_PostcodesVersionData_ValueCorrect()
         {
-            //ARRANGE           
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             output.PostcodeCurrentVersion.Should().Be("Version_002");
         }
 
@@ -353,13 +353,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "MockDB - Postcodes SFAAreaCost Data - Does exist"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_SFAAreaCostData_Exists()
         {
-            //ARRANGE           
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             output.SfaAreaCost.Should().NotBeNull();
         }
 
@@ -368,14 +368,14 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         /// </summary>
         [Fact(DisplayName = "MockDB - Postcodes SFAAreaCost Data - Count Correct"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_SFAAreaCostData_CountCorrect()
-        { 
-            //ARRANGE           
+        {
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             output.SfaAreaCost.Count.Should().Be(2);
         }
 
@@ -385,13 +385,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "MockDB - Postcodes SFAAreaCost Data Keys Correct"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_SFAAreaCostData_KeysCorrect()
         {
-            //ARRANGE           
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             output.SfaAreaCost.Where(k => k.Key == "CV1 2WT").Select(o => o.Key).Should().BeEquivalentTo("CV1 2WT");
             output.SfaAreaCost.Where(k => k.Key == "CV1 2TT").Select(o => o.Key).Should().BeEquivalentTo("CV1 2TT");
             output.SfaAreaCost.Where(k => k.Key == "CV1 2AA").Select(o => o.Key).Should().BeNullOrEmpty();
@@ -403,16 +403,16 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "MockDB - Postcodes SFAAreaCost Data Keys Not Found"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_SFAAreaCostData_KeysNotFound()
         {
-            //ARRANGE           
+            // ARRANGE
             var postcode = new List<string>
             {
                 "CV1 1AA"
             };
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcode);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, postcode);
 
-            //ASSERT
+            // ASSERT
             output.LARSFunding.Where(k => k.Key == "CV1 2WT").Select(o => o.Key).Should().BeNullOrEmpty();
             output.LARSFunding.Where(k => k.Key == "CV1 2TT").Select(o => o.Key).Should().BeNullOrEmpty();
         }
@@ -423,13 +423,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "MockDB - Postcodes SFAAreaCost Data - Data Count Correct"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_SFAAreaCostData_DataCountCorrect()
         {
-            //ARRANGE           
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             output.SfaAreaCost.Where(k => k.Key == "CV1 2WT").Select(o => o.Value).Count().Should().Be(1);
             output.SfaAreaCost.Where(k => k.Key == "CV1 2WT").SelectMany(o => o.Value).Count().Should().Be(1);
             output.SfaAreaCost.Where(k => k.Key == "CV1 2TT").Select(o => o.Value).Count().Should().Be(1);
@@ -442,13 +442,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         [Fact(DisplayName = "MockDB - Postcodes SFAAreaCost Data - Data Values Correct"), Trait("RefDataCachePopulation", "Unit")]
         public void MockDB_SFAAreaCostData_DataValuesCorrect()
         {
-            //ARRANGE           
+            // ARRANGE
             // Use Test Helpers
 
-            //ACT           
-            var output = MockDBOutput(learnAimRefList, postcodesList);
+            // ACT
+            var output = MockDBOutput(LearnAimRefList, PostcodesList);
 
-            //ASSERT
+            // ASSERT
             var expectedOutput1 = new SfaAreaCost
             {
                 Postcode = "CV1 2WT",
@@ -485,8 +485,8 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
 
         #region Test Helpers
 
-        readonly Mock<ILARS> LARSMock = new Mock<ILARS>();
-        readonly Mock<IPostcodes> postcodesMock = new Mock<IPostcodes>();
+        private readonly Mock<ILARS> larsMock = new Mock<ILARS>();
+        private readonly Mock<IPostcodes> postcodesMock = new Mock<IPostcodes>();
 
         private IReferenceDataCache MockDBOutput(IList<string> learnAimRefs, IList<string> postcodes)
         {
@@ -499,14 +499,14 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
 
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
 
-            LARSMock.Setup(x => x.LARS_Version).Returns(larsVersionMock);
-            LARSMock.Setup(x => x.LARS_LearningDelivery).Returns(larsLearningDeliveryMock);
-            LARSMock.Setup(x => x.LARS_Funding).Returns(larsFundingMock);
+            larsMock.Setup(x => x.LARS_Version).Returns(larsVersionMock);
+            larsMock.Setup(x => x.LARS_LearningDelivery).Returns(larsLearningDeliveryMock);
+            larsMock.Setup(x => x.LARS_Funding).Returns(larsFundingMock);
 
             postcodesMock.Setup(x => x.SFA_PostcodeAreaCost).Returns(sfaAreaCostMock);
             postcodesMock.Setup(x => x.VersionInfos).Returns(postcodesVersionMock);
 
-            var service = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock.Object, postcodesMock.Object);
+            var service = new ReferenceDataCachePopulationService(referenceDataCache, larsMock.Object, postcodesMock.Object);
             service.Populate(learnAimRefs, postcodes);
 
             return referenceDataCache;
@@ -514,20 +514,20 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
 
         #region Test Data
 
-        private static IList<string> learnAimRefList = new List<string>
+        private static readonly IList<string> LearnAimRefList = new List<string>
         {
-            "123456","7890"
+            "123456", "7890"
         };
 
         private static LARS_Version[] MockLARSVersionArray()
         {
             return new LARS_Version[]
             {
-                larsVersionTestValue,
+                LarsVersionTestValue,
             };
         }
 
-        readonly static LARS_Version larsVersionTestValue =
+        private static readonly LARS_Version LarsVersionTestValue =
             new LARS_Version()
             {
                 MajorNumber = 5,
@@ -543,18 +543,18 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
                 Created_By = "System",
                 Modified_On = DateTime.Parse("2018-07-01"),
                 Modified_By = "System"
-            };     
-        
+            };
+
         private static LARS_LearningDelivery[] MockLARSLearningDeliveryArray()
         {
             return new LARS_LearningDelivery[]
             {
-                larsLearningDeliveryTestValue1,
-                larsLearningDeliveryTestValue2
+                LarsLearningDeliveryTestValue1,
+                LarsLearningDeliveryTestValue2
             };
         }
 
-        readonly static LARS_LearningDelivery larsLearningDeliveryTestValue1 =
+        private static readonly LARS_LearningDelivery LarsLearningDeliveryTestValue1 =
             new LARS_LearningDelivery()
             {
                 LearnAimRef = "123456",
@@ -574,7 +574,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
                 Modified_By = "TestUser"
             };
 
-        readonly static LARS_LearningDelivery larsLearningDeliveryTestValue2 =
+        private static readonly LARS_LearningDelivery LarsLearningDeliveryTestValue2 =
            new LARS_LearningDelivery()
            {
                LearnAimRef = "7890",
@@ -598,13 +598,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
         {
             return new LARS_Funding[]
             {
-                larsFundingTestValue1,
-                larsFundingTestValue2,
-                larsFundingTestValue3
+                LarsFundingTestValue1,
+                LarsFundingTestValue2,
+                LarsFundingTestValue3
             };
         }
-       
-        readonly static LARS_Funding larsFundingTestValue1 =
+
+        private static readonly LARS_Funding LarsFundingTestValue1 =
             new LARS_Funding()
             {
                 LearnAimRef = "123456",
@@ -620,7 +620,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
                 Modified_By = "TestUser"
             };
 
-        readonly static LARS_Funding larsFundingTestValue2 =
+        private static readonly LARS_Funding LarsFundingTestValue2 =
           new LARS_Funding()
           {
               LearnAimRef = "7890",
@@ -636,7 +636,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
               Modified_By = "TestUser"
           };
 
-        readonly static LARS_Funding larsFundingTestValue3 =
+        private static readonly LARS_Funding LarsFundingTestValue3 =
            new LARS_Funding()
            {
                LearnAimRef = "123456",
@@ -652,9 +652,9 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
                Modified_By = "TestUser"
            };
 
-        private static IList<string> postcodesList = new List<string>
+        private static readonly IList<string> PostcodesList = new List<string>
         {
-            "CV1 2WT","CV1 2TT"
+            "CV1 2WT", "CV1 2TT"
         };
 
         private static VersionInfo[] MockPostcodesVersionArray()
@@ -665,7 +665,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
             };
         }
 
-        readonly static VersionInfo PostcodesVersionTestValue =
+        private static readonly VersionInfo PostcodesVersionTestValue =
             new VersionInfo
             {
                 VersionNumber = "Version_002",
@@ -685,7 +685,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
             };
         }
 
-        readonly static SFA_PostcodeAreaCost SFAAreaCostTestValue1 =
+        private static readonly SFA_PostcodeAreaCost SFAAreaCostTestValue1 =
           new SFA_PostcodeAreaCost()
           {
               MasterPostcode = new MasterPostcode { Postcode = "CV1 2WT" },
@@ -695,7 +695,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
               EffectiveTo = null,
           };
 
-        readonly static SFA_PostcodeAreaCost SFAAreaCostTestValue2 =
+        private static readonly SFA_PostcodeAreaCost SFAAreaCostTestValue2 =
          new SFA_PostcodeAreaCost()
          {
              MasterPostcode = new MasterPostcode { Postcode = "CV1 2TT" },
@@ -705,7 +705,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.ExternalData.Tests
              EffectiveTo = DateTime.Parse("2015-12-31")
          };
 
-        readonly static SFA_PostcodeAreaCost SFAAreaCostTestValue3=
+        private static readonly SFA_PostcodeAreaCost SFAAreaCostTestValue3 =
         new SFA_PostcodeAreaCost()
         {
             MasterPostcode = new MasterPostcode { Postcode = "CV1 2TT" },
