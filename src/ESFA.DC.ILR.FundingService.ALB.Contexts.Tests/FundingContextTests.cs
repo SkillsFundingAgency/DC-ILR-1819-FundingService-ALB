@@ -43,7 +43,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
             // Use Test Helpers
 
             // ACT
-            var ukprn = FundngContext.UKPRN;
+            var ukprn = fundngContext.UKPRN;
 
             // ASSERT
             ukprn.Should().NotBe(null);
@@ -59,7 +59,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
             // Use Test Helpers
 
             // ACT
-            var ukprn = FundngContext.UKPRN;
+            var ukprn = fundngContext.UKPRN;
 
             // ASSERT
             ukprn.Should().Be(10006341);
@@ -75,7 +75,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
             // Use Test Helpers
 
             // ACT
-            var ukprn = FundngContext.UKPRN;
+            var ukprn = fundngContext.UKPRN;
 
             // ASSERT
             ukprn.Should().BeOfType(typeof(int));
@@ -92,7 +92,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
             // Use Test Helpers
 
             // ACT
-            var validLearners = FundngContext.ValidLearners;
+            var validLearners = fundngContext.ValidLearners;
 
             // ASSERT
             validLearners.Should().NotBeNull();
@@ -108,7 +108,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
             // Use Test Helpers
 
             // ACT
-            var validLearners = FundngContext.ValidLearners;
+            var validLearners = fundngContext.ValidLearners;
 
             // ASSERT
             validLearners.Count.Should().Be(2);
@@ -124,7 +124,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
             // Use Test Helpers
 
             // ACT
-            var validLearners = FundngContext.ValidLearners;
+            var validLearners = fundngContext.ValidLearners;
 
             // ASSERT
             validLearners.Should().BeEquivalentTo(TestLearners());
@@ -167,7 +167,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
             return list;
         }
 
-        private IFundingContext FundngContext = new FundingContext(TestFundingContextManager);
+        private IFundingContext fundngContext = new FundingContext(TestFundingContextManager);
 
         private static IList<ILearner> TestLearners()
         {

@@ -25,44 +25,96 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
         /// <summary>
         /// Return DataEntities from the Funding Service
         /// </summary>
-        [Fact(DisplayName = "DataEntity - Data Entity Exists"), Trait("Funding Service", "Unit")]
+        [Fact(DisplayName = "DataEntity - Data Entity Exists"), Trait("Funding Output", "Unit")]
         public void ProcessFunding_Entity_Exists()
         {
-            //ARRANGE
-            //Use Test Helpers
+            // ARRANGE
+            // Use Test Helpers
 
-            //ACT
-            var dataEntity = FundingServiceMock().Object.ProcessFunding(12345678, TestLearners);
+            // ACT
+            var dataEntity = FundingServiceMock().Object.ProcessFunding(12345678, testLearners);
 
-            //ASSERT
+            // ASSERT
             dataEntity.Should().NotBeNull();
         }
 
         /// <summary>
         /// Return DataEntities from the Funding Service
         /// </summary>
-        [Fact(DisplayName = "DataEntity - Data Entity Count"), Trait("Funding Service", "Unit")]
+        [Fact(DisplayName = "DataEntity - Data Entity Count"), Trait("Funding Output", "Unit")]
         public void ProcessFunding_Entity_Count()
         {
-            //ARRANGE
-            //Use Test Helpers
+            // ARRANGE
+            // Use Test Helpers
 
-            //ACT
-            var dataEntity = FundingServiceMock().Object.ProcessFunding(12345678, TestLearners);
+            // ACT
+            var dataEntity = FundingServiceMock().Object.ProcessFunding(12345678, testLearners);
 
-            //ASSERT
+            // ASSERT
             dataEntity.Count().Should().Be(2);
+        }
+
+        /// <summary>
+        /// Return DataEntities from the Funding Service
+        /// </summary>
+        [Fact(DisplayName = "DataEntity - Data Entity - Learners Correct"), Trait("Funding Output", "Unit")]
+        public void ProcessFunding_Entity_LearnersCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var dataEntity = FundingServiceMock().Object.ProcessFunding(12345678, testLearners);
+
+            // ASSERT
+            var learners = dataEntity.SelectMany(g => g.Children.Select(l => l.LearnRefNumber)).ToList();
+
+            learners.Should().BeEquivalentTo(new List<string> { "TestLearner1", "TestLearner2" });
+        }
+
+        /// <summary>
+        /// Return DataEntities from the Funding Service
+        /// </summary>
+        [Fact(DisplayName = "DataEntity - Data Entity - ChangePoints Correct"), Trait("Funding Output", "Unit")]
+        public void ProcessFunding_Entity_ChangePointsCorrect()
+        {
+            // ARRANGE
+            var expectedChangePoints = new List<ITemporalValueItem>();
+
+            foreach (var temporal in ChangePoints())
+            {
+                expectedChangePoints.Add(temporal);
+            }
+
+            foreach (var temporal in ChangePoints())
+            {
+                expectedChangePoints.Add(temporal);
+            }
+
+            // ACT
+            var dataEntity = FundingServiceMock().Object.ProcessFunding(12345678, testLearners);
+
+            // ASSERT
+            var actualChangePoints = new List<ITemporalValueItem>();
+            var actualAttributes = dataEntity.SelectMany(g => g.Children.SelectMany(l => l.Children.SelectMany(ld => ld.Attributes.Select(a => a.Value))));
+
+            foreach (var attribute in actualAttributes)
+            {
+                actualChangePoints.AddRange(attribute.Changepoints);
+            }
+
+            expectedChangePoints.Should().BeEquivalentTo(actualChangePoints);
         }
 
         #region Test Helpers
 
-        private static readonly Mock<IFundingService> fundingServiceContextMock = new Mock<IFundingService>();
+        private static readonly Mock<IFundingService> FundingServiceContextMock = new Mock<IFundingService>();
 
         private Mock<IFundingService> FundingServiceMock()
         {
-            fundingServiceContextMock.Setup(x => x.ProcessFunding(12345678, TestLearners)).Returns(ProcessFundingMock());
+            FundingServiceContextMock.Setup(x => x.ProcessFunding(12345678, testLearners)).Returns(ProcessFundingMock());
 
-            return fundingServiceContextMock;
+            return FundingServiceContextMock;
         }
 
         private IEnumerable<IDataEntity> ProcessFundingMock()
@@ -134,15 +186,52 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
                 EntityName = "LearningDelivery",
                 Attributes = new Dictionary<string, IAttributeData>
                     {
-                        { "Non-Payment", new AttributeData("Non-Payment", null) },
-                        { "Payment", new AttributeData("Payment", null) },
+                        { "Payment", Attribute("Payment", true) },
+                        { "Non-Payment",  Attribute("Non-Payment", false) },
                     },
-                Parent = parent
+                Parent = parent,
             };
 
             entities.Add(entity);
 
             return entities;
+        }
+
+        private IAttributeData Attribute(string attributeName, bool hasChangePoints)
+        {
+            var attribute = new AttributeData(attributeName, null);
+
+            if (hasChangePoints)
+            {
+                attribute.AddChangepoints(ChangePoints());
+            }
+
+            return attribute;
+        }
+
+        private IEnumerable<ITemporalValueItem> ChangePoints()
+        {
+            var changePoints = new List<TemporalValueItem>();
+
+            IEnumerable<TemporalValueItem> cps = new List<TemporalValueItem>
+            {
+                 new TemporalValueItem(new DateTime(2017, 08, 01), 1.5m, null),
+                 new TemporalValueItem(new DateTime(2017, 09, 01), 1.5m, null),
+                 new TemporalValueItem(new DateTime(2017, 10, 01), 1.5m, null),
+                 new TemporalValueItem(new DateTime(2017, 11, 01), 1.5m, null),
+                 new TemporalValueItem(new DateTime(2017, 12, 01), 1.5m, null),
+                 new TemporalValueItem(new DateTime(2018, 01, 01), 1.5m, null),
+                 new TemporalValueItem(new DateTime(2018, 02, 01), 1.5m, null),
+                 new TemporalValueItem(new DateTime(2018, 03, 01), 1.5m, null),
+                 new TemporalValueItem(new DateTime(2018, 04, 01), 1.5m, null),
+                 new TemporalValueItem(new DateTime(2018, 05, 01), 1.5m, null),
+                 new TemporalValueItem(new DateTime(2018, 06, 01), 1.5m, null),
+                 new TemporalValueItem(new DateTime(2018, 07, 01), 1.5m, null),
+            };
+
+            changePoints.AddRange(cps);
+
+            return changePoints;
         }
 
         private Message ILRFile(string filePath)
@@ -167,7 +256,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             return int.Parse(valueInt);
         }
 
-        private readonly IList<ILearner> TestLearners = new[]
+        private readonly IList<ILearner> testLearners = new[]
         {
             new MessageLearner
             {
