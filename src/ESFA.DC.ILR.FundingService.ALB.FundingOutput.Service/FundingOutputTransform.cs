@@ -6,7 +6,7 @@ using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Attribute;
 using ESFA.DC.OPA.Model;
 using ESFA.DC.OPA.Model.Interface;
 
-namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput
+namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
 {
     public class FundingOutputTransform
     {

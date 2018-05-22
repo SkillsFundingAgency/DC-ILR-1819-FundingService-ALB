@@ -6,6 +6,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Attribute;
+using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
 using ESFA.DC.ILR.Model;
 using ESFA.DC.ILR.Model.Interface;
@@ -195,13 +196,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
                  new LearnerAttribute
                  {
                      LearnRefNumber = "TestLearner1",
-                     LearnerPeriodisedAttributes = TestLearnerPeriodisedValues(0),
+                     LearnerPeriodisedAttributes = TestLearnerPeriodisedValuesArray(0),
                      LearningDeliveryAttributes = null,
                  },
                  new LearnerAttribute
                  {
                      LearnRefNumber = "TestLearner2",
-                     LearnerPeriodisedAttributes = TestLearnerPeriodisedValues(1m),
+                     LearnerPeriodisedAttributes = TestLearnerPeriodisedValuesArray(1m),
                      LearningDeliveryAttributes = null,
                  }
             };
@@ -253,41 +254,45 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             expectedLearnRefNumbers.Should().BeEquivalentTo(learnRefNmbers);
         }
 
-        ///// <summary>
-        ///// Return FundingOutputs from the FundingOutput
-        ///// </summary>
-        //[Fact(DisplayName = "Transform - FundingOutput - LearnerAttributes LearnerPeriodAttributes"), Trait("Funding Output", "Unit")]
-        //public void Transform_FundingOutput_LearnerAttributes_LearnerPeriodAttributes()
-        //{
-        //    // ARRANGE
-        //    var expectedLearnerPeriodAttributes = new List<LearnerPeriodisedAttribute>();
+        /// <summary>
+        /// Return FundingOutputs from the FundingOutput
+        /// </summary>
+        [Fact(DisplayName = "Transform - FundingOutput - LearnerAttributes LearnerPeriodAttributes"), Trait("Funding Output", "Unit")]
+        public void Transform_FundingOutput_LearnerAttributes_LearnerPeriodAttributes()
+        {
+            // ARRANGE
+            var expectedLearnerPeriodisedAttributes = new List<LearnerPeriodisedAttribute[]>
+            {
+                TestLearnerPeriodisedValuesArray(0.0m),
+                TestLearnerPeriodisedValuesArray(1.0m),
+            };
 
-        //    // ACT
-        //    var fundingOutput = TestFundingOutputs();
+            // ACT
+            var fundingOutput = TestFundingOutputs();
 
-        //    // ASSERT
-        //    var learnerPeriodAttributes = fundingOutput.learners.Select(l => l.LearnerPeriodisedAttributes).ToList();
+            // ASSERT
+            var learnerPeriodisedAttributes = fundingOutput.learners.Select(l => l.LearnerPeriodisedAttributes).ToList();
 
-        //    expectedLearnerPeriodAttributes.Should().BeEquivalentTo(learnerPeriodAttributes);
-        //}
+            expectedLearnerPeriodisedAttributes.Should().BeEquivalentTo(learnerPeriodisedAttributes);
+        }
 
-        ///// <summary>
-        ///// Return FundingOutputs from the FundingOutput
-        ///// </summary>
-        //[Fact(DisplayName = "Transform - FundingOutput - LearnerAttributes LearnerDeliveryAttributes"), Trait("Funding Output", "Unit")]
-        //public void Transform_FundingOutput_LearnerAttributes_LearnerDeliveryAttributes()
-        //{
-        //    // ARRANGE
-        //    var expectedLearningDeliveryAttributes = new List<LearningDeliveryAttribute>();
+        /// <summary>
+        /// Return FundingOutputs from the FundingOutput
+        /// </summary>
+        [Fact(DisplayName = "Transform - FundingOutput - LearnerAttributes LearnerDeliveryAttributes"), Trait("Funding Output", "Unit")]
+        public void Transform_FundingOutput_LearnerAttributes_LearnerDeliveryAttributes()
+        {
+            // ARRANGE
+            var expectedLearningDeliveryAttributes = new List<LearningDeliveryAttribute>();
 
-        //    // ACT
-        //    var fundingOutput = TestFundingOutputs();
+            // ACT
+            var fundingOutput = TestFundingOutputs();
 
-        //    // ASSERT
-        //    var learningDelAttributes = fundingOutput.learners.Select(l => l.LearningDeliveryAttributes).ToList();
+            // ASSERT
+            var learningDelAttributes = fundingOutput.learners.Select(l => l.LearningDeliveryAttributes).ToList();
 
-        //    expectedLearningDeliveryAttributes.Should().BeEquivalentTo(learningDelAttributes);
-        //}
+            expectedLearningDeliveryAttributes.Should().BeEquivalentTo(learningDelAttributes);
+        }
 
         #region Test Helpers
 
@@ -582,29 +587,34 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             return output.Transform();
         }
 
-        private LearnerPeriodisedAttribute[] TestLearnerPeriodisedValues(decimal value)
+        private LearnerPeriodisedAttribute[] TestLearnerPeriodisedValuesArray(decimal value)
         {
             return new LearnerPeriodisedAttribute[]
             {
-                new LearnerPeriodisedAttribute
-                {
-                    AttributeName = "ALBSeqNum",
-                    Period1 = value,
-                    Period2 = value,
-                    Period3 = value,
-                    Period4 = value,
-                    Period5 = value,
-                    Period6 = value,
-                    Period7 = value,
-                    Period8 = value,
-                    Period9 = value,
-                    Period10 = value,
-                    Period11 = value,
-                    Period12 = value,
-                }
+                TestLearnerPeriodisedValues(value)
             };
         }
 
-        #endregion
-    }
+        private LearnerPeriodisedAttribute TestLearnerPeriodisedValues(decimal value)
+        {
+            return new LearnerPeriodisedAttribute
+            {
+                AttributeName = "ALBSeqNum",
+                Period1 = value,
+                Period2 = value,
+                Period3 = value,
+                Period4 = value,
+                Period5 = value,
+                Period6 = value,
+                Period7 = value,
+                Period8 = value,
+                Period9 = value,
+                Period10 = value,
+                Period11 = value,
+                Period12 = value,
+            };
+        }
+
+    #endregion
+}
 }
