@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
+using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model;
+using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Attribute;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
 using ESFA.DC.ILR.Model;
 using ESFA.DC.ILR.Model.Interface;
@@ -13,7 +15,8 @@ using ESFA.DC.JobContext;
 using ESFA.DC.JobContext.Interface;
 using ESFA.DC.OPA.Model;
 using ESFA.DC.OPA.Model.Interface;
-
+using ESFA.DC.Serialization.Interfaces;
+using ESFA.DC.Serialization.Json;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -81,12 +84,12 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             // ARRANGE
             var expectedChangePoints = new List<ITemporalValueItem>();
 
-            foreach (var temporal in ChangePoints())
+            foreach (var temporal in ChangePoints(1.5m))
             {
                 expectedChangePoints.Add(temporal);
             }
 
-            foreach (var temporal in ChangePoints())
+            foreach (var temporal in ChangePoints(1.5m))
             {
                 expectedChangePoints.Add(temporal);
             }
@@ -105,6 +108,186 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
 
             expectedChangePoints.Should().BeEquivalentTo(actualChangePoints);
         }
+
+        /// <summary>
+        /// Return FundingOutputs from the FundingOutput
+        /// </summary>
+        [Fact(DisplayName = "Transform - FundingOutput - Exists"), Trait("Funding Output", "Unit")]
+        public void Transform_FundingOutput_Exists()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var fundingOutput = TestFundingOutputs();
+
+            // ASSERT
+            fundingOutput.Should().NotBeNull();
+        }
+
+        /// <summary>
+        /// Return FundingOutputs from the FundingOutput
+        /// </summary>
+        [Fact(DisplayName = "Transform - FundingOutput - Global Exists"), Trait("Funding Output", "Unit")]
+        public void Transform_FundingOutput_GlobalExists()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var fundingOutput = TestFundingOutputs();
+
+            // ASSERT
+            fundingOutput.global.Should().NotBeNull();
+        }
+
+        /// <summary>
+        /// Return FundingOutputs from the FundingOutput
+        /// </summary>
+        [Fact(DisplayName = "Transform - FundingOutput - Global Correct"), Trait("Funding Output", "Unit")]
+        public void Transform_FundingOutput_GlobalCorrect()
+        {
+            // ARRANGE
+            var expectedGlobal = new GlobalAttribute
+            {
+                UKPRN = 12345678,
+                LARSVersion = "Version_005",
+                PostcodeAreaCostVersion = "Version_002",
+                RulebaseVersion = "1718.5.10",
+            };
+
+            // ACT
+            var fundingOutput = TestFundingOutputs();
+
+            // ASSERT
+            fundingOutput.global.Should().BeEquivalentTo(expectedGlobal);
+
+            ISerializationService serializationService = new JsonSerializationService();
+
+            var str = serializationService.Serialize<FundingOutputs>(fundingOutput);
+        }
+
+        /// <summary>
+        /// Return FundingOutputs from the FundingOutput
+        /// </summary>
+        [Fact(DisplayName = "Transform - FundingOutput - Learners Exist"), Trait("Funding Output", "Unit")]
+        public void Transform_FundingOutput_LearnersExist()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var fundingOutput = TestFundingOutputs();
+
+            // ASSERT
+            fundingOutput.learners.Should().NotBeNull();
+        }
+
+        /// <summary>
+        /// Return FundingOutputs from the FundingOutput
+        /// </summary>
+        [Fact(DisplayName = "Transform - FundingOutput - Learners Correct"), Trait("Funding Output", "Unit")]
+        public void Transform_FundingOutput_LearnersCorrect()
+        {
+            // ARRANGE
+            var expectedLearners = new LearnerAttribute[]
+            {
+                 new LearnerAttribute
+                 {
+                     LearnRefNumber = "TestLearner1",
+                     LearnerPeriodisedAttributes = TestLearnerPeriodisedValues(0),
+                     LearningDeliveryAttributes = null,
+                 },
+                 new LearnerAttribute
+                 {
+                     LearnRefNumber = "TestLearner2",
+                     LearnerPeriodisedAttributes = TestLearnerPeriodisedValues(1m),
+                     LearningDeliveryAttributes = null,
+                 }
+            };
+
+            // ACT
+            var fundingOutput = TestFundingOutputs();
+
+            // ASSERT
+            fundingOutput.learners.Should().BeEquivalentTo(expectedLearners);
+
+            ISerializationService serializationService = new JsonSerializationService();
+
+            var str = serializationService.Serialize<FundingOutputs>(fundingOutput);
+        }
+
+        /// <summary>
+        /// Return FundingOutputs from the FundingOutput
+        /// </summary>
+        [Fact(DisplayName = "Transform - FundingOutput - LearnerAttributes Exist"), Trait("Funding Output", "Unit")]
+        public void Transform_FundingOutput_LearnerAttributesExist()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var fundingOutput = TestFundingOutputs();
+
+            // ASSERT
+            fundingOutput.learners.Select(l => l.LearnRefNumber).Should().NotBeNull();
+            fundingOutput.learners.Select(l => l.LearnerPeriodisedAttributes).Should().NotBeNull();
+            fundingOutput.learners.Select(l => l.LearningDeliveryAttributes).Should().NotBeNull();
+        }
+
+        /// <summary>
+        /// Return FundingOutputs from the FundingOutput
+        /// </summary>
+        [Fact(DisplayName = "Transform - FundingOutput - LearnerAttributes LearnRefNumber"), Trait("Funding Output", "Unit")]
+        public void Transform_FundingOutput_LearnerAttributes_LearnRefNumber()
+        {
+            // ARRANGE
+            var expectedLearnRefNumbers = new List<string> { "TestLearner1", "TestLearner2" };
+
+            // ACT
+            var fundingOutput = TestFundingOutputs();
+
+            // ASSERT
+            var learnRefNmbers = fundingOutput.learners.Select(l => l.LearnRefNumber).ToList();
+
+            expectedLearnRefNumbers.Should().BeEquivalentTo(learnRefNmbers);
+        }
+
+        ///// <summary>
+        ///// Return FundingOutputs from the FundingOutput
+        ///// </summary>
+        //[Fact(DisplayName = "Transform - FundingOutput - LearnerAttributes LearnerPeriodAttributes"), Trait("Funding Output", "Unit")]
+        //public void Transform_FundingOutput_LearnerAttributes_LearnerPeriodAttributes()
+        //{
+        //    // ARRANGE
+        //    var expectedLearnerPeriodAttributes = new List<LearnerPeriodisedAttribute>();
+
+        //    // ACT
+        //    var fundingOutput = TestFundingOutputs();
+
+        //    // ASSERT
+        //    var learnerPeriodAttributes = fundingOutput.learners.Select(l => l.LearnerPeriodisedAttributes).ToList();
+
+        //    expectedLearnerPeriodAttributes.Should().BeEquivalentTo(learnerPeriodAttributes);
+        //}
+
+        ///// <summary>
+        ///// Return FundingOutputs from the FundingOutput
+        ///// </summary>
+        //[Fact(DisplayName = "Transform - FundingOutput - LearnerAttributes LearnerDeliveryAttributes"), Trait("Funding Output", "Unit")]
+        //public void Transform_FundingOutput_LearnerAttributes_LearnerDeliveryAttributes()
+        //{
+        //    // ARRANGE
+        //    var expectedLearningDeliveryAttributes = new List<LearningDeliveryAttribute>();
+
+        //    // ACT
+        //    var fundingOutput = TestFundingOutputs();
+
+        //    // ASSERT
+        //    var learningDelAttributes = fundingOutput.learners.Select(l => l.LearningDeliveryAttributes).ToList();
+
+        //    expectedLearningDeliveryAttributes.Should().BeEquivalentTo(learningDelAttributes);
+        //}
 
         #region Test Helpers
 
@@ -129,11 +312,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
                     {
                         { "UKPRN", new AttributeData("UKPRN", 12345678) },
                         { "LARSVersion", new AttributeData("LARSVersion", "Version_005") },
+                        { "PostcodeAreaCostVersion", new AttributeData("PostcodeAreaCostVersion", "Version_002") },
+                        { "RulebaseVersion", new AttributeData("RulebaseVersion", "1718.5.10") },
                     },
                     Parent = null,
                 };
 
-            entity1.AddChildren(TestLearnerEntity(entity1, "TestLearner1"));
+            entity1.AddChildren(TestLearnerEntity(entity1, "TestLearner1", false));
 
             entities.Add(entity1);
 
@@ -143,36 +328,60 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
                 EntityName = "global",
                 Attributes = new Dictionary<string, IAttributeData>
                 {
-                                { "UKPRN", new AttributeData("UKPRN", 12345678) },
-                                { "LARSVersion", new AttributeData("LARSVersion", "Version_005") },
+                    { "UKPRN", new AttributeData("UKPRN", 12345678) },
+                    { "LARSVersion", new AttributeData("LARSVersion", "Version_005") },
+                    { "PostcodeAreaCostVersion", new AttributeData("PostcodeAreaCostVersion", "Version_002") },
+                    { "RulebaseVersion", new AttributeData("RulebaseVersion", "1718.5.10") },
                 },
                 Parent = null,
             };
 
-            entity1.AddChildren(TestLearnerEntity(entity2, "TestLearner2"));
+            entity1.AddChildren(TestLearnerEntity(entity2, "TestLearner2", true));
 
             entities.Add(entity2);
 
             return entities;
         }
 
-        private IEnumerable<IDataEntity> TestLearnerEntity(DataEntity parent, string learnRefNumber)
+        private IEnumerable<IDataEntity> TestLearnerEntity(DataEntity parent, string learnRefNumber, bool includeALBChangePoint)
         {
             var entities = new List<DataEntity>();
+            if (includeALBChangePoint)
+            {
+                var entity1 = new DataEntity("Learner")
+                {
+                    EntityName = "Learner",
+                    Attributes = new Dictionary<string, IAttributeData>
+                {
+                    { "LearnRefNumber", new AttributeData("LearnRefNumber", learnRefNumber) },
+                    { "ALBSeqNum", Attribute("ALBSeqNum", true, 1.0m) },
+                    { "ALB2", Attribute("ALB2", false, 0m) },
+                },
+                    Parent = parent
+                };
 
-            var entity = new DataEntity("Learner")
+                entity1.AddChildren(TestLearningDeliveryEntity(entity1));
+
+                entities.Add(entity1);
+
+                return entities;
+            }
+
+            var entity2 = new DataEntity("Learner")
             {
                 EntityName = "Learner",
                 Attributes = new Dictionary<string, IAttributeData>
                 {
                     { "LearnRefNumber", new AttributeData("LearnRefNumber", learnRefNumber) },
+                    { "ALBSeqNum", Attribute("ALBSeqNum", false, 0m) },
+                    { "ALB2", Attribute("ALB2", false, 0m) },
                 },
                 Parent = parent
             };
 
-            entity.AddChildren(TestLearningDeliveryEntity(entity));
+            entity2.AddChildren(TestLearningDeliveryEntity(entity2));
 
-            entities.Add(entity);
+            entities.Add(entity2);
 
             return entities;
         }
@@ -186,8 +395,8 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
                 EntityName = "LearningDelivery",
                 Attributes = new Dictionary<string, IAttributeData>
                     {
-                        { "Payment", Attribute("Payment", true) },
-                        { "Non-Payment",  Attribute("Non-Payment", false) },
+                        { "Payment", Attribute("Payment", true, 1.5m) },
+                        { "Non-Payment",  Attribute("Non-Payment", false, 0m) },
                     },
                 Parent = parent,
             };
@@ -197,36 +406,37 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             return entities;
         }
 
-        private IAttributeData Attribute(string attributeName, bool hasChangePoints)
+        private IAttributeData Attribute(string attributeName, bool hasChangePoints, decimal attributeValue)
         {
-            var attribute = new AttributeData(attributeName, null);
-
             if (hasChangePoints)
             {
-                attribute.AddChangepoints(ChangePoints());
+                var attribute = new AttributeData(attributeName, null);
+                attribute.AddChangepoints(ChangePoints(attributeValue));
+
+                return attribute;
             }
 
-            return attribute;
+            return new AttributeData(attributeName, attributeValue);
         }
 
-        private IEnumerable<ITemporalValueItem> ChangePoints()
+        private IEnumerable<ITemporalValueItem> ChangePoints(decimal value)
         {
             var changePoints = new List<TemporalValueItem>();
 
             IEnumerable<TemporalValueItem> cps = new List<TemporalValueItem>
             {
-                 new TemporalValueItem(new DateTime(2017, 08, 01), 1.5m, null),
-                 new TemporalValueItem(new DateTime(2017, 09, 01), 1.5m, null),
-                 new TemporalValueItem(new DateTime(2017, 10, 01), 1.5m, null),
-                 new TemporalValueItem(new DateTime(2017, 11, 01), 1.5m, null),
-                 new TemporalValueItem(new DateTime(2017, 12, 01), 1.5m, null),
-                 new TemporalValueItem(new DateTime(2018, 01, 01), 1.5m, null),
-                 new TemporalValueItem(new DateTime(2018, 02, 01), 1.5m, null),
-                 new TemporalValueItem(new DateTime(2018, 03, 01), 1.5m, null),
-                 new TemporalValueItem(new DateTime(2018, 04, 01), 1.5m, null),
-                 new TemporalValueItem(new DateTime(2018, 05, 01), 1.5m, null),
-                 new TemporalValueItem(new DateTime(2018, 06, 01), 1.5m, null),
-                 new TemporalValueItem(new DateTime(2018, 07, 01), 1.5m, null),
+                 new TemporalValueItem(new DateTime(2017, 08, 01), value, null),
+                 new TemporalValueItem(new DateTime(2017, 09, 01), value, null),
+                 new TemporalValueItem(new DateTime(2017, 10, 01), value, null),
+                 new TemporalValueItem(new DateTime(2017, 11, 01), value, null),
+                 new TemporalValueItem(new DateTime(2017, 12, 01), value, null),
+                 new TemporalValueItem(new DateTime(2018, 01, 01), value, null),
+                 new TemporalValueItem(new DateTime(2018, 02, 01), value, null),
+                 new TemporalValueItem(new DateTime(2018, 03, 01), value, null),
+                 new TemporalValueItem(new DateTime(2018, 04, 01), value, null),
+                 new TemporalValueItem(new DateTime(2018, 05, 01), value, null),
+                 new TemporalValueItem(new DateTime(2018, 06, 01), value, null),
+                 new TemporalValueItem(new DateTime(2018, 07, 01), value, null),
             };
 
             changePoints.AddRange(cps);
@@ -363,6 +573,37 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
                 }
             }
         };
+
+        private FundingOutputs TestFundingOutputs()
+        {
+            var dataEntities = FundingServiceMock().Object.ProcessFunding(12345678, testLearners);
+
+            var output = new FundingOutputTransform(dataEntities);
+            return output.Transform();
+        }
+
+        private LearnerPeriodisedAttribute[] TestLearnerPeriodisedValues(decimal value)
+        {
+            return new LearnerPeriodisedAttribute[]
+            {
+                new LearnerPeriodisedAttribute
+                {
+                    AttributeName = "ALBSeqNum",
+                    Period1 = value,
+                    Period2 = value,
+                    Period3 = value,
+                    Period4 = value,
+                    Period5 = value,
+                    Period6 = value,
+                    Period7 = value,
+                    Period8 = value,
+                    Period9 = value,
+                    Period10 = value,
+                    Period11 = value,
+                    Period12 = value,
+                }
+            };
+        }
 
         #endregion
     }
