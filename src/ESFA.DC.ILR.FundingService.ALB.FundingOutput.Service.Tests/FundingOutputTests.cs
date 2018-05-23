@@ -9,6 +9,7 @@ using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Attribute;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface.Attribute;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service;
+using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
 using ESFA.DC.ILR.Model;
 using ESFA.DC.ILR.Model.Interface;
@@ -606,8 +607,9 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
         {
             var dataEntities = FundingServiceMock().Object.ProcessFunding(12345678, testLearners);
 
-            var output = new FundingOutputTransform(dataEntities);
-            return output.Transform();
+            IFundingOutputService fundingOutputService = new FundingOutputService();
+
+            return fundingOutputService.ProcessFundingOutputs(dataEntities);
         }
 
         private ILearnerPeriodisedAttribute[] TestLearnerPeriodisedValuesArray(decimal value)

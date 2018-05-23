@@ -37,6 +37,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESFA.DC.ILR.FundingService.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests", "ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests.csproj", "{F0976C24-FA43-4F5E-8502-2E88D0DBFB1C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface", "ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface.csproj", "{EDD71615-9BE3-4A54-9E93-1FAA4ED3BE77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,10 @@ Global
 		{F0976C24-FA43-4F5E-8502-2E88D0DBFB1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0976C24-FA43-4F5E-8502-2E88D0DBFB1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0976C24-FA43-4F5E-8502-2E88D0DBFB1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDD71615-9BE3-4A54-9E93-1FAA4ED3BE77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDD71615-9BE3-4A54-9E93-1FAA4ED3BE77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDD71615-9BE3-4A54-9E93-1FAA4ED3BE77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDD71615-9BE3-4A54-9E93-1FAA4ED3BE77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -21,8 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>
-    </CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>ESFA.DC.ILR.FundingService.ALB.Console.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -121,7 +120,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ESFA.DC.ILR.FundingService.ALB.Console.ruleset" />
-    <None Include="ESFA.DC.ILR.FundingService.ALB.Console1.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +142,10 @@
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.csproj">
       <Project>{4CA652F1-49F4-4E80-9113-125489413525}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface.csproj">
+      <Project>{edd71615-9be3-4a54-9e93-1faa4ed3be77}</Project>
+      <Name>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.csproj">
       <Project>{F8A7B96E-3775-409E-9329-E04BFFBD2E4F}</Project>

@@ -15,6 +15,7 @@ using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service;
+using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface;
 using ESFA.DC.ILR.FundingService.ALB.OrchestrationService;
 using ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders;
@@ -75,8 +76,8 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
                 var dataPersister = new DataPersister();
                 dataPersister.PersistData(fundingOutputs);
 
-                var jsonOutputs = new FundingOutputTransform(fundingOutputs);
-                var jOut = jsonOutputs.Transform();
+                IFundingOutputService fundingOutputService = new FundingOutputService();
+                var jOut = fundingOutputService.ProcessFundingOutputs(fundingOutputs);
                 ISerializationService serializationService = new JsonSerializationService();
 
                 var str = serializationService.Serialize<IFundingOutputs>(jOut);
@@ -111,6 +112,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
         {
             var builder = new ContainerBuilder();
 
+            builder.RegisterType<FundingOutputService>().As<IFundingOutputService>().InstancePerLifetimeScope();
             builder.RegisterType<LARS>().As<ILARS>().InstancePerLifetimeScope();
             builder.RegisterType<Postcodes>().As<IPostcodes>().InstancePerLifetimeScope();
             builder.RegisterType<SessionBuilder>().As<ISessionBuilder>().InstancePerLifetimeScope();
