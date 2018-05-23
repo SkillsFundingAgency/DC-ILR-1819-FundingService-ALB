@@ -1,6 +1,8 @@
-﻿namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Attribute
+﻿using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Interface.Attribute;
+
+namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Attribute
 {
-    public class LearnerPeriodisedAttribute
+    public class LearnerPeriodisedAttribute : ILearnerPeriodisedAttribute
     {
         public string AttributeName { get; set; }
 
