@@ -1,4 +1,4 @@
-﻿using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Interface.Attribute;
+﻿using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface.Attribute;
 
 namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Attribute
 {

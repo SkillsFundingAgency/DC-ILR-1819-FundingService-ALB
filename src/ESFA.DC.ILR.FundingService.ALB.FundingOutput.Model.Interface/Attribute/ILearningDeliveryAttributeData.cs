@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Interface.Attribute
+namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface.Attribute
 {
     public interface ILearningDeliveryAttributeData
     {

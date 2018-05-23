@@ -24,7 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests\ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -150,9 +150,9 @@
       <Project>{40a43ba4-a9aa-4746-836d-e60ebffe5727}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.ExternalData</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Interface\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Interface.csproj">
-      <Project>{a77c082c-868c-4e8c-b10e-e144f4538e05}</Project>
-      <Name>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Interface</Name>
+    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface.csproj">
+      <Project>{F348A08B-D84B-497A-860C-BB37025F8CCD}</Project>
+      <Name>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.csproj">
       <Project>{4ca652f1-49f4-4e80-9113-125489413525}</Project>

@@ -110,6 +110,5 @@
     <Rule Id="SA1633" Action="None" />
     <Rule Id="SA1649" Action="Error" />
     <Rule Id="SA1652" Action="None" />
-    <Rule Id="SA1133" Action="None" />
   </Rules>
 </RuleSet>

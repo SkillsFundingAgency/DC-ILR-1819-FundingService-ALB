@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Linq;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Attribute;
+using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface;
+using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface.Attribute;
 using ESFA.DC.OPA.Model;
 using ESFA.DC.OPA.Model.Interface;
 
@@ -35,18 +37,16 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
            { 12, new DateTime(2018, 07, 01) },
         };
 
-        public FundingOutputs Transform()
+        public IFundingOutputs Transform()
         {
-            FundingOutputs fundingOutputs = new FundingOutputs
+            return new FundingOutputs
             {
                 Global = GlobalOutput(_dataEntities.Select(g => g.Attributes).First()),
                 Learners = LearnerOutput(_dataEntities.SelectMany(g => g.Children)),
             };
-
-            return fundingOutputs;
         }
 
-        private GlobalAttribute GlobalOutput(IDictionary<string, IAttributeData> attributes)
+        private IGlobalAttribute GlobalOutput(IDictionary<string, IAttributeData> attributes)
         {
            return new GlobalAttribute
            {
@@ -57,9 +57,9 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
            };
         }
 
-        private LearnerAttribute[] LearnerOutput(IEnumerable<IDataEntity> learnerEntities)
+        private ILearnerAttribute[] LearnerOutput(IEnumerable<IDataEntity> learnerEntities)
         {
-            var learners = new List<LearnerAttribute>();
+            var learners = new List<ILearnerAttribute>();
 
             foreach (var learner in learnerEntities)
             {
@@ -74,10 +74,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
             return learners.ToArray();
         }
 
-        private LearnerPeriodisedAttribute[] LearnerPeriodisedAttributes(IDataEntity learner)
+        private ILearnerPeriodisedAttribute[] LearnerPeriodisedAttributes(IDataEntity learner)
         {
             List<string> attributeList = new List<string> { "ALBSeqNum" };
-            List<LearnerPeriodisedAttribute> learnerPeriodisedAttributesList = new List<LearnerPeriodisedAttribute>();
+            List<ILearnerPeriodisedAttribute> learnerPeriodisedAttributesList = new List<ILearnerPeriodisedAttribute>();
 
             foreach (var attribute in attributeList)
             {
@@ -131,9 +131,9 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
             return learnerPeriodisedAttributesList.ToArray();
         }
 
-        private LearningDeliveryAttribute[] LearningDeliveryAttributes(IDataEntity learner)
+        private ILearningDeliveryAttribute[] LearningDeliveryAttributes(IDataEntity learner)
         {
-            List<LearningDeliveryAttribute> list = new List<LearningDeliveryAttribute>();
+            List<ILearningDeliveryAttribute> list = new List<ILearningDeliveryAttribute>();
             string aimSeqNumber = "AimSeqNumber";
 
             var learningdeliveries = learner.Children.ToList();
@@ -151,7 +151,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
             return list.ToArray();
         }
 
-        private LearningDeliveryAttributeData LearningDeliveryAttributeData(IDataEntity learningDelivery)
+        private ILearningDeliveryAttributeData LearningDeliveryAttributeData(IDataEntity learningDelivery)
         {
             var attributes = learningDelivery.Attributes;
 
@@ -175,10 +175,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
             };
         }
 
-        private LearningDeliveryPeriodisedAttribute[] LearningDeliveryPeriodisedAttributeData(IDataEntity learningDelivery)
+        private ILearningDeliveryPeriodisedAttribute[] LearningDeliveryPeriodisedAttributeData(IDataEntity learningDelivery)
         {
             List<string> attributeList = new List<string>() { "ALBCode", "ALBSupportPayment", "AreaUpliftBalPayment", "AreaUpliftOnProgPayment" };
-            List<LearningDeliveryPeriodisedAttribute> learningDeliveryPeriodisedAttributesList = new List<LearningDeliveryPeriodisedAttribute>();
+            List<ILearningDeliveryPeriodisedAttribute> learningDeliveryPeriodisedAttributesList = new List<ILearningDeliveryPeriodisedAttribute>();
 
             foreach (var attribute in attributeList)
             {

@@ -5,8 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
-using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Attribute;
+using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface;
+using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface.Attribute;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
 using ESFA.DC.ILR.Model;
@@ -149,7 +150,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
         public void Transform_FundingOutput_GlobalCorrect()
         {
             // ARRANGE
-            var expectedGlobal = new GlobalAttribute
+            IGlobalAttribute expectedGlobal = new GlobalAttribute
             {
                 UKPRN = 12345678,
                 LARSVersion = "Version_005",
@@ -165,7 +166,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
 
             ISerializationService serializationService = new JsonSerializationService();
 
-            var str = serializationService.Serialize<FundingOutputs>(fundingOutput);
+            var str = serializationService.Serialize<IFundingOutputs>(fundingOutput);
         }
 
         /// <summary>
@@ -191,7 +192,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
         public void Transform_FundingOutput_LearnersCorrect()
         {
             // ARRANGE
-            var expectedLearners = new LearnerAttribute[]
+            ILearnerAttribute[] expectedLearners = new LearnerAttribute[]
             {
                  new LearnerAttribute
                  {
@@ -215,7 +216,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
 
             ISerializationService serializationService = new JsonSerializationService();
 
-            var str = serializationService.Serialize<FundingOutputs>(fundingOutput);
+            var str = serializationService.Serialize<IFundingOutputs>(fundingOutput);
         }
 
         /// <summary>
@@ -261,7 +262,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
         public void Transform_FundingOutput_LearnerAttributes_LearnerPeriodAttributes()
         {
             // ARRANGE
-            var expectedLearnerPeriodisedAttributes = new List<LearnerPeriodisedAttribute[]>
+            IList<ILearnerPeriodisedAttribute[]> expectedLearnerPeriodisedAttributes = new List<ILearnerPeriodisedAttribute[]>
             {
                 TestLearnerPeriodisedValuesArray(0.0m),
                 TestLearnerPeriodisedValuesArray(1.0m),
@@ -283,7 +284,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
         public void Transform_FundingOutput_LearnerAttributes_LearnerDeliveryAttributes()
         {
             // ARRANGE
-            var expectedLearningDeliveryAttributes = new List<LearningDeliveryAttribute[]>
+            IList<ILearningDeliveryAttribute[]> expectedLearningDeliveryAttributes = new List<ILearningDeliveryAttribute[]>
             {
                 TestLearningDeliveryAttributeArray(1),
                 TestLearningDeliveryAttributeArray(1),
@@ -601,7 +602,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             }
         };
 
-        private FundingOutputs TestFundingOutputs()
+        private IFundingOutputs TestFundingOutputs()
         {
             var dataEntities = FundingServiceMock().Object.ProcessFunding(12345678, testLearners);
 
@@ -609,7 +610,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             return output.Transform();
         }
 
-        private LearnerPeriodisedAttribute[] TestLearnerPeriodisedValuesArray(decimal value)
+        private ILearnerPeriodisedAttribute[] TestLearnerPeriodisedValuesArray(decimal value)
         {
             return new LearnerPeriodisedAttribute[]
             {
@@ -637,7 +638,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             };
         }
 
-        private LearningDeliveryAttribute[] TestLearningDeliveryAttributeArray(int aimSeq)
+        private ILearningDeliveryAttribute[] TestLearningDeliveryAttributeArray(int aimSeq)
         {
             return new LearningDeliveryAttribute[]
             {
@@ -655,7 +656,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             };
         }
 
-        private LearningDeliveryAttributeData LearningDeliveryAttributeData()
+        private ILearningDeliveryAttributeData LearningDeliveryAttributeData()
         {
             return new LearningDeliveryAttributeData
             {
@@ -677,7 +678,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             };
         }
 
-        private LearningDeliveryPeriodisedAttribute[] LearningDeliveryPeriodisedAttributesDataArray()
+        private ILearningDeliveryPeriodisedAttribute[] LearningDeliveryPeriodisedAttributesDataArray()
         {
             return new LearningDeliveryPeriodisedAttribute[]
             {

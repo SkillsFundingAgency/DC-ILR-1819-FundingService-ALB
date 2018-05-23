@@ -13,6 +13,7 @@ using ESFA.DC.ILR.FundingService.ALB.Contexts.Interface;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model;
+using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service;
 using ESFA.DC.ILR.FundingService.ALB.OrchestrationService;
 using ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface;
@@ -78,7 +79,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
                 var jOut = jsonOutputs.Transform();
                 ISerializationService serializationService = new JsonSerializationService();
 
-                var str = serializationService.Serialize<FundingOutputs>(jOut);
+                var str = serializationService.Serialize<IFundingOutputs>(jOut);
 
                 stopwatch.Stop();
                 var inputsCreateTime = stopwatch.Elapsed;
