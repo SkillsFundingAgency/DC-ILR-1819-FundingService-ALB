@@ -24,7 +24,7 @@ using FluentAssertions;
 using Moq;
 using Xunit;
 
-namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
+namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
 {
     public class FundingOutputTests
     {
