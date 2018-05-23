@@ -85,22 +85,21 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             // ARRANGE
             var expectedChangePoints = new List<ITemporalValueItem>();
 
-            foreach (var temporal in ChangePoints(1.5m))
-            {
-                expectedChangePoints.Add(temporal);
-            }
-
-            foreach (var temporal in ChangePoints(1.5m))
-            {
-                expectedChangePoints.Add(temporal);
-            }
+            expectedChangePoints.AddRange(ChangePoints(100.00m));
+            expectedChangePoints.AddRange(ChangePoints(100.00m));
+            expectedChangePoints.AddRange(ChangePoints(100.00m));
+            expectedChangePoints.AddRange(ChangePoints(100.00m));
+            expectedChangePoints.AddRange(ChangePoints(100.00m));
+            expectedChangePoints.AddRange(ChangePoints(100.00m));
+            expectedChangePoints.AddRange(ChangePoints(100.00m));
+            expectedChangePoints.AddRange(ChangePoints(100.00m));
 
             // ACT
             var dataEntity = FundingServiceMock().Object.ProcessFunding(12345678, testLearners);
 
             // ASSERT
             var actualChangePoints = new List<ITemporalValueItem>();
-            var actualAttributes = dataEntity.SelectMany(g => g.Children.SelectMany(l => l.Children.SelectMany(ld => ld.Attributes.Select(a => a.Value))));
+            var actualAttributes = dataEntity.SelectMany(g => g.Children.SelectMany(l => l.Children.SelectMany(ld => ld.Attributes.Select(a => a.Value).Where(c => c.Changepoints.Count() > 0))));
 
             foreach (var attribute in actualAttributes)
             {
@@ -139,7 +138,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             var fundingOutput = TestFundingOutputs();
 
             // ASSERT
-            fundingOutput.global.Should().NotBeNull();
+            fundingOutput.Global.Should().NotBeNull();
         }
 
         /// <summary>
@@ -161,7 +160,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             var fundingOutput = TestFundingOutputs();
 
             // ASSERT
-            fundingOutput.global.Should().BeEquivalentTo(expectedGlobal);
+            fundingOutput.Global.Should().BeEquivalentTo(expectedGlobal);
 
             ISerializationService serializationService = new JsonSerializationService();
 
@@ -181,7 +180,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             var fundingOutput = TestFundingOutputs();
 
             // ASSERT
-            fundingOutput.learners.Should().NotBeNull();
+            fundingOutput.Learners.Should().NotBeNull();
         }
 
         /// <summary>
@@ -197,13 +196,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
                  {
                      LearnRefNumber = "TestLearner1",
                      LearnerPeriodisedAttributes = TestLearnerPeriodisedValuesArray(0),
-                     LearningDeliveryAttributes = null,
+                     LearningDeliveryAttributes = TestLearningDeliveryAttributeArray(1),
                  },
                  new LearnerAttribute
                  {
                      LearnRefNumber = "TestLearner2",
                      LearnerPeriodisedAttributes = TestLearnerPeriodisedValuesArray(1m),
-                     LearningDeliveryAttributes = null,
+                     LearningDeliveryAttributes = TestLearningDeliveryAttributeArray(1),
                  }
             };
 
@@ -211,7 +210,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             var fundingOutput = TestFundingOutputs();
 
             // ASSERT
-            fundingOutput.learners.Should().BeEquivalentTo(expectedLearners);
+            fundingOutput.Learners.Should().BeEquivalentTo(expectedLearners);
 
             ISerializationService serializationService = new JsonSerializationService();
 
@@ -231,9 +230,9 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             var fundingOutput = TestFundingOutputs();
 
             // ASSERT
-            fundingOutput.learners.Select(l => l.LearnRefNumber).Should().NotBeNull();
-            fundingOutput.learners.Select(l => l.LearnerPeriodisedAttributes).Should().NotBeNull();
-            fundingOutput.learners.Select(l => l.LearningDeliveryAttributes).Should().NotBeNull();
+            fundingOutput.Learners.Select(l => l.LearnRefNumber).Should().NotBeNull();
+            fundingOutput.Learners.Select(l => l.LearnerPeriodisedAttributes).Should().NotBeNull();
+            fundingOutput.Learners.Select(l => l.LearningDeliveryAttributes).Should().NotBeNull();
         }
 
         /// <summary>
@@ -249,7 +248,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             var fundingOutput = TestFundingOutputs();
 
             // ASSERT
-            var learnRefNmbers = fundingOutput.learners.Select(l => l.LearnRefNumber).ToList();
+            var learnRefNmbers = fundingOutput.Learners.Select(l => l.LearnRefNumber).ToList();
 
             expectedLearnRefNumbers.Should().BeEquivalentTo(learnRefNmbers);
         }
@@ -271,7 +270,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             var fundingOutput = TestFundingOutputs();
 
             // ASSERT
-            var learnerPeriodisedAttributes = fundingOutput.learners.Select(l => l.LearnerPeriodisedAttributes).ToList();
+            var learnerPeriodisedAttributes = fundingOutput.Learners.Select(l => l.LearnerPeriodisedAttributes).ToList();
 
             expectedLearnerPeriodisedAttributes.Should().BeEquivalentTo(learnerPeriodisedAttributes);
         }
@@ -283,13 +282,17 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
         public void Transform_FundingOutput_LearnerAttributes_LearnerDeliveryAttributes()
         {
             // ARRANGE
-            var expectedLearningDeliveryAttributes = new List<LearningDeliveryAttribute>();
+            var expectedLearningDeliveryAttributes = new List<LearningDeliveryAttribute[]>
+            {
+                TestLearningDeliveryAttributeArray(1),
+                TestLearningDeliveryAttributeArray(1),
+            };
 
             // ACT
             var fundingOutput = TestFundingOutputs();
 
             // ASSERT
-            var learningDelAttributes = fundingOutput.learners.Select(l => l.LearningDeliveryAttributes).ToList();
+            var learningDelAttributes = fundingOutput.Learners.Select(l => l.LearningDeliveryAttributes).ToList();
 
             expectedLearningDeliveryAttributes.Should().BeEquivalentTo(learningDelAttributes);
         }
@@ -315,7 +318,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
                     EntityName = "global",
                     Attributes = new Dictionary<string, IAttributeData>
                     {
-                        { "UKPRN", new AttributeData("UKPRN", 12345678) },
+                        { "UKPRN", new AttributeData("UKPRN", "12345678.0") },
                         { "LARSVersion", new AttributeData("LARSVersion", "Version_005") },
                         { "PostcodeAreaCostVersion", new AttributeData("PostcodeAreaCostVersion", "Version_002") },
                         { "RulebaseVersion", new AttributeData("RulebaseVersion", "1718.5.10") },
@@ -333,7 +336,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
                 EntityName = "global",
                 Attributes = new Dictionary<string, IAttributeData>
                 {
-                    { "UKPRN", new AttributeData("UKPRN", 12345678) },
+                    { "UKPRN", new AttributeData("UKPRN", "12345678.0") },
                     { "LARSVersion", new AttributeData("LARSVersion", "Version_005") },
                     { "PostcodeAreaCostVersion", new AttributeData("PostcodeAreaCostVersion", "Version_002") },
                     { "RulebaseVersion", new AttributeData("RulebaseVersion", "1718.5.10") },
@@ -360,7 +363,6 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
                 {
                     { "LearnRefNumber", new AttributeData("LearnRefNumber", learnRefNumber) },
                     { "ALBSeqNum", Attribute("ALBSeqNum", true, 1.0m) },
-                    { "ALB2", Attribute("ALB2", false, 0m) },
                 },
                     Parent = parent
                 };
@@ -379,7 +381,6 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
                 {
                     { "LearnRefNumber", new AttributeData("LearnRefNumber", learnRefNumber) },
                     { "ALBSeqNum", Attribute("ALBSeqNum", false, 0m) },
-                    { "ALB2", Attribute("ALB2", false, 0m) },
                 },
                 Parent = parent
             };
@@ -399,10 +400,28 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             {
                 EntityName = "LearningDelivery",
                 Attributes = new Dictionary<string, IAttributeData>
-                    {
-                        { "Payment", Attribute("Payment", true, 1.5m) },
-                        { "Non-Payment",  Attribute("Non-Payment", false, 0m) },
-                    },
+                {
+                    { "AimSeqNumber", Attribute("AimSeqNumber", false, "1.0") },
+                    { "Achieved", Attribute("Achieved", false, "false") },
+                    { "ActualNumInstalm", Attribute("ActualNumInstalm", false, "21.0") },
+                    { "AdvLoan", Attribute("AdvLoan", false, "true") },
+                    { "ApplicFactDate", Attribute("ApplicFactDate", false, "30/04/2017 00:00:00") },
+                    { "ApplicProgWeightFact", Attribute("ApplicProgWeightFact", false, "A") },
+                    { "AreaCostFactAdj", Attribute("AreaCostFactAdj", false, "0.1") },
+                    { "AreaCostInstalment", Attribute("AreaCostInstalment", false, "21.525") },
+                    { "FundLine", Attribute("FundLine", false, "Advanced Learner Loans Bursary") },
+                    { "FundStart", Attribute("FundStart", false, "true") },
+                    { "LiabilityDate", Attribute("LiabilityDate", false, "14/05/2017 00:00:00") },
+                    { "LoanBursAreaUplift", Attribute("LoanBursAreaUplift", false, "true") },
+                    { "LoanBursSupp", Attribute("LoanBursSupp", false, "true") },
+                    { "OutstndNumOnProgInstalm", Attribute("OutstndNumOnProgInstalm", false, "0.0") },
+                    { "PlannedNumOnProgInstalm", Attribute("PlannedNumOnProgInstalm", false, "12.0") },
+                    { "WeightedRate", Attribute("WeightedRate", false, "2583") },
+                    { "ALBCode", Attribute("ALBCode", true, 100.0m) },
+                    { "ALBSupportPayment", Attribute("ALBSupportPayment", true, 100.0m) },
+                    { "AreaUpliftBalPayment", Attribute("AreaUpliftBalPayment", true, 100.0m) },
+                    { "AreaUpliftOnProgPayment", Attribute("AreaUpliftOnProgPayment", true, 100.0m) },
+                },
                 Parent = parent,
             };
 
@@ -411,12 +430,12 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             return entities;
         }
 
-        private IAttributeData Attribute(string attributeName, bool hasChangePoints, decimal attributeValue)
+        private IAttributeData Attribute(string attributeName, bool hasChangePoints, object attributeValue)
         {
             if (hasChangePoints)
             {
                 var attribute = new AttributeData(attributeName, null);
-                attribute.AddChangepoints(ChangePoints(attributeValue));
+                attribute.AddChangepoints(ChangePoints(decimal.Parse(attributeValue.ToString())));
 
                 return attribute;
             }
@@ -615,6 +634,77 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
             };
         }
 
-    #endregion
-}
+        private LearningDeliveryAttribute[] TestLearningDeliveryAttributeArray(int aimSeq)
+        {
+            return new LearningDeliveryAttribute[]
+            {
+                TestLearningDeliveryAttributeValues(1)
+            };
+        }
+
+        private LearningDeliveryAttribute TestLearningDeliveryAttributeValues(int aimSeq)
+        {
+            return new LearningDeliveryAttribute
+            {
+                AimSeqNumber = aimSeq,
+                LearningDeliveryAttributeDatas = LearningDeliveryAttributeData(),
+                LearningDeliveryPeriodisedAttributes = LearningDeliveryPeriodisedAttributesDataArray(),
+            };
+        }
+
+        private LearningDeliveryAttributeData LearningDeliveryAttributeData()
+        {
+            return new LearningDeliveryAttributeData
+            {
+                Achieved = false,
+                ActualNumInstalm = 21,
+                AdvLoan = true,
+                ApplicFactDate = DateTime.Parse("30/04/2017 00:00:00"),
+                ApplicProgWeightFact = "A",
+                AreaCostFactAdj = 0.1m,
+                AreaCostInstalment = 21.525m,
+                FundLine = "Advanced Learner Loans Bursary",
+                FundStart = true,
+                LiabilityDate = DateTime.Parse("14/05/2017 00:00:00"),
+                LoanBursAreaUplift = true,
+                LoanBursSupp = true,
+                OutstndNumOnProgInstalm = 0,
+                PlannedNumOnProgInstalm = 12,
+                WeightedRate = 2583.0m,
+            };
+        }
+
+        private LearningDeliveryPeriodisedAttribute[] LearningDeliveryPeriodisedAttributesDataArray()
+        {
+            return new LearningDeliveryPeriodisedAttribute[]
+            {
+                LearningDeliveryPeriodisedAttributesData("ALBCode", 100.00m),
+                LearningDeliveryPeriodisedAttributesData("ALBSupportPayment", 100.00m),
+                LearningDeliveryPeriodisedAttributesData("AreaUpliftBalPayment", 100.00m),
+                LearningDeliveryPeriodisedAttributesData("AreaUpliftOnProgPayment", 100.00m),
+            };
+        }
+
+        private LearningDeliveryPeriodisedAttribute LearningDeliveryPeriodisedAttributesData(string attribute, decimal value)
+        {
+            return new LearningDeliveryPeriodisedAttribute
+            {
+                AttributeName = attribute,
+                Period1 = value,
+                Period2 = value,
+                Period3 = value,
+                Period4 = value,
+                Period5 = value,
+                Period6 = value,
+                Period7 = value,
+                Period8 = value,
+                Period9 = value,
+                Period10 = value,
+                Period11 = value,
+                Period12 = value,
+            };
+        }
+
+        #endregion
+    }
 }

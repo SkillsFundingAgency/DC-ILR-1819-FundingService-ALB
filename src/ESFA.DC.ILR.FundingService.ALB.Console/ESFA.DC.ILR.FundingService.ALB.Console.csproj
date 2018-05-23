@@ -21,8 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>
-    </CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>ESFA.DC.ILR.FundingService.ALB.Console.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,8 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>
-    </CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>ESFA.DC.ILR.FundingService.ALB.Console1.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.8.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -121,6 +119,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ESFA.DC.ILR.FundingService.ALB.Console.ruleset" />
+    <None Include="ESFA.DC.ILR.FundingService.ALB.Console1.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +134,14 @@
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.ExternalData\ESFA.DC.ILR.FundingService.ALB.ExternalData.csproj">
       <Project>{40a43ba4-a9aa-4746-836d-e60ebffe5727}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.ExternalData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.csproj">
+      <Project>{4CA652F1-49F4-4E80-9113-125489413525}</Project>
+      <Name>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.csproj">
+      <Project>{F8A7B96E-3775-409E-9329-E04BFFBD2E4F}</Project>
+      <Name>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service</Name>
     </ProjectReference>
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface\ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface.csproj">
       <Project>{629b2083-780b-40b0-b8c9-3eab85e3014f}</Project>
