@@ -67,7 +67,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Stubs.Persistance
 
             // Create Learner outputs
             var learnerOutput = TransformLearnerOutput(entities, globalOutput.UKPRN);
-            var learnerPeriodOutput = GetLearnerPeriodOutput(learnerOutput);
+                var learnerPeriodOutput = GetLearnerPeriodOutput(learnerOutput);
             var learnerPeriodisedValues = GetLearnerPeriodisedValuesOutput(learnerOutput);
 
             // Persist reusults

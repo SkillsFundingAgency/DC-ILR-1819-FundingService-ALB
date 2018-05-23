@@ -12,6 +12,9 @@ using ESFA.DC.ILR.FundingService.ALB.Contexts;
 using ESFA.DC.ILR.FundingService.ALB.Contexts.Interface;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
+using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model;
+using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface;
+using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service;
 using ESFA.DC.ILR.FundingService.ALB.OrchestrationService;
 using ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders;
@@ -31,13 +34,14 @@ using ESFA.DC.OPA.Service.Interface;
 using ESFA.DC.OPA.Service.Interface.Builders;
 using ESFA.DC.OPA.Service.Interface.Rulebase;
 using ESFA.DC.Serialization.Interfaces;
+using ESFA.DC.Serialization.Json;
 using ESFA.DC.Serialization.Xml;
 
 namespace ESFA.DC.ILR.FundingService.ALB.Console
 {
     public static class Program
     {
-        // sprivate static string fileName = "ILR-10006341-1819-20180118-023456-01.xml";
+        // private static string fileName = "ILR-10006341-1819-20180118-023456-01.xml";
         private static string fileName = "ILR-10006341-1819-20180118-023456-02.xml";
 
         private static Stream stream;
@@ -70,6 +74,12 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
                 stopwatch.Start();
                 var dataPersister = new DataPersister();
                 dataPersister.PersistData(fundingOutputs);
+
+                var jsonOutputs = new FundingOutputTransform(fundingOutputs);
+                var jOut = jsonOutputs.Transform();
+                ISerializationService serializationService = new JsonSerializationService();
+
+                var str = serializationService.Serialize<IFundingOutputs>(jOut);
 
                 stopwatch.Stop();
                 var inputsCreateTime = stopwatch.Elapsed;
