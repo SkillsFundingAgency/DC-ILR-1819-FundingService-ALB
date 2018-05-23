@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -299,6 +300,8 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
 
         #region Test Helpers
 
+        private static readonly IFormatProvider culture = new CultureInfo("en-GB", true);
+
         private static readonly Mock<IFundingService> FundingServiceContextMock = new Mock<IFundingService>();
 
         private Mock<IFundingService> FundingServiceMock()
@@ -504,11 +507,11 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
                         CompStatus = 1,
                         DelLocPostCode = "CV1 2WT",
                         LearnActEndDateSpecified = true,
-                        LearnActEndDate = DateTime.Parse("2018-06-30"),
-                        LearnStartDate = DateTime.Parse("2017-08-30"),
-                        LearnPlanEndDate = DateTime.Parse("2018-07-30"),
+                        LearnActEndDate = DateTime.Parse("2018-06-30", culture),
+                        LearnStartDate = DateTime.Parse("2017-08-30", culture),
+                        LearnPlanEndDate = DateTime.Parse("2018-07-30", culture),
                         OrigLearnStartDateSpecified = true,
-                        OrigLearnStartDate = DateTime.Parse("2017-08-30"),
+                        OrigLearnStartDate = DateTime.Parse("2017-08-30", culture),
                         OtherFundAdjSpecified = false,
                         OutcomeSpecified = false,
                         PriorLearnFundAdjSpecified = false,
@@ -519,25 +522,25 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
                                 LearnDelFAMCode = "1",
                                 LearnDelFAMType = "ADL",
                                 LearnDelFAMDateFromSpecified = true,
-                                LearnDelFAMDateFrom = DateTime.Parse("2017-08-30"),
+                                LearnDelFAMDateFrom = DateTime.Parse("2017-08-30", culture),
                                 LearnDelFAMDateToSpecified = true,
-                                LearnDelFAMDateTo = DateTime.Parse("2017-10-31")
+                                LearnDelFAMDateTo = DateTime.Parse("2017-10-31", culture)
                             },
                             new MessageLearnerLearningDeliveryLearningDeliveryFAM
                             {
                                 LearnDelFAMCode = "100",
                                 LearnDelFAMType = "SOF",
                                 LearnDelFAMDateFromSpecified = true,
-                                LearnDelFAMDateFrom = DateTime.Parse("2017-10-31"),
+                                LearnDelFAMDateFrom = DateTime.Parse("2017-10-31", culture),
                                 LearnDelFAMDateToSpecified = true,
-                                LearnDelFAMDateTo = DateTime.Parse("2017-11-30")
+                                LearnDelFAMDateTo = DateTime.Parse("2017-11-30", culture)
                             },
                             new MessageLearnerLearningDeliveryLearningDeliveryFAM
                             {
                                 LearnDelFAMCode = "1",
                                 LearnDelFAMType = "RES",
                                 LearnDelFAMDateFromSpecified = true,
-                                LearnDelFAMDateFrom = DateTime.Parse("2017-12-01"),
+                                LearnDelFAMDateFrom = DateTime.Parse("2017-12-01", culture),
                                 LearnDelFAMDateToSpecified = false
                             }
                         }
@@ -556,11 +559,11 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
                         CompStatus = 1,
                         DelLocPostCode = "CV1 2WT",
                         LearnActEndDateSpecified = true,
-                        LearnActEndDate = DateTime.Parse("2018-06-30"),
-                        LearnStartDate = DateTime.Parse("2017-08-30"),
-                        LearnPlanEndDate = DateTime.Parse("2018-07-30"),
+                        LearnActEndDate = DateTime.Parse("2018-06-30", culture),
+                        LearnStartDate = DateTime.Parse("2017-08-30", culture),
+                        LearnPlanEndDate = DateTime.Parse("2018-07-30", culture),
                         OrigLearnStartDateSpecified = true,
-                        OrigLearnStartDate = DateTime.Parse("2017-08-30"),
+                        OrigLearnStartDate = DateTime.Parse("2017-08-30", culture),
                         OtherFundAdjSpecified = false,
                         OutcomeSpecified = false,
                         PriorLearnFundAdjSpecified = false,
@@ -571,25 +574,25 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
                                 LearnDelFAMCode = "1",
                                 LearnDelFAMType = "ADL",
                                 LearnDelFAMDateFromSpecified = true,
-                                LearnDelFAMDateFrom = DateTime.Parse("2017-08-30"),
+                                LearnDelFAMDateFrom = DateTime.Parse("2017-08-30", culture),
                                 LearnDelFAMDateToSpecified = true,
-                                LearnDelFAMDateTo = DateTime.Parse("2017-10-31")
+                                LearnDelFAMDateTo = DateTime.Parse("2017-10-31", culture)
                             },
                             new MessageLearnerLearningDeliveryLearningDeliveryFAM
                             {
                                 LearnDelFAMCode = "100",
                                 LearnDelFAMType = "SOF",
                                 LearnDelFAMDateFromSpecified = true,
-                                LearnDelFAMDateFrom = DateTime.Parse("2017-10-31"),
+                                LearnDelFAMDateFrom = DateTime.Parse("2017-10-31", culture),
                                 LearnDelFAMDateToSpecified = true,
-                                LearnDelFAMDateTo = DateTime.Parse("2017-11-30")
+                                LearnDelFAMDateTo = DateTime.Parse("2017-11-30", culture)
                             },
                             new MessageLearnerLearningDeliveryLearningDeliveryFAM
                             {
                                 LearnDelFAMCode = "1",
                                 LearnDelFAMType = "RES",
                                 LearnDelFAMDateFromSpecified = true,
-                                LearnDelFAMDateFrom = DateTime.Parse("2017-12-01"),
+                                LearnDelFAMDateFrom = DateTime.Parse("2017-12-01", culture),
                                 LearnDelFAMDateToSpecified = false
                             }
                         }
@@ -659,13 +662,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests
                 Achieved = false,
                 ActualNumInstalm = 21,
                 AdvLoan = true,
-                ApplicFactDate = DateTime.Parse("30/04/2017 00:00:00"),
+                ApplicFactDate = DateTime.Parse("30/04/2017 00:00:00", culture),
                 ApplicProgWeightFact = "A",
                 AreaCostFactAdj = 0.1m,
                 AreaCostInstalment = 21.525m,
                 FundLine = "Advanced Learner Loans Bursary",
                 FundStart = true,
-                LiabilityDate = DateTime.Parse("14/05/2017 00:00:00"),
+                LiabilityDate = DateTime.Parse("14/05/2017 00:00:00", culture),
                 LoanBursAreaUplift = true,
                 LoanBursSupp = true,
                 OutstndNumOnProgInstalm = 0,

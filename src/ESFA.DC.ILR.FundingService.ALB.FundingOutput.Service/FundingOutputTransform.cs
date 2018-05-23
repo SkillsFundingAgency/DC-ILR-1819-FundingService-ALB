@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Attribute;
@@ -10,6 +11,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
 {
     public class FundingOutputTransform
     {
+        private static readonly IFormatProvider culture = new CultureInfo("en-GB", true);
         private readonly IEnumerable<IDataEntity> _dataEntities;
 
         public FundingOutputTransform(IEnumerable<IDataEntity> dataEntities)
@@ -158,13 +160,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
                 Achieved = ConvertToBit(GetAttributeValue(attributes, "Achieved")),
                 ActualNumInstalm = DecimalStrToInt(GetAttributeValue(attributes, "ActualNumInstalm")),
                 AdvLoan = ConvertToBit(GetAttributeValue(attributes, "AdvLoan")),
-                ApplicFactDate = DateTime.Parse(GetAttributeValue(attributes, "ApplicFactDate")),
+                ApplicFactDate = DateTime.Parse(GetAttributeValue(attributes, "ApplicFactDate"), culture),
                 ApplicProgWeightFact = GetAttributeValue(attributes, "ApplicProgWeightFact"),
                 AreaCostFactAdj = decimal.Parse(GetAttributeValue(attributes, "AreaCostFactAdj")),
                 AreaCostInstalment = decimal.Parse(GetAttributeValue(attributes, "AreaCostInstalment")),
                 FundLine = GetAttributeValue(attributes, "FundLine"),
                 FundStart = ConvertToBit(GetAttributeValue(attributes, "FundStart")),
-                LiabilityDate = DateTime.Parse(GetAttributeValue(attributes, "LiabilityDate")),
+                LiabilityDate = DateTime.Parse(GetAttributeValue(attributes, "LiabilityDate"), culture),
                 LoanBursAreaUplift = ConvertToBit(GetAttributeValue(attributes, "LoanBursAreaUplift")),
                 LoanBursSupp = ConvertToBit(GetAttributeValue(attributes, "LoanBursSupp")),
                 OutstndNumOnProgInstalm = DecimalStrToInt(GetAttributeValue(attributes, "OutstndNumOnProgInstalm")),
