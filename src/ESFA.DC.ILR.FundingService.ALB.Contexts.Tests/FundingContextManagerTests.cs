@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ESFA.DC.ILR.FundingService.ALB.Contexts;
 using ESFA.DC.ILR.FundingService.ALB.Contexts.Interface;
 using ESFA.DC.ILR.Model;
 using ESFA.DC.ILR.Model.Interface;
@@ -196,38 +195,6 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
         #region KeyValuePersistanceService Tests
 
         /// <summary>
-        /// Return UKPRN from KeyValuePersistanceService
-        /// </summary>
-        [Fact(DisplayName = "KeyValuePersistanceService - UKPRN Exists"), Trait("Funding Service", "Unit")]
-        public void KeyValuePersistanceService()
-        {
-            // ARRANGE
-            var testUKPRNString = SerializationService.Serialize(10006341);
-
-            // ACT
-            var ukprn = KeyValuePersistenceService.GetAsync("UKPRN").Result;
-
-            // ASSERT
-            testUKPRNString.Should().NotBeNullOrEmpty();
-        }
-
-        /// <summary>
-        /// Return UKPRN from KeyValuePersistanceService
-        /// </summary>
-        [Fact(DisplayName = "KeyValuePersistanceService - UKPRN Correct"), Trait("Funding Service", "Unit")]
-        public void KeyValuePersistanceService_UKPRN_Correct()
-        {
-            // ARRANGE
-            var testUKPRNString = SerializationService.Serialize(10006341);
-
-            // ACT
-            var ukprn = KeyValuePersistenceService.GetAsync("UKPRN").Result;
-
-            // ASSERT
-            testUKPRNString.Should().BeEquivalentTo(testUKPRNString);
-        }
-
-        /// <summary>
         /// Return Valid Learners from KeyValuePersistanceService
         /// </summary>
         [Fact(DisplayName = "KeyValuePersistanceService - Learners Exist"), Trait("Funding Service", "Unit")]
@@ -279,7 +246,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
         private static IDictionary<JobContextMessageKey, object> KeyValuePairsDictionary => new Dictionary<JobContextMessageKey, object>()
         {
             { JobContextMessageKey.Filename, "FileName" },
-            { JobContextMessageKey.UkPrn, "UKPRN" },
+            { JobContextMessageKey.UkPrn, 10006341 },
             { JobContextMessageKey.ValidLearnRefNumbers, "ValidLearnRefNumbers" },
         };
 
@@ -292,7 +259,6 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
             var list = new DictionaryKeyValuePersistenceService();
             var serializer = new JsonSerializationService();
 
-            list.SaveAsync("UKPRN", "10006341").Wait();
             list.SaveAsync("ValidLearnRefNumbers", serializer.Serialize(TestLearners())).Wait();
 
             return list;

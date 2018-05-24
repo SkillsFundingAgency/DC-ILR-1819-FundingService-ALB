@@ -12,7 +12,6 @@ using ESFA.DC.ILR.FundingService.ALB.Contexts;
 using ESFA.DC.ILR.FundingService.ALB.Contexts.Interface;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
-using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface;
@@ -140,43 +139,39 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
             {
                 JobId = 1,
                 SubmissionDateTimeUtc = DateTime.Parse("2018-08-01").ToUniversalTime(),
-                Topics = new List<ITopicItem>
-                {
-                    new TopicItem
-                    {
-                        Tasks = new List<ITaskItem>
-                        {
-                            new TaskItem
-                            {
-                                Tasks = new List<string>
-                                {
-                                    "Task A",
-                                },
-                                SupportsParallelExecution = true,
-                            },
-                        },
-                        TopicName = "Topic A",
-                    },
-                },
+                Topics = TopicList,
                 TopicPointer = 1,
                 KeyValuePairs = new Dictionary<JobContextMessageKey, object>
                 {
                     { JobContextMessageKey.Filename, fileName },
-                    { JobContextMessageKey.UkPrn, "UKPRN" },
+                    { JobContextMessageKey.UkPrn, 10006341 },
                     { JobContextMessageKey.ValidLearnRefNumbers, "ValidLearnRefNumbers" },
                 },
             };
         }
 
+        private static ITaskItem TaskItem => new TaskItem
+        {
+            Tasks = new List<string>
+            {
+                "Task A",
+            },
+            SupportsParallelExecution = true,
+        };
+
+        private static IReadOnlyList<ITaskItem> TaskItemList => new List<ITaskItem> { TaskItem };
+
+        private static ITopicItem TopicItem => new TopicItem("Subscription", "SubscriptionFilter", TaskItemList);
+
+        private static IReadOnlyList<ITopicItem> TopicList => new List<ITopicItem> { TopicItem };
+
         private static DictionaryKeyValuePersistenceService BuildKeyValueDictionary()
         {
             var learners = message.Learner.ToList();
 
-            // var learnRefNumbers = new List<string> { "16v224" };
             var list = new DictionaryKeyValuePersistenceService();
             var serializer = new XmlSerializationService();
 
-            list.SaveAsync("UKPRN", "10006341").Wait();
             list.SaveAsync("ValidLearnRefNumbers", serializer.Serialize(learners)).Wait();
 
             return list;
