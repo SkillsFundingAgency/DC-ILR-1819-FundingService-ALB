@@ -497,7 +497,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
 
             IFundingService fundingService = new FundingService(dataEntityBuilder, opaService);
 
-            var preFundingOrchestrationService = new PreFundingOrchestrationService(referenceDataCachePopulationService, fundingContext, fundingService);
+            var preFundingOrchestrationService = new ConsoleFundingOrchestrationService(referenceDataCachePopulationService, fundingContext, fundingService);
             var learners = preFundingOrchestrationService.PopulateData(fundingContext.ValidLearners);
                      
             return fundingService.ProcessFunding(fundingContext.UKPRN, learners);

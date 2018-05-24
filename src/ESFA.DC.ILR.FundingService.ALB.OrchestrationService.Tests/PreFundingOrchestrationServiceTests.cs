@@ -45,7 +45,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
     public class PreFundingOrchestrationServiceTests
     {
         /// <summary>
-        /// Return PreFundingOrchestrationService
+        /// Return ConsoleFundingOrchestrationService
         /// </summary>
         [Fact(DisplayName = "PreFundingOrchestration - Instance Exists"), Trait("PreFundingOrchestration", "Unit")]
         public void PreFundingOrchestrationService_Exists()
@@ -62,7 +62,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
         }
 
         /// <summary>
-        /// Return PreFundingOrchestrationService
+        /// Return ConsoleFundingOrchestrationService
         /// </summary>
         [Fact(DisplayName = "PreFundingOrchestration - FundingServiceInitialise - DataEntity Count"), Trait("PreFundingOrchestration", "Unit")]
         public void PreFundingOrchestrationService_FundingServiceInitialise_DataEntityCount()
@@ -80,7 +80,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
         }
 
         /// <summary>
-        /// Return PreFundingOrchestrationService
+        /// Return ConsoleFundingOrchestrationService
         /// </summary>
         [Fact(DisplayName = "PreFundingOrchestration - FundingServiceInitialise - LearnRefNumbers Correct"), Trait("PreFundingOrchestration", "Unit")]
         public void PreFundingOrchestrationService_FundingServiceInitialise_LearnRefNumbersCorrect()
@@ -434,7 +434,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
             KeyValuePairs = KeyValuePairsDictionary,
         };
 
-        private PreFundingOrchestrationService SetupPreFundingOrchestrationService(IMessage message, IReferenceDataCache referenceDataCache)
+        private ConsoleFundingOrchestrationService SetupPreFundingOrchestrationService(IMessage message, IReferenceDataCache referenceDataCache)
         {
             IFundingContext fundingContext = SetupFundingContext(message);
 
@@ -446,7 +446,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
 
             var fundingService = new Service.FundingService(dataEntityBuilder, opaService);
 
-            return new PreFundingOrchestrationService(referenceDataCachePopulationService, fundingContext, fundingService);
+            return new ConsoleFundingOrchestrationService(referenceDataCachePopulationService, fundingContext, fundingService);
         }
 
         private Mock<ILARS> LARSMock()

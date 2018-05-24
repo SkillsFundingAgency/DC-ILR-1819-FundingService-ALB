@@ -9,13 +9,13 @@ using ESFA.DC.OPA.Model.Interface;
 
 namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService
 {
-    public class PreFundingOrchestrationService : IPreFundingOrchestrationService
+    public class ConsoleFundingOrchestrationService : IPreFundingOrchestrationService
     {
         private readonly IReferenceDataCachePopulationService _referenceDataCachePopulationService;
         private readonly IFundingContext _fundingContext;
         private readonly IFundingService _fundingService;
 
-        public PreFundingOrchestrationService(IReferenceDataCachePopulationService referenceDataCachePopulationService, IFundingContext fundingContext, IFundingService fundingService)
+        public ConsoleFundingOrchestrationService(IReferenceDataCachePopulationService referenceDataCachePopulationService, IFundingContext fundingContext, IFundingService fundingService)
         {
             _referenceDataCachePopulationService = referenceDataCachePopulationService;
             _fundingContext = fundingContext;
