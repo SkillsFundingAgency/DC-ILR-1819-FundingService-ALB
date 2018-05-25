@@ -2,23 +2,23 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Attribute;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface.Attribute;
+using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface;
 using ESFA.DC.OPA.Model;
 using ESFA.DC.OPA.Model.Interface;
 
 namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
 {
-    public class FundingOutputTransform
+    public class FundingOutputService : IFundingOutputService
     {
         private static readonly IFormatProvider culture = new CultureInfo("en-GB", true);
-        private readonly IEnumerable<IDataEntity> _dataEntities;
 
-        public FundingOutputTransform(IEnumerable<IDataEntity> dataEntities)
+        public FundingOutputService()
         {
-            _dataEntities = dataEntities;
         }
 
         private static Dictionary<int, DateTime> Periods => new Dictionary<int, DateTime>
@@ -37,16 +37,16 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
            { 12, new DateTime(2018, 07, 01) },
         };
 
-        public IFundingOutputs Transform()
+        public IFundingOutputs ProcessFundingOutputs(IEnumerable<IDataEntity> dataEntities)
         {
             return new FundingOutputs
             {
-                Global = GlobalOutput(_dataEntities.Select(g => g.Attributes).First()),
-                Learners = LearnerOutput(_dataEntities.SelectMany(g => g.Children)),
+                Global = GlobalOutput(dataEntities.Select(g => g.Attributes).First()),
+                Learners = LearnerOutput(dataEntities.SelectMany(g => g.Children)),
             };
         }
 
-        private IGlobalAttribute GlobalOutput(IDictionary<string, IAttributeData> attributes)
+        protected internal IGlobalAttribute GlobalOutput(IDictionary<string, IAttributeData> attributes)
         {
            return new GlobalAttribute
            {
@@ -57,7 +57,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
            };
         }
 
-        private ILearnerAttribute[] LearnerOutput(IEnumerable<IDataEntity> learnerEntities)
+        protected internal ILearnerAttribute[] LearnerOutput(IEnumerable<IDataEntity> learnerEntities)
         {
             var learners = new List<ILearnerAttribute>();
 
@@ -74,7 +74,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
             return learners.ToArray();
         }
 
-        private ILearnerPeriodisedAttribute[] LearnerPeriodisedAttributes(IDataEntity learner)
+        protected internal ILearnerPeriodisedAttribute[] LearnerPeriodisedAttributes(IDataEntity learner)
         {
             List<string> attributeList = new List<string> { "ALBSeqNum" };
             List<ILearnerPeriodisedAttribute> learnerPeriodisedAttributesList = new List<ILearnerPeriodisedAttribute>();
@@ -131,7 +131,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
             return learnerPeriodisedAttributesList.ToArray();
         }
 
-        private ILearningDeliveryAttribute[] LearningDeliveryAttributes(IDataEntity learner)
+        protected internal ILearningDeliveryAttribute[] LearningDeliveryAttributes(IDataEntity learner)
         {
             List<ILearningDeliveryAttribute> list = new List<ILearningDeliveryAttribute>();
             string aimSeqNumber = "AimSeqNumber";
@@ -151,7 +151,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
             return list.ToArray();
         }
 
-        private ILearningDeliveryAttributeData LearningDeliveryAttributeData(IDataEntity learningDelivery)
+        protected internal ILearningDeliveryAttributeData LearningDeliveryAttributeData(IDataEntity learningDelivery)
         {
             var attributes = learningDelivery.Attributes;
 
@@ -175,7 +175,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
             };
         }
 
-        private ILearningDeliveryPeriodisedAttribute[] LearningDeliveryPeriodisedAttributeData(IDataEntity learningDelivery)
+        protected internal ILearningDeliveryPeriodisedAttribute[] LearningDeliveryPeriodisedAttributeData(IDataEntity learningDelivery)
         {
             List<string> attributeList = new List<string>() { "ALBCode", "ALBSupportPayment", "AreaUpliftBalPayment", "AreaUpliftOnProgPayment" };
             List<ILearningDeliveryPeriodisedAttribute> learningDeliveryPeriodisedAttributesList = new List<ILearningDeliveryPeriodisedAttribute>();

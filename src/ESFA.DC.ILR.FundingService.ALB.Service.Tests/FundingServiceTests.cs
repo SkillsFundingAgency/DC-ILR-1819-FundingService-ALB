@@ -540,7 +540,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             private static IDictionary<JobContextMessageKey, object> KeyValuePairsDictionary => new Dictionary<JobContextMessageKey, object>()
             {
                 { JobContextMessageKey.Filename, "FileName" },
-                { JobContextMessageKey.UkPrn, "UKPRN" },
+                { JobContextMessageKey.UkPrn, 10006341 },
                 { JobContextMessageKey.ValidLearnRefNumbers, "ValidLearnRefNumbers" },
             };
 
@@ -554,7 +554,6 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
                 var list = new DictionaryKeyValuePersistenceService();
                 var serializer = new JsonSerializationService();
 
-                list.SaveAsync("UKPRN", "10006341").Wait();
                 list.SaveAsync("ValidLearnRefNumbers", serializer.Serialize(learners)).Wait();
 
                 return list;

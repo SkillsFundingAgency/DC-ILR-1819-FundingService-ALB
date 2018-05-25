@@ -29,9 +29,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts
 
         public int MapUKPRN()
         {
-            var key = _jobContextMessage.KeyValuePairs.Where(k => k.Key.ToString() == UKPRNKey).Select(v => v.Value.ToString()).FirstOrDefault();
-
-            return int.Parse(_keyValuePersistenceService.GetAsync(key).Result);
+            return int.Parse(_jobContextMessage.KeyValuePairs.Where(k => k.Key.ToString() == UKPRNKey).Select(v => v.Value.ToString()).Single());
         }
 
         public IList<ILearner> MapValidLearners()
