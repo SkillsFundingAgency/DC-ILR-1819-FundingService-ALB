@@ -433,6 +433,385 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Tests
             learningDeliveryAttributes.AimSeqNumber.Should().Be(1);
         }
 
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryAttributes - LearningDeliveryAttributeDatas Exists"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryAttributes_LearningDeliveryAttributeDatasExists()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryAttributes = TestFundingOutputs().Learners.SelectMany(l => l.LearningDeliveryAttributes).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryAttributes.LearningDeliveryAttributeDatas.Should().NotBeNull();
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryAttributes - LearningDeliveryPeriodisedAttributes Exist"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryAttributes_LearningDeliveryPeriodisedAttributesExist()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryAttributes = TestFundingOutputs().Learners.SelectMany(l => l.LearningDeliveryAttributes).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryAttributes.LearningDeliveryPeriodisedAttributes.Should().NotBeNull();
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryAttributes - LearningDeliveryPeriodisedAttributes Count"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryAttributes_LearningDeliveryPeriodisedAttributesCount()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryAttributes = TestFundingOutputs().Learners.SelectMany(l => l.LearningDeliveryAttributes).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryAttributes.LearningDeliveryPeriodisedAttributes.Count().Should().Be(2);
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryAttributeDatas - Achieved Correct"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryAttributeDatas_AchievedCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryAttributeDatas =
+                TestFundingOutputs().Learners.SelectMany(l =>
+                l.LearningDeliveryAttributes.Select(ld => ld.LearningDeliveryAttributeDatas)).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryAttributeDatas.Achieved.Should().Be(true);
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryAttributeDatas - ActualNumInstalm Correct"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryAttributeDatas_ActualNumInstalmCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryAttributeDatas =
+                TestFundingOutputs().Learners.SelectMany(l =>
+                l.LearningDeliveryAttributes.Select(ld => ld.LearningDeliveryAttributeDatas)).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryAttributeDatas.ActualNumInstalm.Should().Be(1);
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryAttributeDatas - AdvLoan Correct"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryAttributeDatas_AdvLoanCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryAttributeDatas =
+                TestFundingOutputs().Learners.SelectMany(l =>
+                l.LearningDeliveryAttributes.Select(ld => ld.LearningDeliveryAttributeDatas)).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryAttributeDatas.AdvLoan.Should().Be(false);
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryAttributeDatas - ApplicFactDate Correct"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryAttributeDatas_ApplicFactDateCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryAttributeDatas =
+                TestFundingOutputs().Learners.SelectMany(l =>
+                l.LearningDeliveryAttributes.Select(ld => ld.LearningDeliveryAttributeDatas)).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryAttributeDatas.ApplicFactDate.Should().Be(DateTime.Parse("2018-08-01 00:00:00", culture));
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryAttributeDatas - ApplicProgWeightFact Correct"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryAttributeDatas_ApplicProgWeightFactCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryAttributeDatas =
+                TestFundingOutputs().Learners.SelectMany(l =>
+                l.LearningDeliveryAttributes.Select(ld => ld.LearningDeliveryAttributeDatas)).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryAttributeDatas.ApplicProgWeightFact.Should().Be("ApplicProgWeightFact");
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryAttributeDatas - AreaCostFactAdj Correct"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryAttributeDatas_AreaCostFactAdjCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryAttributeDatas =
+                TestFundingOutputs().Learners.SelectMany(l =>
+                l.LearningDeliveryAttributes.Select(ld => ld.LearningDeliveryAttributeDatas)).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryAttributeDatas.AreaCostFactAdj.Should().Be(1.00m);
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryAttributeDatas - AreaCostInstalment Correct"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryAttributeDatas_AreaCostInstalmentCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryAttributeDatas =
+                TestFundingOutputs().Learners.SelectMany(l =>
+                l.LearningDeliveryAttributes.Select(ld => ld.LearningDeliveryAttributeDatas)).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryAttributeDatas.AreaCostInstalment.Should().Be(2.00m);
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryAttributeDatas - FundLine Correct"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryAttributeDatas_FundLineCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryAttributeDatas =
+                TestFundingOutputs().Learners.SelectMany(l =>
+                l.LearningDeliveryAttributes.Select(ld => ld.LearningDeliveryAttributeDatas)).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryAttributeDatas.FundLine.Should().Be("FundLine");
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryAttributeDatas - FundStart Correct"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryAttributeDatas_FundStartCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryAttributeDatas =
+                TestFundingOutputs().Learners.SelectMany(l =>
+                l.LearningDeliveryAttributes.Select(ld => ld.LearningDeliveryAttributeDatas)).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryAttributeDatas.FundStart.Should().Be(true);
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryAttributeDatas - LiabilityDate Correct"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryAttributeDatas_LiabilityDateCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryAttributeDatas =
+                TestFundingOutputs().Learners.SelectMany(l =>
+                l.LearningDeliveryAttributes.Select(ld => ld.LearningDeliveryAttributeDatas)).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryAttributeDatas.LiabilityDate.Should().Be(DateTime.Parse("2018-10-01 00:00:00", culture));
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryAttributeDatas - LoanBursAreaUplift Correct"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryAttributeDatas_LoanBursAreaUpliftCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryAttributeDatas =
+                TestFundingOutputs().Learners.SelectMany(l =>
+                l.LearningDeliveryAttributes.Select(ld => ld.LearningDeliveryAttributeDatas)).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryAttributeDatas.LoanBursAreaUplift.Should().Be(false);
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryAttributeDatas - LoanBursSupp Correct"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryAttributeDatas_LoanBursSuppCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryAttributeDatas =
+                TestFundingOutputs().Learners.SelectMany(l =>
+                l.LearningDeliveryAttributes.Select(ld => ld.LearningDeliveryAttributeDatas)).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryAttributeDatas.LoanBursSupp.Should().Be(true);
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryAttributeDatas - OutstndNumOnProgInstalm Correct"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryAttributeDatas_OutstndNumOnProgInstalmCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryAttributeDatas =
+                TestFundingOutputs().Learners.SelectMany(l =>
+                l.LearningDeliveryAttributes.Select(ld => ld.LearningDeliveryAttributeDatas)).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryAttributeDatas.OutstndNumOnProgInstalm.Should().Be(10);
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryAttributeDatas - PlannedNumOnProgInstalm Correct"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryAttributeDatas_PlannedNumOnProgInstalmCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryAttributeDatas =
+                TestFundingOutputs().Learners.SelectMany(l =>
+                l.LearningDeliveryAttributes.Select(ld => ld.LearningDeliveryAttributeDatas)).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryAttributeDatas.PlannedNumOnProgInstalm.Should().Be(20);
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryAttributeDatas - WeightedRate Correct"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryAttributeDatas_WeightedRateCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryAttributeDatas =
+                TestFundingOutputs().Learners.SelectMany(l =>
+                l.LearningDeliveryAttributes.Select(ld => ld.LearningDeliveryAttributeDatas)).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryAttributeDatas.WeightedRate.Should().Be(3.00m);
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryPeriodisedAttributes - WeightedRate Correct"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryPeriodisedAttributes_AttributeNameCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryPeriodisedAttributes =
+                TestFundingOutputs().Learners.SelectMany(l =>
+                l.LearningDeliveryAttributes.Select(ld => ld.LearningDeliveryPeriodisedAttributes)).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryPeriodisedAttributes[0].AttributeName.Should().Be("ALBSupportPayment");
+            learningDeliveryPeriodisedAttributes[1].AttributeName.Should().Be("AreaUpliftBalPayment");
+        }
+
+        /// <summary>
+        /// Return FundingOutput Model
+        /// </summary>
+        [Fact(DisplayName = "FundingOutputModel - LearningDeliveryPeriodisedAttributes - Periods Correct"), Trait("FundingOutputModel", "Unit")]
+        public void FundingOutputModel_LearningDeliveryPeriodisedAttributes_PeriodsCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var learningDeliveryPeriodisedAttributes =
+                TestFundingOutputs().Learners.SelectMany(l =>
+                l.LearningDeliveryAttributes.Select(ld => ld.LearningDeliveryPeriodisedAttributes)).FirstOrDefault();
+
+            // ASSERT
+            learningDeliveryPeriodisedAttributes[0].Period1.Should().Be(100.00m);
+            learningDeliveryPeriodisedAttributes[0].Period2.Should().Be(100.00m);
+            learningDeliveryPeriodisedAttributes[0].Period3.Should().Be(100.00m);
+            learningDeliveryPeriodisedAttributes[0].Period4.Should().Be(100.00m);
+            learningDeliveryPeriodisedAttributes[0].Period5.Should().Be(100.00m);
+            learningDeliveryPeriodisedAttributes[0].Period6.Should().Be(100.00m);
+            learningDeliveryPeriodisedAttributes[0].Period7.Should().Be(100.00m);
+            learningDeliveryPeriodisedAttributes[0].Period8.Should().Be(100.00m);
+            learningDeliveryPeriodisedAttributes[0].Period9.Should().Be(100.00m);
+            learningDeliveryPeriodisedAttributes[0].Period10.Should().Be(100.00m);
+            learningDeliveryPeriodisedAttributes[0].Period11.Should().Be(100.00m);
+            learningDeliveryPeriodisedAttributes[0].Period12.Should().Be(100.00m);
+
+            learningDeliveryPeriodisedAttributes[1].Period1.Should().Be(200.00m);
+            learningDeliveryPeriodisedAttributes[1].Period2.Should().Be(200.00m);
+            learningDeliveryPeriodisedAttributes[1].Period3.Should().Be(200.00m);
+            learningDeliveryPeriodisedAttributes[1].Period4.Should().Be(200.00m);
+            learningDeliveryPeriodisedAttributes[1].Period5.Should().Be(200.00m);
+            learningDeliveryPeriodisedAttributes[1].Period6.Should().Be(200.00m);
+            learningDeliveryPeriodisedAttributes[1].Period7.Should().Be(200.00m);
+            learningDeliveryPeriodisedAttributes[1].Period8.Should().Be(200.00m);
+            learningDeliveryPeriodisedAttributes[1].Period9.Should().Be(200.00m);
+            learningDeliveryPeriodisedAttributes[1].Period10.Should().Be(200.00m);
+            learningDeliveryPeriodisedAttributes[1].Period11.Should().Be(200.00m);
+            learningDeliveryPeriodisedAttributes[1].Period12.Should().Be(200.00m);
+        }
+
         #region Test Helpers
 
         private static readonly IFormatProvider culture = new CultureInfo("en-GB", true);

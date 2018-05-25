@@ -9,8 +9,8 @@
     <ProjectGuid>{F0976C24-FA43-4F5E-8502-2E88D0DBFB1C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests</RootNamespace>
-    <AssemblyName>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Tests</AssemblyName>
+    <RootNamespace>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests</RootNamespace>
+    <AssemblyName>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -138,7 +138,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FundingOutputTests.cs" />
+    <Compile Include="FundingOutputServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

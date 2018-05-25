@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Attribute;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface;
@@ -45,7 +46,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
             };
         }
 
-        private IGlobalAttribute GlobalOutput(IDictionary<string, IAttributeData> attributes)
+        protected internal IGlobalAttribute GlobalOutput(IDictionary<string, IAttributeData> attributes)
         {
            return new GlobalAttribute
            {
@@ -56,7 +57,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
            };
         }
 
-        private ILearnerAttribute[] LearnerOutput(IEnumerable<IDataEntity> learnerEntities)
+        protected internal ILearnerAttribute[] LearnerOutput(IEnumerable<IDataEntity> learnerEntities)
         {
             var learners = new List<ILearnerAttribute>();
 
@@ -73,7 +74,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
             return learners.ToArray();
         }
 
-        private ILearnerPeriodisedAttribute[] LearnerPeriodisedAttributes(IDataEntity learner)
+        protected internal ILearnerPeriodisedAttribute[] LearnerPeriodisedAttributes(IDataEntity learner)
         {
             List<string> attributeList = new List<string> { "ALBSeqNum" };
             List<ILearnerPeriodisedAttribute> learnerPeriodisedAttributesList = new List<ILearnerPeriodisedAttribute>();
@@ -130,7 +131,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
             return learnerPeriodisedAttributesList.ToArray();
         }
 
-        private ILearningDeliveryAttribute[] LearningDeliveryAttributes(IDataEntity learner)
+        protected internal ILearningDeliveryAttribute[] LearningDeliveryAttributes(IDataEntity learner)
         {
             List<ILearningDeliveryAttribute> list = new List<ILearningDeliveryAttribute>();
             string aimSeqNumber = "AimSeqNumber";
@@ -150,7 +151,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
             return list.ToArray();
         }
 
-        private ILearningDeliveryAttributeData LearningDeliveryAttributeData(IDataEntity learningDelivery)
+        protected internal ILearningDeliveryAttributeData LearningDeliveryAttributeData(IDataEntity learningDelivery)
         {
             var attributes = learningDelivery.Attributes;
 
@@ -174,7 +175,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
             };
         }
 
-        private ILearningDeliveryPeriodisedAttribute[] LearningDeliveryPeriodisedAttributeData(IDataEntity learningDelivery)
+        protected internal ILearningDeliveryPeriodisedAttribute[] LearningDeliveryPeriodisedAttributeData(IDataEntity learningDelivery)
         {
             List<string> attributeList = new List<string>() { "ALBCode", "ALBSupportPayment", "AreaUpliftBalPayment", "AreaUpliftOnProgPayment" };
             List<ILearningDeliveryPeriodisedAttribute> learningDeliveryPeriodisedAttributesList = new List<ILearningDeliveryPeriodisedAttribute>();
