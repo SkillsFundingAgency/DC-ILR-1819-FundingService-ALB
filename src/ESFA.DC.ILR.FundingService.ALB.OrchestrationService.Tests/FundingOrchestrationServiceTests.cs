@@ -14,8 +14,12 @@ using ESFA.DC.ILR.FundingService.ALB.ExternalData;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.LARS.Model;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Postcodes.Model;
+using ESFA.DC.ILR.FundingService.ALB.OrchestrationService;
+using ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface;
+using ESFA.DC.ILR.FundingService.ALB.Service;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Interface;
+using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
 using ESFA.DC.ILR.Model;
 using ESFA.DC.ILR.Model.Interface;
 using ESFA.DC.IO.Dictionary;
@@ -38,167 +42,64 @@ using Xunit;
 
 namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
 {
-    public class PreFundingOrchestrationServiceTests
+    public class FundingOrchestrationServiceTests
     {
         /// <summary>
-        /// Return PreFundingOrchestrationService
+        /// Return FundingOrchestrationService
         /// </summary>
-        [Fact(DisplayName = "PreFundingOrchestration - Instance Exists"), Trait("PreFundingOrchestration", "Unit")]
-        public void PreFundingOrchestrationService_Exists()
+        [Fact(DisplayName = "FundingOrchestration - Instance Exists"), Trait("FundingOrchestration Service", "Unit")]
+        public void FundingOrchestrationService_Instance_Exists()
         {
             // ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
-            IReferenceDataCache referenceDataCache = new ReferenceDataCache();
 
             // ACT
-            var preFundingOrchestrationService = SetupPreFundingOrchestrationService(message, referenceDataCache);
+            var preFundingOrchestrationService = FundingOrchestrationService(message);
 
             // ASSERT
             preFundingOrchestrationService.Should().NotBeNull();
         }
 
         /// <summary>
-        /// Populate reference data cache and check values
+        /// Return FundingOrchestrationService
         /// </summary>
-        [Fact(DisplayName = "PopulateReferenceData - LARS Version Correct"), Trait("Funding Service", "Unit")]
-        public void PopulateReferenceData_LARSVersion_Correct()
+        [Fact(DisplayName = "FundingOrchestration - FundingServiceInitialise - DataEntity Count"), Trait("FundingOrchestration Service", "Unit")]
+        public void FundingOrchestrationService_FundingServiceInitialise_DataEntityCount()
         {
             // ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
-            IReferenceDataCache referenceDataCache = new ReferenceDataCache();
-            var preFundingOrchestrationService = SetupPreFundingOrchestrationService(message, referenceDataCache);
 
             // ACT
-            preFundingOrchestrationService.PopulateData(message.Learners.ToList());
+            var preFundingOrchestrationService = FundingOrchestrationService(message);
+            var dataEntities = preFundingOrchestrationService.FundingServiceInitilise();
 
             // ASSERT
-            referenceDataCache.LARSCurrentVersion.Should().Be("Version_005");
+            dataEntities.Count().Should().Be(2);
         }
 
         /// <summary>
-        /// Populate reference data cache and check values
+        /// Return FundingOrchestrationService
         /// </summary>
-        [Fact(DisplayName = "PopulateReferenceData - LARS LearningDelivery Correct"), Trait("Funding Service", "Unit")]
-        public void PopulateReferenceData_LARSVLearningDelivery_Correct()
+        [Fact(DisplayName = "FundingOrchestration - FundingServiceInitialise - LearnRefNumbers Correct"), Trait("FundingOrchestration Service", "Unit")]
+        public void PreFundingOrchestrationService_FundingServiceInitialise_LearnRefNumbersCorrect()
         {
             // ARRANGE
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
-            IReferenceDataCache referenceDataCache = new ReferenceDataCache();
-            var preFundingOrchestrationService = SetupPreFundingOrchestrationService(message, referenceDataCache);
+
+            var learnersExpected = new List<string>()
+            {
+                "22v237",
+                "16v224"
+            };
 
             // ACT
-            preFundingOrchestrationService.PopulateData(message.Learners.ToList());
+            var preFundingOrchestrationService = FundingOrchestrationService(message);
+            var dataEntities = preFundingOrchestrationService.FundingServiceInitilise();
 
             // ASSERT
-            var expectedOutput1 = new LARSLearningDelivery
-            {
-                LearnAimRef = "50094488",
-                LearnAimRefType = "0006",
-                NotionalNVQLevelv2 = "2",
-                RegulatedCreditValue = 180
-            };
+            var learnersActual = dataEntities.SelectMany(g => g.Children.Select(l => l.LearnRefNumber)).ToList();
 
-            var expectedOutput2 = new LARSLearningDelivery
-            {
-                LearnAimRef = "60005415",
-                LearnAimRefType = "0006",
-                NotionalNVQLevelv2 = "4",
-                RegulatedCreditValue = 42
-            };
-
-            var output1 = referenceDataCache.LARSLearningDelivery.Where(k => k.Key == "50094488").Select(o => o.Value);
-            var output2 = referenceDataCache.LARSLearningDelivery.Where(k => k.Key == "60005415").Select(o => o.Value);
-
-            output1.FirstOrDefault().Should().BeEquivalentTo(expectedOutput1);
-            output2.FirstOrDefault().Should().BeEquivalentTo(expectedOutput2);
-        }
-
-        /// <summary>
-        /// Populate reference data cache and check values
-        /// </summary>
-        [Fact(DisplayName = "PopulateReferenceData - LARS Funding Correct"), Trait("Funding Service", "Unit")]
-        public void PopulateReferenceData_LARSFunding_Correct()
-        {
-            // ARRANGE
-            IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
-            IReferenceDataCache referenceDataCache = new ReferenceDataCache();
-            var preFundingOrchestrationService = SetupPreFundingOrchestrationService(message, referenceDataCache);
-
-            // ACT
-            preFundingOrchestrationService.PopulateData(message.Learners.ToList());
-
-            // ASSERT
-            var expectedOutput1 = new LARSFunding
-            {
-                LearnAimRef = "50094488",
-                EffectiveFrom = DateTime.Parse("2000-01-01"),
-                EffectiveTo = null,
-                FundingCategory = "Matrix",
-                WeightingFactor = "G",
-                RateWeighted = 11356m
-            };
-
-            var expectedOutput2 = new LARSFunding
-            {
-                LearnAimRef = "60005415",
-                EffectiveFrom = DateTime.Parse("2000-01-01"),
-                EffectiveTo = null,
-                FundingCategory = "Matrix",
-                WeightingFactor = "C",
-                RateWeighted = 2583m
-            };
-
-            var output1 = referenceDataCache.LARSFunding.Where(k => k.Key == "50094488").Select(o => o.Value).SingleOrDefault();
-            var output2 = referenceDataCache.LARSFunding.Where(k => k.Key == "60005415").SelectMany(o => o.Value).SingleOrDefault();
-
-            output1.Should().BeEquivalentTo(expectedOutput1);
-            output2.Should().BeEquivalentTo(expectedOutput2);
-        }
-
-        /// <summary>
-        /// Populate reference data cache and check values
-        /// </summary>
-        [Fact(DisplayName = "PopulateReferenceData - Postcodes Version Correct"), Trait("Funding Service", "Unit")]
-        public void PopulateReferenceData_Postcodes_Correct()
-        {
-            // ARRANGE
-            IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
-            IReferenceDataCache referenceDataCache = new ReferenceDataCache();
-            var preFundingOrchestrationService = SetupPreFundingOrchestrationService(message, referenceDataCache);
-
-            // ACT
-            preFundingOrchestrationService.PopulateData(message.Learners.ToList());
-
-            // ASSERT
-            referenceDataCache.PostcodeCurrentVersion.Should().Be("Version_002");
-        }
-
-        /// <summary>
-        /// Populate reference data cache and check values
-        /// </summary>
-        [Fact(DisplayName = "PopulateReferenceData - Postcodes SFA AreaCost Correct"), Trait("Funding Service", "Unit")]
-        public void PopulateReferenceData_PostcodesSFAAreaCost_Correct()
-        {
-            // ARRANGE
-            IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
-            IReferenceDataCache referenceDataCache = new ReferenceDataCache();
-            var preFundingOrchestrationService = SetupPreFundingOrchestrationService(message, referenceDataCache);
-
-            // ACT
-            preFundingOrchestrationService.PopulateData(message.Learners.ToList());
-
-            // ASSERT
-            var expectedOutput1 = new SfaAreaCost
-            {
-                Postcode = "CV1 2WT",
-                AreaCostFactor = 1.2m,
-                EffectiveFrom = DateTime.Parse("2000-01-01"),
-                EffectiveTo = null,
-            };
-
-            var output = referenceDataCache.SfaAreaCost.Where(k => k.Key == "CV1 2WT").SelectMany(o => o.Value).FirstOrDefault();
-
-            output.Should().BeEquivalentTo(expectedOutput1);
+            learnersExpected.Should().BeEquivalentTo(learnersActual);
         }
 
         #region Test Helpers
@@ -382,19 +283,20 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
             KeyValuePairs = KeyValuePairsDictionary,
         };
 
-        private PreFundingOrchestrationService SetupPreFundingOrchestrationService(IMessage message, IReferenceDataCache referenceDataCache)
+        private IFundingOrchestrationService FundingOrchestrationService(IMessage message)
         {
             IFundingContext fundingContext = SetupFundingContext(message);
 
             IAttributeBuilder<IAttributeData> attributeBuilder = new AttributeBuilder();
+            IReferenceDataCache referenceDataCache = new ReferenceDataCache();
 
-            var dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
+            IDataEntityBuilder dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
+            IReferenceDataCachePopulationService referenceDataCachePopulationService = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock().Object, PostcodesMock().Object);
+            IFundingService fundingService = new Service.FundingService(dataEntityBuilder, opaService);
 
-            var referenceDataCachePopulationService = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock().Object, PostcodesMock().Object);
+            IPreFundingOrchestrationService preFundingOrchestrationService = new PreFundingOrchestrationService(referenceDataCachePopulationService, fundingContext, fundingService);
 
-            var fundingService = new Service.FundingService(dataEntityBuilder, opaService);
-
-            return new PreFundingOrchestrationService(referenceDataCachePopulationService, fundingContext, fundingService);
+            return new FundingOrchestrationService(preFundingOrchestrationService, fundingContext, fundingService);
         }
 
         private Mock<ILARS> LARSMock()

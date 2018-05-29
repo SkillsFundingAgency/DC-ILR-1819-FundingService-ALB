@@ -61,11 +61,11 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
 
             using (var scope = container.BeginLifetimeScope())
             {
-                var preFundingOrchestration = container.Resolve<IPreFundingOrchestrationService>();
+                var fundingOrchestration = container.Resolve<IFundingOrchestrationService>();
 
                 stopwatch.Start();
 
-                var fundingOutputs = preFundingOrchestration.FundingServiceInitilise();
+                var fundingOutputs = fundingOrchestration.FundingServiceInitilise();
 
                 var fundingCreateTime = stopwatch.Elapsed;
                 System.Console.WriteLine("Funding Complete in " + fundingCreateTime.ToString());
@@ -124,6 +124,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
             builder.RegisterType<ReferenceDataCache>().As<IReferenceDataCache>().InstancePerLifetimeScope();
             builder.RegisterType<ReferenceDataCachePopulationService>().As<IReferenceDataCachePopulationService>().InstancePerLifetimeScope();
             builder.RegisterType<PreFundingOrchestrationService>().As<IPreFundingOrchestrationService>().InstancePerLifetimeScope();
+            builder.RegisterType<FundingOrchestrationService>().As<IFundingOrchestrationService>().InstancePerLifetimeScope();
             builder.RegisterType<XmlSerializationService>().As<ISerializationService>().InstancePerLifetimeScope();
             builder.Register(ctx => BuildKeyValueDictionary()).As<IKeyValuePersistenceService>().InstancePerLifetimeScope();
             builder.RegisterType<FundingContext>().As<IFundingContext>().InstancePerLifetimeScope();
