@@ -12,11 +12,9 @@ using ESFA.DC.ILR.FundingService.ALB.Contexts;
 using ESFA.DC.ILR.FundingService.ALB.Contexts.Interface;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
-using ESFA.DC.ILR.FundingService.ALB.ExternalData.LARS.Model;
-using ESFA.DC.ILR.FundingService.ALB.ExternalData.Postcodes.Model;
-using ESFA.DC.ILR.FundingService.ALB.OrchestrationService;
+using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service;
+using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface;
 using ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface;
-using ESFA.DC.ILR.FundingService.ALB.Service;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
@@ -51,30 +49,30 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
         public void FundingOrchestrationService_Instance_Exists()
         {
             // ARRANGE
-            IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
+            IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-01.xml");
 
             // ACT
-            var preFundingOrchestrationService = FundingOrchestrationService(message);
+            var fundingOrchestrationService = FundingOrchestrationService(message);
 
             // ASSERT
-            preFundingOrchestrationService.Should().NotBeNull();
+            fundingOrchestrationService.Should().NotBeNull();
         }
 
         /// <summary>
         /// Return FundingOrchestrationService
         /// </summary>
-        [Fact(DisplayName = "FundingOrchestration - FundingServiceInitialise - DataEntity Count"), Trait("FundingOrchestration Service", "Unit")]
-        public void FundingOrchestrationService_FundingServiceInitialise_DataEntityCount()
+        [Fact(DisplayName = "FundingOrchestration - FundingServiceInitialise - Output Count"), Trait("FundingOrchestration Service", "Unit")]
+        public void FundingOrchestrationService_FundingServiceInitialise_OutputCount()
         {
             // ARRANGE
-            IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
+            IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-01.xml");
 
             // ACT
-            var preFundingOrchestrationService = FundingOrchestrationService(message);
-            var dataEntities = preFundingOrchestrationService.FundingServiceInitilise();
+            var fundingOrchestrationService = FundingOrchestrationService(message);
+            var fundingOutputs = fundingOrchestrationService.FundingServiceInitilise();
 
             // ASSERT
-            dataEntities.Count().Should().Be(2);
+            fundingOutputs.Count().Should().Be(1);
         }
 
         /// <summary>
@@ -84,7 +82,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
         public void PreFundingOrchestrationService_FundingServiceInitialise_LearnRefNumbersCorrect()
         {
             // ARRANGE
-            IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
+            IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-01.xml");
 
             var learnersExpected = new List<string>()
             {
@@ -93,11 +91,11 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
             };
 
             // ACT
-            var preFundingOrchestrationService = FundingOrchestrationService(message);
-            var dataEntities = preFundingOrchestrationService.FundingServiceInitilise();
+            var fundingOrchestrationService = FundingOrchestrationService(message);
+            var fundingOutputs = fundingOrchestrationService.FundingServiceInitilise();
 
             // ASSERT
-            var learnersActual = dataEntities.SelectMany(g => g.Children.Select(l => l.LearnRefNumber)).ToList();
+            var learnersActual = fundingOutputs.SelectMany(l => l.Learners.Select(lrn => lrn.LearnRefNumber)).ToList();
 
             learnersExpected.Should().BeEquivalentTo(learnersActual);
         }
@@ -292,7 +290,8 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
 
             IDataEntityBuilder dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
             IReferenceDataCachePopulationService referenceDataCachePopulationService = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock().Object, PostcodesMock().Object);
-            IFundingService fundingService = new Service.FundingService(dataEntityBuilder, opaService);
+            IFundingOutputService fundingOutputService = new FundingOutputService();
+            IFundingService fundingService = new Service.FundingService(dataEntityBuilder, opaService, fundingOutputService);
 
             IPreFundingOrchestrationService preFundingOrchestrationService = new PreFundingOrchestrationService(referenceDataCachePopulationService, fundingContext, fundingService);
 

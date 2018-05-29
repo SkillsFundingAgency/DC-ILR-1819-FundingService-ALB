@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -8,19 +9,11 @@ using System.Xml.Serialization;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Attribute;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface.Attribute;
-using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service;
-using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
 using ESFA.DC.ILR.Model;
 using ESFA.DC.ILR.Model.Interface;
-using ESFA.DC.IO.Dictionary;
-using ESFA.DC.IO.Interfaces;
-using ESFA.DC.JobContext;
-using ESFA.DC.JobContext.Interface;
 using ESFA.DC.OPA.Model;
 using ESFA.DC.OPA.Model.Interface;
-using ESFA.DC.Serialization.Interfaces;
-using ESFA.DC.Serialization.Json;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -29,89 +22,6 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
 {
     public class FundingOutputServiceTests
     {
-        /// <summary>
-        /// Return DataEntities from the Funding Service
-        /// </summary>
-        [Fact(DisplayName = "DataEntity - Data Entity Exists"), Trait("FundingOutput Service", "Unit")]
-        public void ProcessFunding_Entity_Exists()
-        {
-            // ARRANGE
-            // Use Test Helpers
-
-            // ACT
-            var dataEntity = FundingServiceMock().Object.ProcessFunding(12345678, testLearners);
-
-            // ASSERT
-            dataEntity.Should().NotBeNull();
-        }
-
-        /// <summary>
-        /// Return DataEntities from the Funding Service
-        /// </summary>
-        [Fact(DisplayName = "DataEntity - Data Entity Count"), Trait("FundingOutput Service", "Unit")]
-        public void ProcessFunding_Entity_Count()
-        {
-            // ARRANGE
-            // Use Test Helpers
-
-            // ACT
-            var dataEntity = FundingServiceMock().Object.ProcessFunding(12345678, testLearners);
-
-            // ASSERT
-            dataEntity.Count().Should().Be(2);
-        }
-
-        /// <summary>
-        /// Return DataEntities from the Funding Service
-        /// </summary>
-        [Fact(DisplayName = "DataEntity - Data Entity - Learners Correct"), Trait("FundingOutput Service", "Unit")]
-        public void ProcessFunding_Entity_LearnersCorrect()
-        {
-            // ARRANGE
-            // Use Test Helpers
-
-            // ACT
-            var dataEntity = FundingServiceMock().Object.ProcessFunding(12345678, testLearners);
-
-            // ASSERT
-            var learners = dataEntity.SelectMany(g => g.Children.Select(l => l.LearnRefNumber)).ToList();
-
-            learners.Should().BeEquivalentTo(new List<string> { "TestLearner1", "TestLearner2" });
-        }
-
-        /// <summary>
-        /// Return DataEntities from the Funding Service
-        /// </summary>
-        [Fact(DisplayName = "DataEntity - Data Entity - ChangePoints Correct"), Trait("FundingOutput Service", "Unit")]
-        public void ProcessFunding_Entity_ChangePointsCorrect()
-        {
-            // ARRANGE
-            var expectedChangePoints = new List<ITemporalValueItem>();
-
-            expectedChangePoints.AddRange(ChangePoints(100.00m));
-            expectedChangePoints.AddRange(ChangePoints(100.00m));
-            expectedChangePoints.AddRange(ChangePoints(100.00m));
-            expectedChangePoints.AddRange(ChangePoints(100.00m));
-            expectedChangePoints.AddRange(ChangePoints(100.00m));
-            expectedChangePoints.AddRange(ChangePoints(100.00m));
-            expectedChangePoints.AddRange(ChangePoints(100.00m));
-            expectedChangePoints.AddRange(ChangePoints(100.00m));
-
-            // ACT
-            var dataEntity = FundingServiceMock().Object.ProcessFunding(12345678, testLearners);
-
-            // ASSERT
-            var actualChangePoints = new List<ITemporalValueItem>();
-            var actualAttributes = dataEntity.SelectMany(g => g.Children.SelectMany(l => l.Children.SelectMany(ld => ld.Attributes.Select(a => a.Value).Where(c => c.Changepoints.Count() > 0))));
-
-            foreach (var attribute in actualAttributes)
-            {
-                actualChangePoints.AddRange(attribute.Changepoints);
-            }
-
-            expectedChangePoints.Should().BeEquivalentTo(actualChangePoints);
-        }
-
         /// <summary>
         /// Return FundingOutputs from the FundingOutput
         /// </summary>
@@ -122,10 +32,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
             // Use Test Helpers
 
             // ACT
-            var fundingOutput = TestFundingOutputs();
+            var fundingOutputService = new FundingOutputService();
 
             // ASSERT
-            fundingOutput.Should().NotBeNull();
+            fundingOutputService.Should().NotBeNull();
         }
 
         /// <summary>
@@ -135,13 +45,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
         public void ProcessFundingOutputs_FundingOutput_GlobalExists()
         {
             // ARRANGE
-            // Use Test Helpers
+            var fundingOutputService = new FundingOutputService();
 
             // ACT
-            var fundingOutput = TestFundingOutputs();
+            var fundingOutput = fundingOutputService.ProcessFundingOutputs(TestEntities());
 
             // ASSERT
-            fundingOutput.Global.Should().NotBeNull();
+            fundingOutput.Select(g => g.Global).Should().NotBeNull();
         }
 
         /// <summary>
@@ -159,15 +69,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
                 RulebaseVersion = "1718.5.10",
             };
 
+            var fundingOutputService = new FundingOutputService();
+
             // ACT
-            var fundingOutput = TestFundingOutputs();
+            var fundingOutput = fundingOutputService.ProcessFundingOutputs(TestEntities());
 
             // ASSERT
-            fundingOutput.Global.Should().BeEquivalentTo(expectedGlobal);
-
-            ISerializationService serializationService = new JsonSerializationService();
-
-            var str = serializationService.Serialize<IFundingOutputs>(fundingOutput);
+            fundingOutput.Select(g => g.Global).Should().BeEquivalentTo(expectedGlobal);
         }
 
         /// <summary>
@@ -177,13 +85,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
         public void ProcessFundingOutputs_FundingOutput_LearnersExist()
         {
             // ARRANGE
-            // Use Test Helpers
+            var fundingOutputService = new FundingOutputService();
 
             // ACT
-            var fundingOutput = TestFundingOutputs();
+            var fundingOutput = fundingOutputService.ProcessFundingOutputs(TestEntities());
 
             // ASSERT
-            fundingOutput.Learners.Should().NotBeNull();
+            fundingOutput.Select(l => l.Learners).Should().NotBeNull();
         }
 
         /// <summary>
@@ -209,15 +117,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
                  }
             };
 
+            var fundingOutputService = new FundingOutputService();
+
             // ACT
-            var fundingOutput = TestFundingOutputs();
+            var fundingOutput = fundingOutputService.ProcessFundingOutputs(TestEntities());
 
             // ASSERT
-            fundingOutput.Learners.Should().BeEquivalentTo(expectedLearners);
-
-            ISerializationService serializationService = new JsonSerializationService();
-
-            var str = serializationService.Serialize<IFundingOutputs>(fundingOutput);
+            fundingOutput.SelectMany(l => l.Learners).Should().BeEquivalentTo(expectedLearners);
         }
 
         /// <summary>
@@ -227,15 +133,15 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
         public void ProcessFundingOutputs_FundingOutput_LearnerAttributesExist()
         {
             // ARRANGE
-            // Use Test Helpers
+            var fundingOutputService = new FundingOutputService();
 
             // ACT
-            var fundingOutput = TestFundingOutputs();
+            var fundingOutput = fundingOutputService.ProcessFundingOutputs(TestEntities());
 
             // ASSERT
-            fundingOutput.Learners.Select(l => l.LearnRefNumber).Should().NotBeNull();
-            fundingOutput.Learners.Select(l => l.LearnerPeriodisedAttributes).Should().NotBeNull();
-            fundingOutput.Learners.Select(l => l.LearningDeliveryAttributes).Should().NotBeNull();
+            fundingOutput.SelectMany(l => l.Learners).Select(l => l.LearnRefNumber).Should().NotBeNull();
+            fundingOutput.SelectMany(l => l.Learners).Select(l => l.LearnerPeriodisedAttributes).Should().NotBeNull();
+            fundingOutput.SelectMany(l => l.Learners).Select(l => l.LearningDeliveryAttributes).Should().NotBeNull();
         }
 
         /// <summary>
@@ -247,11 +153,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
             // ARRANGE
             var expectedLearnRefNumbers = new List<string> { "TestLearner1", "TestLearner2" };
 
+            var fundingOutputService = new FundingOutputService();
+
             // ACT
-            var fundingOutput = TestFundingOutputs();
+            var fundingOutput = fundingOutputService.ProcessFundingOutputs(TestEntities());
 
             // ASSERT
-            var learnRefNmbers = fundingOutput.Learners.Select(l => l.LearnRefNumber).ToList();
+            var learnRefNmbers = fundingOutput.SelectMany(l => l.Learners).Select(l => l.LearnRefNumber).ToList();
 
             expectedLearnRefNumbers.Should().BeEquivalentTo(learnRefNmbers);
         }
@@ -269,11 +177,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
                 TestLearnerPeriodisedValuesArray(1.0m),
             };
 
+            var fundingOutputService = new FundingOutputService();
+
             // ACT
-            var fundingOutput = TestFundingOutputs();
+            var fundingOutput = fundingOutputService.ProcessFundingOutputs(TestEntities());
 
             // ASSERT
-            var learnerPeriodisedAttributes = fundingOutput.Learners.Select(l => l.LearnerPeriodisedAttributes).ToList();
+            var learnerPeriodisedAttributes = fundingOutput.SelectMany(l => l.Learners).Select(l => l.LearnerPeriodisedAttributes).ToList();
 
             expectedLearnerPeriodisedAttributes.Should().BeEquivalentTo(learnerPeriodisedAttributes);
         }
@@ -291,11 +201,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
                 TestLearningDeliveryAttributeArray(1),
             };
 
+            var fundingOutputService = new FundingOutputService();
+
             // ACT
-            var fundingOutput = TestFundingOutputs();
+            var fundingOutput = fundingOutputService.ProcessFundingOutputs(TestEntities());
 
             // ASSERT
-            var learningDelAttributes = fundingOutput.Learners.Select(l => l.LearningDeliveryAttributes).ToList();
+            var learningDelAttributes = fundingOutput.SelectMany(l => l.Learners).Select(l => l.LearningDeliveryAttributes).ToList();
 
             expectedLearningDeliveryAttributes.Should().BeEquivalentTo(learningDelAttributes);
         }
@@ -559,14 +471,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
 
         private static readonly Mock<IFundingService> FundingServiceContextMock = new Mock<IFundingService>();
 
-        private Mock<IFundingService> FundingServiceMock()
-        {
-            FundingServiceContextMock.Setup(x => x.ProcessFunding(12345678, testLearners)).Returns(ProcessFundingMock());
-
-            return FundingServiceContextMock;
-        }
-
-        private IEnumerable<IDataEntity> ProcessFundingMock()
+        private IEnumerable<IDataEntity> TestEntities()
         {
             var entities = new List<DataEntity>();
 
@@ -854,15 +759,6 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
                 }
             }
         };
-
-        private IFundingOutputs TestFundingOutputs()
-        {
-            var dataEntities = FundingServiceMock().Object.ProcessFunding(12345678, testLearners);
-
-            IFundingOutputService fundingOutputService = new FundingOutputService();
-
-            return fundingOutputService.ProcessFundingOutputs(dataEntities);
-        }
 
         private ILearnerPeriodisedAttribute[] TestLearnerPeriodisedValuesArray(decimal value)
         {

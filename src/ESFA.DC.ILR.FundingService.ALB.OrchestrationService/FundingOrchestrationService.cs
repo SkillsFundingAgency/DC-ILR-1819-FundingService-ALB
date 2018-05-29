@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using ESFA.DC.ILR.FundingService.ALB.Contexts.Interface;
+using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface;
 using ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
 using ESFA.DC.OPA.Model.Interface;
@@ -21,7 +22,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService
             _fundingService = fundingService;
         }
 
-        public IEnumerable<IDataEntity> FundingServiceInitilise()
+        public IEnumerable<IFundingOutputs> FundingServiceInitilise()
         {
             var ukprn = _fundingContext.UKPRN;
 

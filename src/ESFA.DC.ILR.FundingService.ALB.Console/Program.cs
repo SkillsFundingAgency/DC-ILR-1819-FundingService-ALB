@@ -75,15 +75,9 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
                 var dataPersister = new DataPersister();
                 dataPersister.PersistData(fundingOutputs);
 
-                IFundingOutputService fundingOutputService = new FundingOutputService();
-                var jOut = fundingOutputService.ProcessFundingOutputs(fundingOutputs);
-                ISerializationService serializationService = new JsonSerializationService();
-
-                var str = serializationService.Serialize<IFundingOutputs>(jOut);
-
                 stopwatch.Stop();
-                var inputsCreateTime = stopwatch.Elapsed;
-                System.Console.WriteLine("Persistance completed in " + inputsCreateTime.ToString());
+                var timetoPersist = stopwatch.Elapsed;
+                System.Console.WriteLine("Persistance completed in " + timetoPersist.ToString());
                 stopwatch.Reset();
             }
         }

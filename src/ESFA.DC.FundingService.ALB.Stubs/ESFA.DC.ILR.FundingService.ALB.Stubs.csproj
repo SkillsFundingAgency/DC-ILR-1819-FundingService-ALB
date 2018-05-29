@@ -15,13 +15,15 @@
   <ItemGroup>
     <PackageReference Include="ESFA.DC.IO.Interfaces" Version="0.1.2-beta0001" />
     <PackageReference Include="ESFA.DC.JobContext" Version="0.1.8-beta0001" />
-    <PackageReference Include="ESFA.DC.JobContext.Interface" Version="0.1.8-beta0001" />
+    <PackageReference Include="ESFA.DC.JobContext.Interface" Version="0.1.9-beta0001" />
     <PackageReference Include="ESFA.DC.Mapping.Interface" Version="0.1.0-beta0001" />
-    <PackageReference Include="ESFA.DC.Serialization.Interfaces" Version="0.1.2-beta0001" />
+    <PackageReference Include="ESFA.DC.Serialization.Interfaces" Version="0.1.4-beta0001" />
+    <PackageReference Include="ESFA.DC.Serialization.Json" Version="0.1.4-beta0001" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.csproj" />
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.Service.Interface\ESFA.DC.ILR.FundingService.ALB.Service.Interface.csproj" />
   </ItemGroup>
 
