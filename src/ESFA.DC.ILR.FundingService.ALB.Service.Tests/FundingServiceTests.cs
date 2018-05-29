@@ -49,6 +49,100 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
         /// <summary>
         /// Return FundingOutputs from the Funding Service
         /// </summary>
+        [Fact(DisplayName = "ProcessFunding - FundingOutput Exists"), Trait("Funding Service", "Unit")]
+        public void ProcessFunding_Exists()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var fundingOutput = RunFundingService();
+
+            // ASSERT
+            fundingOutput.Should().NotBeNull();
+        }
+
+        /// <summary>
+        /// Return FundingOutputs from the Funding Service
+        /// </summary>
+        [Fact(DisplayName = "ProcessFunding - FundingOutput - FundingOutput Correct"), Trait("Funding Service", "Unit")]
+        public void ProcessFunding_FundingOutput_Correct()
+        {
+            // ARRANGE
+            JsonSerializationService jsonSerializationService = new JsonSerializationService();
+
+            // ACT
+            var actualFundingOutput = RunFundingService();
+
+            // ASSERT
+            var expectedFundingOutputModel = jsonSerializationService.Deserialize<FundingOutputs>(LoadJsonToString());
+
+            expectedFundingOutputModel.Should().BeEquivalentTo(actualFundingOutput.FirstOrDefault());
+        }
+
+        #endregion
+
+        #region BuildInputEntities Tests
+
+        /// <summary>
+        /// Return FundingOutputs from the Funding Service
+        /// </summary>
+        [Fact(DisplayName = "BuildInputEntities - DataEntity Exists"), Trait("Funding Service", "Unit")]
+        public void BuildInputEntities_DataEntity_Exists()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var dataEntity = TestBuildInputEntities();
+
+            // ASSERT
+            dataEntity.Should().NotBeNull();
+        }
+
+        /// <summary>
+        /// Return FundingOutputs from the Funding Service
+        /// </summary>
+        [Fact(DisplayName = "BuildInputEntities - DataEntity - Count"), Trait("Funding Service", "Unit")]
+        public void BuildInputEntities_DataEntity_Count()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var dataEntity = TestBuildInputEntities();
+
+            // ASSERT
+            dataEntity.Count().Should().Be(2);
+        }
+
+        /// <summary>
+        /// Return FundingOutputs from the Funding Service
+        /// </summary>
+        [Fact(DisplayName = "BuildInputEntities - DataEntity - LearnRefNumbers Correct"), Trait("Funding Service", "Unit")]
+        public void BuildInputEntities_DataEntity_LearnRefNumbersCorrect()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var dataEntity = TestBuildInputEntities();
+
+            // ASSERT
+            var actualLearners = dataEntity.SelectMany(g => g.Children.Select(l => l.LearnRefNumber)).ToList();
+
+            var expectedLearners = new List<string> { "16v224", "22v237" };
+
+            expectedLearners.Should().BeEquivalentTo(actualLearners);
+        }
+
+        #endregion
+
+        #region ExecuteSessions Tests
+
+        /// <summary>
+        /// Return FundingOutputs from the Funding Service
+        /// </summary>
         [Fact(DisplayName ="ExecuteSessions - Data Entity Exists"), Trait("Funding Service", "Unit")]
         public void ExecuteSessions_Entity_Exists()
         {
@@ -299,6 +393,94 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
 
         #endregion
 
+        #region DataEntitytoFundingOutput Tests
+
+        /// <summary>
+        /// Return FundingOutputs from the Funding Service
+        /// </summary>
+        [Fact(DisplayName = "DataEntitytoFundingOutput - FundingOutput Exists"), Trait("Funding Service", "Unit")]
+        public void DataEntitytoFundingOutput_FundingOutput_Exists()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var fundingOutput = DataEntitytoFundingOutput();
+
+            // ASSERT
+            fundingOutput.Should().NotBeNull();
+        }
+
+        /// <summary>
+        /// Return FundingOutputs from the Funding Service
+        /// </summary>
+        [Fact(DisplayName = "DataEntitytoFundingOutput - FundingOutput Count"), Trait("Funding Service", "Unit")]
+        public void DataEntitytoFundingOutput_FundingOutput_Count()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var fundingOutput = DataEntitytoFundingOutput();
+
+            // ASSERT
+            fundingOutput.Count().Should().Be(1);
+        }
+
+        /// <summary>
+        /// Return FundingOutputs from the Funding Service
+        /// </summary>
+        [Fact(DisplayName = "DataEntitytoFundingOutput - FundingOutput - Learner Count"), Trait("Funding Service", "Unit")]
+        public void DataEntitytoFundingOutput_FundingOutput_LearnerCount()
+        {
+            // ARRANGE
+            // Use Test Helpers
+
+            // ACT
+            var fundingOutput = DataEntitytoFundingOutput();
+
+            // ASSERT
+            fundingOutput.SelectMany(f => f.Learners).Count().Should().Be(2);
+        }
+
+        /// <summary>
+        /// Return FundingOutputs from the Funding Service
+        /// </summary>
+        [Fact(DisplayName = "DataEntitytoFundingOutput - FundingOutput - Global Correct"), Trait("Funding Service", "Unit")]
+        public void DataEntitytoFundingOutput_FundingOutput_GlobalCorrect()
+        {
+            // ARRANGE
+            JsonSerializationService jsonSerializationService = new JsonSerializationService();
+
+            // ACT
+            var actualFundingOutput = DataEntitytoFundingOutput();
+
+            // ASSERT
+            var expectedFundingOutputModel = jsonSerializationService.Deserialize<FundingOutputs>(LoadJsonToString());
+
+            expectedFundingOutputModel.Global.Should().BeEquivalentTo(actualFundingOutput.Select(g => g.Global).FirstOrDefault());
+        }
+
+        /// <summary>
+        /// Return FundingOutputs from the Funding Service
+        /// </summary>
+        [Fact(DisplayName = "DataEntitytoFundingOutput - FundingOutput - Learners Correct"), Trait("Funding Service", "Unit")]
+        public void DataEntitytoFundingOutput_FundingOutput_LearnersCorrect()
+        {
+            // ARRANGE
+            JsonSerializationService jsonSerializationService = new JsonSerializationService();
+
+            // ACT
+            var actualFundingOutput = DataEntitytoFundingOutput();
+
+            // ASSERT
+            var expectedFundingOutputModel = jsonSerializationService.Deserialize<FundingOutputs>(LoadJsonToString());
+
+            expectedFundingOutputModel.Learners.Should().BeEquivalentTo(actualFundingOutput.Select(l => l.Learners).FirstOrDefault());
+        }
+
+        #endregion
+
         #region Test Helpers
 
         #region Test Data
@@ -488,8 +670,9 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             return postcodesContextMock;
         }
 
-        private IEnumerable<IFundingOutputs> RunFundingService(IMessage message)
-        {           
+        private IEnumerable<IFundingOutputs> RunFundingService()
+        {
+            IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IFundingContext fundingContext = SetupFundingContext(message);
 
             IReferenceDataCache referenceDataCache = new ReferenceDataCache();
@@ -501,9 +684,29 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             var fundingService = new FundingService(dataEntityBuilder, opaService, fundingOutputService);
 
             var preFundingOrchestrationService = new PreFundingOrchestrationService(referenceDataCachePopulationService, fundingContext, fundingService);
+
             var learners = preFundingOrchestrationService.PopulateData(fundingContext.ValidLearners);
 
-            return fundingService.ProcessFunding(fundingContext.UKPRN, fundingContext.ValidLearners);
+            return fundingService.ProcessFunding(fundingContext.UKPRN, learners);
+        }
+
+        private IEnumerable<IDataEntity> TestBuildInputEntities()
+        {
+            IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
+            IFundingContext fundingContext = SetupFundingContext(message);
+
+            IReferenceDataCache referenceDataCache = new ReferenceDataCache();
+            IAttributeBuilder<IAttributeData> attributeBuilder = new AttributeBuilder();
+            IReferenceDataCachePopulationService referenceDataCachePopulationService = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock().Object, PostcodesMock().Object);
+            IDataEntityBuilder dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
+            IFundingOutputService fundingOutputService = new FundingOutputService();
+
+            var fundingService = new FundingService(dataEntityBuilder, opaService, fundingOutputService);
+
+            var preFundingOrchestrationService = new PreFundingOrchestrationService(referenceDataCachePopulationService, fundingContext, fundingService);
+            var learners = preFundingOrchestrationService.PopulateData(fundingContext.ValidLearners);
+
+            return fundingService.BuildInputEntities(fundingContext.UKPRN, learners);
         }
 
         private IEnumerable<IDataEntity> TestExecuteSessions()
@@ -526,7 +729,30 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
 
             return fundingService.ExecuteSessions(inputs);
         }
-              
+
+        private IList<IFundingOutputs> DataEntitytoFundingOutput()
+        {
+            IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
+            IFundingContext fundingContext = SetupFundingContext(message);
+
+            IReferenceDataCache referenceDataCache = new ReferenceDataCache();
+            IAttributeBuilder<IAttributeData> attributeBuilder = new AttributeBuilder();
+            IReferenceDataCachePopulationService referenceDataCachePopulationService = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock().Object, PostcodesMock().Object);
+            IDataEntityBuilder dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
+            IFundingOutputService fundingOutputService = new FundingOutputService();
+
+            var fundingService = new FundingService(dataEntityBuilder, opaService, fundingOutputService);
+
+            var preFundingOrchestrationService = new PreFundingOrchestrationService(referenceDataCachePopulationService, fundingContext, fundingService);
+            var learners = preFundingOrchestrationService.PopulateData(fundingContext.ValidLearners);
+
+            var inputs = fundingService.BuildInputEntities(fundingContext.UKPRN, learners);
+
+            var dataEntities = fundingService.ExecuteSessions(inputs);
+
+            return fundingService.DataEntitytoFundingOutput(dataEntities);
+        }
+
         private IFundingContext SetupFundingContext(IMessage message)
         {
             IKeyValuePersistenceService keyValuePersistenceService = BuildKeyValueDictionary(message);
@@ -630,10 +856,22 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             return message;
         }
 
-        public int DecimalStrToInt(string value)
+        private int DecimalStrToInt(string value)
         {
             var valueInt = value.Substring(0, value.IndexOf('.', 0));
             return Int32.Parse(valueInt);
+        }
+
+        private string LoadJsonToString()
+        {
+            string json;
+
+            using (StreamReader r = new StreamReader("Files\\ExpectedJsonString.json"))
+            {
+                json = r.ReadToEnd();
+            }
+
+            return json;
         }
 
         #endregion
