@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESFA.DC.ILR.FundingService.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.FundingService.ALB.Contexts.Tests", "ESFA.DC.ILR.FundingService.ALB.Contexts.Tests\ESFA.DC.ILR.FundingService.ALB.Contexts.Tests.csproj", "{188F210E-8C99-4D9A-99DD-47BA87B7B054}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.FundingService.ALB.Modules", "ESFA.DC.ILR.FundingService.ALB.Modules\ESFA.DC.ILR.FundingService.ALB.Modules.csproj", "{B35119B6-90F4-4589-902A-598F1D0EE1E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESFA.DC.ILR.FundingService.ALB.Modules", "ESFA.DC.ILR.FundingService.ALB.Modules\ESFA.DC.ILR.FundingService.ALB.Modules.csproj", "{B35119B6-90F4-4589-902A-598F1D0EE1E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

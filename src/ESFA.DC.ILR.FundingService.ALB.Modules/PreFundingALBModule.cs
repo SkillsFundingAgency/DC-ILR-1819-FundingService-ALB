@@ -16,9 +16,18 @@ using ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Stubs;
 using ESFA.DC.ILR.Model.Interface;
+using ESFA.DC.IO.Interfaces;
+using ESFA.DC.JobContext.Interface;
+using ESFA.DC.Serialization.Interfaces;
 
 namespace ESFA.DC.ILR.FundingService.ALB.Modules
 {
+    enum SerializationTypes
+    {
+        Json,
+        Xml
+    }
+
     public class PreFundingALBModule : Module
     {
         protected override void Load(ContainerBuilder builder)
@@ -35,6 +44,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.Modules
                 .As<ILearnerPerActorService<ILearner, IList<ILearner>>>()
                 .InstancePerLifetimeScope();
             builder.RegisterType<FundingContext>().As<IFundingContext>().InstancePerLifetimeScope();
+//            builder.Register(c => new FundingContextManager(
+//                c.Resolve<IJobContextMessage>(),
+//                c.Resolve<IKeyValuePersistenceService>(),
+//                c.ResolveKeyed<ISerializationService>(SerializationTypes.Json))).As<IFundingContextManager>().InstancePerLifetimeScope();
             builder.RegisterType<FundingContextManager>().As<IFundingContextManager>().InstancePerLifetimeScope();
             builder.RegisterType<ReferenceDataCache>().As<IReferenceDataCache>().InstancePerLifetimeScope();
         }

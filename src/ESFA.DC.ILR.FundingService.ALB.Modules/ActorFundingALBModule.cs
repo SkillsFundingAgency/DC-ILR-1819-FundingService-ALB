@@ -8,6 +8,7 @@ using ESFA.DC.ILR.FundingService.ALB.OrchestrationService;
 using ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Interface;
+using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Rulebase;
 using ESFA.DC.OPA.Model.Interface;
 using ESFA.DC.OPA.Service;
@@ -29,6 +30,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Modules
             builder.RegisterType<AttributeBuilder>().As<IAttributeBuilder<IAttributeData>>().InstancePerLifetimeScope();
             builder.RegisterType<DataEntityBuilder>().As<IDataEntityBuilder>().InstancePerLifetimeScope();
             builder.RegisterType<ReferenceDataCache>().As<IReferenceDataCache>().InstancePerLifetimeScope();
+            builder.RegisterType<Service.FundingService>().As<IFundingService>().InstancePerLifetimeScope();
             builder.RegisterType<ActorALBOrchestrationService>().As<IActorALBOrchestrationService>()
                 .InstancePerLifetimeScope();
         }
