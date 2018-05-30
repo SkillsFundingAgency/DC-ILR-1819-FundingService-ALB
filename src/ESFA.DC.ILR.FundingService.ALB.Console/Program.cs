@@ -12,7 +12,6 @@ using ESFA.DC.ILR.FundingService.ALB.Contexts;
 using ESFA.DC.ILR.FundingService.ALB.Contexts.Interface;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
-using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface;
 using ESFA.DC.ILR.FundingService.ALB.OrchestrationService;
@@ -61,11 +60,11 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
 
             using (var scope = container.BeginLifetimeScope())
             {
-                var preFundingOrchestration = container.Resolve<IPreFundingOrchestrationService>();
+                var fundingOrchestration = container.Resolve<IFundingOrchestrationService>();
 
                 stopwatch.Start();
 
-                var fundingOutputs = preFundingOrchestration.FundingServiceInitilise();
+                var fundingOutputs = fundingOrchestration.FundingServiceInitilise();
 
                 var fundingCreateTime = stopwatch.Elapsed;
                 System.Console.WriteLine("Funding Complete in " + fundingCreateTime.ToString());
@@ -75,15 +74,9 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
                 var dataPersister = new DataPersister();
                 dataPersister.PersistData(fundingOutputs);
 
-                IFundingOutputService fundingOutputService = new FundingOutputService();
-                var jOut = fundingOutputService.ProcessFundingOutputs(fundingOutputs);
-                ISerializationService serializationService = new JsonSerializationService();
-
-                var str = serializationService.Serialize<IFundingOutputs>(jOut);
-
                 stopwatch.Stop();
-                var inputsCreateTime = stopwatch.Elapsed;
-                System.Console.WriteLine("Persistance completed in " + inputsCreateTime.ToString());
+                var timetoPersist = stopwatch.Elapsed;
+                System.Console.WriteLine("Persistance completed in " + timetoPersist.ToString());
                 stopwatch.Reset();
             }
         }
@@ -124,6 +117,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Console
             builder.RegisterType<ReferenceDataCache>().As<IReferenceDataCache>().InstancePerLifetimeScope();
             builder.RegisterType<ReferenceDataCachePopulationService>().As<IReferenceDataCachePopulationService>().InstancePerLifetimeScope();
             builder.RegisterType<PreFundingOrchestrationService>().As<IPreFundingOrchestrationService>().InstancePerLifetimeScope();
+            builder.RegisterType<FundingOrchestrationService>().As<IFundingOrchestrationService>().InstancePerLifetimeScope();
             builder.RegisterType<XmlSerializationService>().As<ISerializationService>().InstancePerLifetimeScope();
             builder.Register(ctx => BuildKeyValueDictionary()).As<IKeyValuePersistenceService>().InstancePerLifetimeScope();
             builder.RegisterType<FundingContext>().As<IFundingContext>().InstancePerLifetimeScope();

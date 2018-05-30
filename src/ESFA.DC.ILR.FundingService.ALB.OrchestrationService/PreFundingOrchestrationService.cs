@@ -12,26 +12,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService
     public class PreFundingOrchestrationService : IPreFundingOrchestrationService
     {
         private readonly IReferenceDataCachePopulationService _referenceDataCachePopulationService;
-        private readonly IFundingContext _fundingContext;
-        private readonly IFundingService _fundingService;
 
         public PreFundingOrchestrationService(IReferenceDataCachePopulationService referenceDataCachePopulationService, IFundingContext fundingContext, IFundingService fundingService)
         {
             _referenceDataCachePopulationService = referenceDataCachePopulationService;
-            _fundingContext = fundingContext;
-            _fundingService = fundingService;
         }
 
-        public IEnumerable<IDataEntity> FundingServiceInitilise()
-        {
-            var ukprn = _fundingContext.UKPRN;
-
-            var learners = PopulateData(_fundingContext.ValidLearners);
-
-            return _fundingService.ProcessFunding(ukprn, learners);
-        }
-
-        protected internal IList<ILearner> PopulateData(IList<ILearner> learners)
+        public IList<ILearner> PopulateData(IList<ILearner> learners)
         {
             IList<ILearner> learnerList = new List<ILearner>();
             HashSet<string> postcodesList = new HashSet<string>();

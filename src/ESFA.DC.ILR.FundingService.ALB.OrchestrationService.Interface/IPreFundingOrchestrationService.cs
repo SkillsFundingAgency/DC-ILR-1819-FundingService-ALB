@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using ESFA.DC.OPA.Model.Interface;
+using ESFA.DC.ILR.Model.Interface;
 
 namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface
 {
     public interface IPreFundingOrchestrationService
     {
-        IEnumerable<IDataEntity> FundingServiceInitilise();
+        IList<ILearner> PopulateData(IList<ILearner> learners);
     }
 }
