@@ -25,7 +25,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Stubs.Persistance
         {
            using (System.IO.StringWriter textWriter = new System.IO.StringWriter())
             {
-                System.IO.File.WriteAllText(@"C:\Code\temp\ALBFundingService\Json_Output.xml", stringOutput);
+                System.IO.File.WriteAllText(@"C:\Code\temp\ALBFundingService\Json_Output.json", stringOutput);
             }
         }
     }

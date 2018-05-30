@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Attribute;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface;
@@ -163,13 +162,13 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
                 Achieved = ConvertToBit(GetAttributeValue(attributes, "Achieved")),
                 ActualNumInstalm = DecimalStrToInt(GetAttributeValue(attributes, "ActualNumInstalm")),
                 AdvLoan = ConvertToBit(GetAttributeValue(attributes, "AdvLoan")),
-                ApplicFactDate = DateTime.Parse(GetAttributeValue(attributes, "ApplicFactDate"), culture),
+                ApplicFactDate = GetAttributeValueDate(attributes, "ApplicFactDate"),
                 ApplicProgWeightFact = GetAttributeValue(attributes, "ApplicProgWeightFact"),
                 AreaCostFactAdj = decimal.Parse(GetAttributeValue(attributes, "AreaCostFactAdj")),
                 AreaCostInstalment = decimal.Parse(GetAttributeValue(attributes, "AreaCostInstalment")),
                 FundLine = GetAttributeValue(attributes, "FundLine"),
                 FundStart = ConvertToBit(GetAttributeValue(attributes, "FundStart")),
-                LiabilityDate = DateTime.Parse(GetAttributeValue(attributes, "LiabilityDate"), culture),
+                LiabilityDate = GetAttributeValueDate(attributes, "LiabilityDate"),
                 LoanBursAreaUplift = ConvertToBit(GetAttributeValue(attributes, "LoanBursAreaUplift")),
                 LoanBursSupp = ConvertToBit(GetAttributeValue(attributes, "LoanBursSupp")),
                 OutstndNumOnProgInstalm = DecimalStrToInt(GetAttributeValue(attributes, "OutstndNumOnProgInstalm")),
@@ -243,6 +242,20 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
         private string GetAttributeValue(IDictionary<string, IAttributeData> attributes, string attributeName)
         {
             return attributes.Where(k => k.Key == attributeName).Select(v => v.Value.Value).Single().ToString();
+        }
+
+        private DateTime? GetAttributeValueDate(IDictionary<string, IAttributeData> attributes, string attributeName)
+        {
+            var attributeValue = attributes.Where(k => k.Key == attributeName).Select(v => v.Value.Value).Single();
+
+            if (attributeValue != null)
+            {
+                DateTime attributeDateValue = Convert.ToDateTime(attributeValue, culture);
+
+                return attributeDateValue;
+            }
+
+            return null;
         }
 
         private int DecimalStrToInt(string value)
