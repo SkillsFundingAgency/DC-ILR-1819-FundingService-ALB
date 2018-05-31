@@ -139,8 +139,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FundingOrchestrationServiceTests.cs" />
-    <Compile Include="PreFundingOrchestrationServiceTests.cs" />
+    <Compile Include="PreFundingALBOrchestrationServiceTests.cs" />
+    <Compile Include="PreFundingALBPopulationServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +182,14 @@
       <Project>{F8A7B96E-3775-409E-9329-E04BFFBD2E4F}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.InternalData.Interface\ESFA.DC.ILR.FundingService.ALB.InternalData.Interface.csproj">
+      <Project>{C4719022-4D3B-4E70-954B-12879B228D5A}</Project>
+      <Name>ESFA.DC.ILR.FundingService.ALB.InternalData.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.InternalData\ESFA.DC.ILR.FundingService.ALB.InternalData.csproj">
+      <Project>{271A2328-7C9B-4982-BF94-F2A01650360A}</Project>
+      <Name>ESFA.DC.ILR.FundingService.ALB.InternalData</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface\ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface.csproj">
       <Project>{629b2083-780b-40b0-b8c9-3eab85e3014f}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface</Name>
@@ -210,6 +218,9 @@
     <Content Include="Files\ILR-10006341-1819-20180118-023456-02.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

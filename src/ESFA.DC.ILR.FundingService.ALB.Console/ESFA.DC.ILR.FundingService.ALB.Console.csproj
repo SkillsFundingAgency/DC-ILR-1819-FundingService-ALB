@@ -35,8 +35,8 @@
     </CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=4.8.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.8.0\lib\net45\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=4.8.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.8.1\lib\net45\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -151,6 +151,10 @@
       <Project>{F8A7B96E-3775-409E-9329-E04BFFBD2E4F}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.Modules\ESFA.DC.ILR.FundingService.ALB.Modules.csproj">
+      <Project>{8DA0DCD7-6FA7-4874-91DF-D07699E13BB7}</Project>
+      <Name>ESFA.DC.ILR.FundingService.ALB.Modules</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface\ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface.csproj">
       <Project>{629b2083-780b-40b0-b8c9-3eab85e3014f}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface</Name>
@@ -166,6 +170,10 @@
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.Service\ESFA.DC.ILR.FundingService.ALB.Service.csproj">
       <Project>{6cb11e3a-7270-410b-98de-ba4880213768}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.TaskProvider\ESFA.DC.ILR.FundingService.ALB.TaskProvider.csproj">
+      <Project>{9AD5DE52-B4C1-4834-8181-74C01ED2237B}</Project>
+      <Name>ESFA.DC.ILR.FundingService.ALB.TaskProvider</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
