@@ -182,6 +182,14 @@
       <Project>{F8A7B96E-3775-409E-9329-E04BFFBD2E4F}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.InternalData.Interface\ESFA.DC.ILR.FundingService.ALB.InternalData.Interface.csproj">
+      <Project>{C4719022-4D3B-4E70-954B-12879B228D5A}</Project>
+      <Name>ESFA.DC.ILR.FundingService.ALB.InternalData.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.InternalData\ESFA.DC.ILR.FundingService.ALB.InternalData.csproj">
+      <Project>{271A2328-7C9B-4982-BF94-F2A01650360A}</Project>
+      <Name>ESFA.DC.ILR.FundingService.ALB.InternalData</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface\ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface.csproj">
       <Project>{629b2083-780b-40b0-b8c9-3eab85e3014f}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface</Name>

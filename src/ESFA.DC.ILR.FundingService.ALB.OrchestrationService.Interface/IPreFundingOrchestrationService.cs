@@ -5,6 +5,6 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface
 {
     public interface IPreFundingOrchestrationService
     {
-        IList<ILearner> PopulateData(IList<ILearner> learners);
+        void PopulateData(IList<ILearner> learners);
     }
 }

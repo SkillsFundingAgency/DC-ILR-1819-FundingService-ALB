@@ -16,6 +16,8 @@ using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface;
+using ESFA.DC.ILR.FundingService.ALB.InternalData;
+using ESFA.DC.ILR.FundingService.ALB.InternalData.Interface;
 using ESFA.DC.ILR.FundingService.ALB.OrchestrationService;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Interface;
@@ -680,14 +682,14 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             IReferenceDataCachePopulationService referenceDataCachePopulationService = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock().Object, PostcodesMock().Object);
             IDataEntityBuilder dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
             IFundingOutputService fundingOutputService = new FundingOutputService();
-            
+            IValidALBLearnersCache validALBLearnersCache = new ValidALBLearnersCache();
+
             var fundingService = new FundingService(dataEntityBuilder, opaService, fundingOutputService);
 
-            var preFundingOrchestrationService = new PreFundingOrchestrationService(referenceDataCachePopulationService, fundingContext, fundingService);
+            var preFundingOrchestrationService = new PreFundingOrchestrationService(referenceDataCachePopulationService, validALBLearnersCache);
+            preFundingOrchestrationService.PopulateData(fundingContext.ValidLearners);
 
-            var learners = preFundingOrchestrationService.PopulateData(fundingContext.ValidLearners);
-
-            return fundingService.ProcessFunding(fundingContext.UKPRN, learners);
+            return fundingService.ProcessFunding(fundingContext.UKPRN, validALBLearnersCache.ValidLearners);
         }
 
         private IEnumerable<IDataEntity> TestBuildInputEntities()
@@ -700,13 +702,14 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             IReferenceDataCachePopulationService referenceDataCachePopulationService = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock().Object, PostcodesMock().Object);
             IDataEntityBuilder dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
             IFundingOutputService fundingOutputService = new FundingOutputService();
+            IValidALBLearnersCache validALBLearnersCache = new ValidALBLearnersCache();
 
             var fundingService = new FundingService(dataEntityBuilder, opaService, fundingOutputService);
 
-            var preFundingOrchestrationService = new PreFundingOrchestrationService(referenceDataCachePopulationService, fundingContext, fundingService);
-            var learners = preFundingOrchestrationService.PopulateData(fundingContext.ValidLearners);
+            var preFundingOrchestrationService = new PreFundingOrchestrationService(referenceDataCachePopulationService, validALBLearnersCache);
+            preFundingOrchestrationService.PopulateData(fundingContext.ValidLearners);
 
-            return fundingService.BuildInputEntities(fundingContext.UKPRN, learners);
+            return fundingService.BuildInputEntities(fundingContext.UKPRN, validALBLearnersCache.ValidLearners);
         }
 
         private IEnumerable<IDataEntity> TestExecuteSessions()
@@ -719,13 +722,14 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             IReferenceDataCachePopulationService referenceDataCachePopulationService = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock().Object, PostcodesMock().Object);
             IDataEntityBuilder dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
             IFundingOutputService fundingOutputService = new FundingOutputService();
+            IValidALBLearnersCache validALBLearnersCache = new ValidALBLearnersCache();
 
             var fundingService = new FundingService(dataEntityBuilder, opaService, fundingOutputService);
 
-            var preFundingOrchestrationService = new PreFundingOrchestrationService(referenceDataCachePopulationService, fundingContext, fundingService);
-            var learners = preFundingOrchestrationService.PopulateData(fundingContext.ValidLearners);
+            var preFundingOrchestrationService = new PreFundingOrchestrationService(referenceDataCachePopulationService, validALBLearnersCache);
+            preFundingOrchestrationService.PopulateData(fundingContext.ValidLearners);
 
-            var inputs = fundingService.BuildInputEntities(fundingContext.UKPRN, learners);
+            var inputs = fundingService.BuildInputEntities(fundingContext.UKPRN, validALBLearnersCache.ValidLearners);
 
             return fundingService.ExecuteSessions(inputs);
         }
@@ -740,14 +744,15 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             IReferenceDataCachePopulationService referenceDataCachePopulationService = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock().Object, PostcodesMock().Object);
             IDataEntityBuilder dataEntityBuilder = new DataEntityBuilder(referenceDataCache, attributeBuilder);
             IFundingOutputService fundingOutputService = new FundingOutputService();
+            IValidALBLearnersCache validALBLearnersCache = new ValidALBLearnersCache();
 
             var fundingService = new FundingService(dataEntityBuilder, opaService, fundingOutputService);
 
-            var preFundingOrchestrationService = new PreFundingOrchestrationService(referenceDataCachePopulationService, fundingContext, fundingService);
-            var learners = preFundingOrchestrationService.PopulateData(fundingContext.ValidLearners);
+            var preFundingOrchestrationService = new PreFundingOrchestrationService(referenceDataCachePopulationService, validALBLearnersCache);
+            preFundingOrchestrationService.PopulateData(fundingContext.ValidLearners);
 
-            var inputs = fundingService.BuildInputEntities(fundingContext.UKPRN, learners);
-
+            var inputs = fundingService.BuildInputEntities(fundingContext.UKPRN, validALBLearnersCache.ValidLearners);
+            
             var dataEntities = fundingService.ExecuteSessions(inputs);
 
             return fundingService.DataEntitytoFundingOutput(dataEntities);

@@ -16,6 +16,8 @@ using ESFA.DC.ILR.FundingService.ALB.ExternalData.LARS.Model;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Postcodes.Model;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service;
 using ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface;
+using ESFA.DC.ILR.FundingService.ALB.InternalData;
+using ESFA.DC.ILR.FundingService.ALB.InternalData.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Interface;
 using ESFA.DC.ILR.Model;
@@ -394,10 +396,11 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
 
             var referenceDataCachePopulationService = new ReferenceDataCachePopulationService(referenceDataCache, LARSMock().Object, PostcodesMock().Object);
             IFundingOutputService fundingOutputService = new FundingOutputService();
+            IValidALBLearnersCache validALBLearnersCache = new ValidALBLearnersCache();
 
             var fundingService = new Service.FundingService(dataEntityBuilder, opaService, fundingOutputService);
 
-            return new PreFundingOrchestrationService(referenceDataCachePopulationService, fundingContext, fundingService);
+            return new PreFundingOrchestrationService(referenceDataCachePopulationService, validALBLearnersCache);
         }
 
         private Mock<ILARS> LARSMock()

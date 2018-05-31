@@ -2,6 +2,8 @@
 using System.Linq;
 using ESFA.DC.ILR.FundingService.ALB.Contexts.Interface;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
+using ESFA.DC.ILR.FundingService.ALB.InternalData;
+using ESFA.DC.ILR.FundingService.ALB.InternalData.Interface;
 using ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
 using ESFA.DC.ILR.Model.Interface;
@@ -12,13 +14,15 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService
     public class PreFundingOrchestrationService : IPreFundingOrchestrationService
     {
         private readonly IReferenceDataCachePopulationService _referenceDataCachePopulationService;
+        private readonly IValidALBLearnersCache _validALBLearnersCache;
 
-        public PreFundingOrchestrationService(IReferenceDataCachePopulationService referenceDataCachePopulationService, IFundingContext fundingContext, IFundingService fundingService)
+        public PreFundingOrchestrationService(IReferenceDataCachePopulationService referenceDataCachePopulationService, IValidALBLearnersCache validALBLearnersCache)
         {
             _referenceDataCachePopulationService = referenceDataCachePopulationService;
+            _validALBLearnersCache = validALBLearnersCache;
         }
 
-        public IList<ILearner> PopulateData(IList<ILearner> learners)
+        public void PopulateData(IList<ILearner> learners)
         {
             IList<ILearner> learnerList = new List<ILearner>();
             HashSet<string> postcodesList = new HashSet<string>();
@@ -51,7 +55,8 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService
 
             _referenceDataCachePopulationService.Populate(learnAimRefsList.ToList(), postcodesList.ToList());
 
-            return learnerList;
+            var validALBLearnersCache = (ValidALBLearnersCache)_validALBLearnersCache;
+            validALBLearnersCache.ValidLearners = learnerList;
         }
     }
 }
