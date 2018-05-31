@@ -3,8 +3,8 @@ using ESFA.DC.ILR.Model.Interface;
 
 namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface
 {
-    public interface IPreFundingOrchestrationService
+    public interface IPreFundingALBPopulationService
     {
-        void PopulateData(IList<ILearner> learners);
+        void PopulateData();
     }
 }

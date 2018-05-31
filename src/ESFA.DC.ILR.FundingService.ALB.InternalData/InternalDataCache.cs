@@ -4,8 +4,10 @@ using ESFA.DC.ILR.Model.Interface;
 
 namespace ESFA.DC.ILR.FundingService.ALB.InternalData
 {
-    public class ValidALBLearnersCache : IValidALBLearnersCache
+    public class InternalDataCache : IInternalDataCache
     {
+        public int UKPRN { get; set; }
+
         public IList<ILearner> ValidLearners { get; set; }
     }
 }

@@ -11,12 +11,11 @@ namespace ESFA.DC.ILR.FundingService.ALB.Stubs.Persistance
     {
         private static readonly CultureInfo Culture = CultureInfo.CreateSpecificCulture("en-GB");
 
-        public void PersistData(IEnumerable<IFundingOutputs> fundingOutputs)
+        public void PersistData(IFundingOutputs fundingOutputs)
         {
-            var outputs = fundingOutputs.FirstOrDefault();
             ISerializationService serializationService = new JsonSerializationService();
 
-            var serializedOutputs = serializationService.Serialize(outputs);
+            var serializedOutputs = serializationService.Serialize(fundingOutputs);
 
             WriteToFile(serializedOutputs);
         }

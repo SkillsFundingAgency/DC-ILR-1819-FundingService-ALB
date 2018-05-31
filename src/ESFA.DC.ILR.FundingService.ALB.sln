@@ -47,6 +47,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESFA.DC.ILR.FundingService.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.FundingService.ALB.InternalData.Tests", "ESFA.DC.ILR.FundingService.ALB.InternalData.Tests\ESFA.DC.ILR.FundingService.ALB.InternalData.Tests.csproj", "{4955781D-BA32-4344-836F-D818C51EFA77}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.FundingService.ALB.Modules", "ESFA.DC.ILR.FundingService.ALB.Modules\ESFA.DC.ILR.FundingService.ALB.Modules.csproj", "{8DA0DCD7-6FA7-4874-91DF-D07699E13BB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.FundingService.ALB.TaskProvider", "ESFA.DC.ILR.FundingService.ALB.TaskProvider\ESFA.DC.ILR.FundingService.ALB.TaskProvider.csproj", "{9AD5DE52-B4C1-4834-8181-74C01ED2237B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -141,6 +145,14 @@ Global
 		{4955781D-BA32-4344-836F-D818C51EFA77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4955781D-BA32-4344-836F-D818C51EFA77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4955781D-BA32-4344-836F-D818C51EFA77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DA0DCD7-6FA7-4874-91DF-D07699E13BB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DA0DCD7-6FA7-4874-91DF-D07699E13BB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DA0DCD7-6FA7-4874-91DF-D07699E13BB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DA0DCD7-6FA7-4874-91DF-D07699E13BB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AD5DE52-B4C1-4834-8181-74C01ED2237B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AD5DE52-B4C1-4834-8181-74C01ED2237B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AD5DE52-B4C1-4834-8181-74C01ED2237B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AD5DE52-B4C1-4834-8181-74C01ED2237B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
