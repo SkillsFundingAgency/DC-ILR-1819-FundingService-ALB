@@ -31,7 +31,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.TaskProvider.Service
 
         public void ExecuteTasks(Message message)
         {
-            //Build Persistance Dictionary
+            // Build Persistance Dictionary
             BuildKeyValueDictionary(message);
 
             // pre funding

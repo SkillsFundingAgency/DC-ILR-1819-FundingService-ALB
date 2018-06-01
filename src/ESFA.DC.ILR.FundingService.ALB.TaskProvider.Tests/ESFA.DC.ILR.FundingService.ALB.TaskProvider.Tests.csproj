@@ -6,11 +6,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F0976C24-FA43-4F5E-8502-2E88D0DBFB1C}</ProjectGuid>
+    <ProjectGuid>{4EB41BBD-2904-4EDB-9951-489FFA60FEF4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests</RootNamespace>
-    <AssemblyName>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests</AssemblyName>
+    <RootNamespace>ESFA.DC.ILR.FundingService.ALB.TaskProvider.Tests</RootNamespace>
+    <AssemblyName>ESFA.DC.ILR.FundingService.ALB.TaskProvider.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -24,7 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>ESFA.DC.ILR.FundingService.ALB.TaskProvider.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,8 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>
-    </CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>ESFA.DC.ILR.FundingService.ALB.TaskProvider.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
@@ -91,8 +90,11 @@
     <Reference Include="ESFA.DC.Serialization.Json, Version=0.1.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ESFA.DC.Serialization.Json.0.1.4-beta0001\lib\netstandard2.0\ESFA.DC.Serialization.Json.dll</HintPath>
     </Reference>
-    <Reference Include="FluentAssertions, Version=5.3.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentAssertions.5.3.0\lib\net45\FluentAssertions.dll</HintPath>
+    <Reference Include="ESFA.DC.Serialization.Xml, Version=0.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ESFA.DC.Serialization.Xml.0.1.4-beta0001\lib\netstandard2.0\ESFA.DC.Serialization.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentAssertions, Version=5.3.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.5.3.2\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
     <Reference Include="Moq, Version=4.8.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.8.2\lib\net45\Moq.dll</HintPath>
@@ -115,8 +117,6 @@
     </Reference>
     <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -138,33 +138,50 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FundingOutputServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TaskProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Files\ILR-10006341-1819-20180118-023456-02.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="App.config" />
+    <None Include="ESFA.DC.ILR.FundingService.ALB.TaskProvider.Tests.ruleset" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+    <Analyzer Include="..\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ESFA.DC.FundingService.ALB.Stubs\ESFA.DC.ILR.FundingService.ALB.Stubs.csproj">
+      <Project>{24948E52-67E6-404C-BCD0-0EC5B468B86E}</Project>
+      <Name>ESFA.DC.ILR.FundingService.ALB.Stubs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.Contexts\ESFA.DC.ILR.FundingService.ALB.Contexts.csproj">
-      <Project>{253eacde-e617-4a4f-bb83-075170e65211}</Project>
+      <Project>{253EACDE-E617-4A4F-BB83-075170E65211}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.Contexts</Name>
     </ProjectReference>
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.ExternalData\ESFA.DC.ILR.FundingService.ALB.ExternalData.csproj">
-      <Project>{40a43ba4-a9aa-4746-836d-e60ebffe5727}</Project>
+      <Project>{40A43BA4-A9AA-4746-836D-E60EBFFE5727}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.ExternalData</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface.csproj">
-      <Project>{F348A08B-D84B-497A-860C-BB37025F8CCD}</Project>
-      <Name>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.Interface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model.csproj">
-      <Project>{4ca652f1-49f4-4e80-9113-125489413525}</Project>
-      <Name>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface.csproj">
-      <Project>{edd71615-9be3-4a54-9e93-1faa4ed3be77}</Project>
+      <Project>{EDD71615-9BE3-4A54-9E93-1FAA4ED3BE77}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service\ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.csproj">
-      <Project>{f8a7b96e-3775-409e-9329-e04bffbd2e4f}</Project>
+      <Project>{F8A7B96E-3775-409E-9329-E04BFFBD2E4F}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.InternalData.Interface\ESFA.DC.ILR.FundingService.ALB.InternalData.Interface.csproj">
+      <Project>{C4719022-4D3B-4E70-954B-12879B228D5A}</Project>
+      <Name>ESFA.DC.ILR.FundingService.ALB.InternalData.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.InternalData\ESFA.DC.ILR.FundingService.ALB.InternalData.csproj">
+      <Project>{271A2328-7C9B-4982-BF94-F2A01650360A}</Project>
+      <Name>ESFA.DC.ILR.FundingService.ALB.InternalData</Name>
     </ProjectReference>
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface\ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface.csproj">
       <Project>{629b2083-780b-40b0-b8c9-3eab85e3014f}</Project>
@@ -175,32 +192,21 @@
       <Name>ESFA.DC.ILR.FundingService.ALB.OrchestrationService</Name>
     </ProjectReference>
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.Service.Interface\ESFA.DC.ILR.FundingService.ALB.Service.Interface.csproj">
-      <Project>{b483baed-652e-4ec1-aaef-654721bdcfaf}</Project>
+      <Project>{B483BAED-652E-4EC1-AAEF-654721BDCFAF}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.Service.Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.Service\ESFA.DC.ILR.FundingService.ALB.Service.csproj">
       <Project>{6cb11e3a-7270-410b-98de-ba4880213768}</Project>
       <Name>ESFA.DC.ILR.FundingService.ALB.Service</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ESFA.DC.ILR.FundingService.ALB.TaskProvider\ESFA.DC.ILR.FundingService.ALB.TaskProvider.csproj">
+      <Project>{9ad5de52-b4c1-4834-8181-74c01ed2237b}</Project>
+      <Name>ESFA.DC.ILR.FundingService.ALB.TaskProvider</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ESFA.DC.TestHelpers.Mock\ESFA.DC.TestHelpers.Mock.csproj">
-      <Project>{2f41d425-9302-40cf-b848-9ac4f08243f7}</Project>
+      <Project>{2F41D425-9302-40CF-B848-9AC4F08243F7}</Project>
       <Name>ESFA.DC.TestHelpers.Mock</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests.ruleset" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-    <Analyzer Include="..\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Files\ILR-10006341-1819-20180118-023456-02.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -19,11 +19,8 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService
 
         public IEnumerable<IList<ILearner>> Execute()
         {
-            // var ukprn = _fundingContext.UKPRN;
-
             _preFundingOrchestrationService.PopulateData();
 
-            // return _fundingService.ProcessFunding(ukprn, _validALBLearnersCache.ValidLearners);
             return _learnerPerActorService.Process();
         }
     }

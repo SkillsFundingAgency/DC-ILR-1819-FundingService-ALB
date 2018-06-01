@@ -1,172 +1,122 @@
 ﻿using System;
 using System.Collections.Generic;
-using ESFA.DC.ILR.FundingService.ALB.Contexts;
-using ESFA.DC.ILR.FundingService.ALB.Contexts.Interface;
+using System.Linq;
+using ESFA.DC.ILR.FundingService.ALB.InternalData.Interface;
 using ESFA.DC.ILR.Model;
 using ESFA.DC.ILR.Model.Interface;
-using ESFA.DC.IO.Dictionary;
-using ESFA.DC.IO.Interfaces;
-using ESFA.DC.JobContext;
-using ESFA.DC.JobContext.Interface;
-using ESFA.DC.Serialization.Interfaces;
-using ESFA.DC.Serialization.Json;
 using FluentAssertions;
 using Xunit;
 
-namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
+namespace ESFA.DC.ILR.FundingService.ALB.InternalData.Tests
 {
-    public class FundingContextTests
+    public class InternalDataCacheTests
     {
         /// <summary>
-        /// Return FundingContext
+        /// Return InternalDataCache
         /// </summary>
-        [Fact(DisplayName = "FundingContext - Instance Exists"), Trait("Funding Context", "Unit")]
-        public void FundingContext_Exists()
+        [Fact(DisplayName = "InternalDataCache - Instance Exists"), Trait("InternalDataCache", "Unit")]
+        public void InternalDataCache_Exists()
         {
             // ARRANGE
             // Use Test Helpers
 
             // ACT
-            var fundingContext = new FundingContext(TestFundingContextManager);
+            IInternalDataCache internalDataCache = TestInternalDataCache();
 
             // ASSERT
-            fundingContext.Should().NotBeNull();
+            internalDataCache.Should().NotBeNull();
         }
 
         /// <summary>
-        /// Return FundingContext
+        /// Return InternalDataCache
         /// </summary>
-        [Fact(DisplayName = "FundingContext - UKPRN Exists"), Trait("Funding Context", "Unit")]
-        public void FundingContext_UKPRN_Exists()
+        [Fact(DisplayName = "InternalDataCache - UKPRN Exists"), Trait("InternalDataCache", "Unit")]
+        public void InternalDataCache_UKPRN_Exists()
         {
             // ARRANGE
             // Use Test Helpers
 
             // ACT
-            var ukprn = fundngContext.UKPRN;
+            IInternalDataCache internalDataCache = TestInternalDataCache();
 
             // ASSERT
-            ukprn.Should().NotBe(null);
+            internalDataCache.UKPRN.Should().NotBe(null);
         }
 
         /// <summary>
-        /// Return FundingContext
+        /// Return InternalDataCache
         /// </summary>
-        [Fact(DisplayName = "FundingContext - UKPRN - Correct"), Trait("Funding Context Manager", "Unit")]
-        public void FundingContextMapper_UKPRN_Correct()
+        [Fact(DisplayName = "InternalDataCache - UKPRN Correct"), Trait("InternalDataCache", "Unit")]
+        public void InternalDataCache_UKPRN_Correct()
         {
             // ARRANGE
             // Use Test Helpers
 
             // ACT
-            var ukprn = fundngContext.UKPRN;
+            IInternalDataCache internalDataCache = TestInternalDataCache();
 
             // ASSERT
-            ukprn.Should().Be(10006341);
+            internalDataCache.UKPRN.Should().Be(12345678);
         }
 
         /// <summary>
-        /// Return FundingContext
+        /// Return InternalDataCache
         /// </summary>
-        [Fact(DisplayName = "FundingContext - UKPRN - CorrectType"), Trait("Funding Context Manager", "Unit")]
-        public void FundingContextMapper_UKPRN_CorrectType()
+        [Fact(DisplayName = "InternalDataCache - ValidLearners Exists"), Trait("InternalDataCache", "Unit")]
+        public void InternalDataCache_ValidLearners_Exists()
         {
             // ARRANGE
             // Use Test Helpers
 
             // ACT
-            var ukprn = fundngContext.UKPRN;
+            IInternalDataCache internalDataCache = TestInternalDataCache();
 
             // ASSERT
-            ukprn.Should().BeOfType(typeof(int));
-            ukprn.Should().NotBeOfType(typeof(string));
+            internalDataCache.ValidLearners.Should().NotBeNull();
         }
 
         /// <summary>
-        /// Return FundingContext
+        /// Return InternalDataCache
         /// </summary>
-        [Fact(DisplayName = "FundingContext - ValidLearners Exists"), Trait("Funding Context", "Unit")]
-        public void FundingContext_ValidLearners_Exists()
+        [Fact(DisplayName = "InternalDataCache - ValidLearners Correct"), Trait("InternalDataCache", "Unit")]
+        public void InternalDataCache_ValidLearners_Correct()
         {
             // ARRANGE
             // Use Test Helpers
 
             // ACT
-            var validLearners = fundngContext.ValidLearners;
+            IInternalDataCache internalDataCache = TestInternalDataCache();
 
             // ASSERT
-            validLearners.Should().NotBeNull();
+            internalDataCache.ValidLearners.Should().BeEquivalentTo(TestLearners());
         }
 
         /// <summary>
-        /// Return FundingContext
+        /// Return InternalDataCache
         /// </summary>
-        [Fact(DisplayName = "FundingContext - ValidLearners Count Correct"), Trait("Funding Context", "Unit")]
-        public void FundingContext_ValidLearners_CountCorrect()
+        [Fact(DisplayName = "InternalDataCache - ValidLearners Count"), Trait("InternalDataCache", "Unit")]
+        public void InternalDataCache_ValidLearners_Count()
         {
             // ARRANGE
             // Use Test Helpers
 
             // ACT
-            var validLearners = fundngContext.ValidLearners;
+            IInternalDataCache internalDataCache = TestInternalDataCache();
 
             // ASSERT
-            validLearners.Count.Should().Be(2);
-        }
-
-        /// <summary>
-        /// Return FundingContext
-        /// </summary>
-        [Fact(DisplayName = "FundingContext - ValidLearners Correct"), Trait("Funding Context", "Unit")]
-        public void FundingContext_ValidLearners_Correct()
-        {
-            // ARRANGE
-            // Use Test Helpers
-
-            // ACT
-            var validLearners = fundngContext.ValidLearners;
-
-            // ASSERT
-            validLearners.Should().BeEquivalentTo(TestLearners());
+            internalDataCache.ValidLearners.Count().Should().Be(2);
         }
 
         #region Test Helpers
 
-        private static readonly IFundingContextManager TestFundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
-
-        private static IJobContextMessage JobContextMessage => new JobContextMessage
+        private IInternalDataCache TestInternalDataCache()
         {
-            JobId = 1,
-            SubmissionDateTimeUtc = DateTime.Parse("2018-08-01").ToUniversalTime(),
-            Topics = Topics,
-            TopicPointer = 1,
-            KeyValuePairs = KeyValuePairsDictionary,
-        };
-
-        private static IReadOnlyList<ITopicItem> Topics => new List<TopicItem>();
-
-        private static IDictionary<JobContextMessageKey, object> KeyValuePairsDictionary => new Dictionary<JobContextMessageKey, object>()
-        {
-            { JobContextMessageKey.Filename, "FileName" },
-            { JobContextMessageKey.UkPrn, 10006341 },
-            { JobContextMessageKey.ValidLearnRefNumbers, "ValidLearnRefNumbers" },
-        };
-
-        private static IKeyValuePersistenceService KeyValuePersistenceService => BuildKeyValueDictionary();
-
-        private static ISerializationService SerializationService => new JsonSerializationService();
-
-        private static DictionaryKeyValuePersistenceService BuildKeyValueDictionary()
-        {
-            var list = new DictionaryKeyValuePersistenceService();
-
-            IList<ILearner> learners = TestLearners();
-            list.SaveAsync("ValidLearnRefNumbers", SerializationService.Serialize(learners)).Wait();
-
-            return list;
+            return new InternalDataCache
+            {
+                UKPRN = 12345678,
+                ValidLearners = TestLearners(),
+            };
         }
-
-        private IFundingContext fundngContext = new FundingContext(TestFundingContextManager);
 
         private static IList<ILearner> TestLearners()
         {
