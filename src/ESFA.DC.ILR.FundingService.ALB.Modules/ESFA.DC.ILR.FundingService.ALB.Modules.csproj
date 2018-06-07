@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.8.1" />
+    <PackageReference Include="ESFA.DC.ILR.FundingService.Dto" Version="0.1.1-beta0001" />
     <PackageReference Include="ESFA.DC.IO.Dictionary" Version="0.1.7-beta0001" />
     <PackageReference Include="ESFA.DC.IO.Interfaces" Version="0.1.2-beta0001" />
     <PackageReference Include="ESFA.DC.OPA.Service" Version="0.1.2-beta0001" />

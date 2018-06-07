@@ -10,11 +10,11 @@ using ESFA.DC.ILR.FundingService.ALB.ExternalData;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
 using ESFA.DC.ILR.FundingService.ALB.InternalData;
 using ESFA.DC.ILR.FundingService.ALB.InternalData.Interface;
-using ESFA.DC.ILR.FundingService.ALB.Modules.Models;
 using ESFA.DC.ILR.FundingService.ALB.OrchestrationService;
 using ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Stubs;
+using ESFA.DC.ILR.FundingService.Dto;
 using ESFA.DC.ILR.Model.Interface;
 
 namespace ESFA.DC.ILR.FundingService.ALB.Modules
