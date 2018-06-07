@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ESFA.DC.ILR.FundingService.ALB.Contexts.Interface;
+using ESFA.DC.ILR.FundingService.Dtos;
+using ESFA.DC.ILR.FundingService.Dtos.Interfaces;
 using ESFA.DC.ILR.Model;
 using ESFA.DC.ILR.Model.Interface;
 using ESFA.DC.IO.Dictionary;
@@ -26,7 +29,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
             // Use Test Helpers
 
             // ACT
-            var fundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
+            var fundingContextManager = new FundingContextManager(JobContextMessage, FundingServiceDto);
 
             // ASSERT
             fundingContextManager.Should().NotBeNull();
@@ -135,7 +138,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
         public void FundingContextMapper_Mapto_Exist()
         {
             // ARRANGE
-            var fundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
+            var fundingContextManager = new FundingContextManager(JobContextMessage, FundingServiceDto);
 
             // ACT
             var mapTo = fundingContextManager.MapTo(JobContextMessage);
@@ -151,7 +154,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
         public void FundingContextMapper_Mapto_Correct()
         {
             // ARRANGE
-            var fundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
+            var fundingContextManager = new FundingContextManager(JobContextMessage, FundingServiceDto);
 
             // ACT
             var mapTo = fundingContextManager.MapTo(JobContextMessage);
@@ -167,7 +170,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
         public void FundingContextMapper_Mapto_CorrectCount()
         {
             // ARRANGE
-            var fundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
+            var fundingContextManager = new FundingContextManager(JobContextMessage, FundingServiceDto);
 
             // ACT
             var mapTo = fundingContextManager.MapTo(JobContextMessage);
@@ -183,7 +186,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
         public void FundingContextMapper_MapFrom_Correct()
         {
             // ARRANGE
-            var fundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
+            var fundingContextManager = new FundingContextManager(JobContextMessage, FundingServiceDto);
 
             // ACT
             Action mapFrom = () => fundingContextManager.MapFrom(TestLearners());
@@ -230,7 +233,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
 
         #region Test Helpers
 
-        private IFundingContextManager TestFundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
+        private IFundingContextManager TestFundingContextManager = new FundingContextManager(JobContextMessage, FundingServiceDto);
 
         private static IJobContextMessage JobContextMessage => new JobContextMessage
         {
@@ -251,6 +254,23 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
         };
 
         private static IKeyValuePersistenceService KeyValuePersistenceService => BuildKeyValueDictionary();
+
+        private static IFundingServiceDto FundingServiceDto => BuildFundingServiceDto();
+
+        private static IFundingServiceDto BuildFundingServiceDto()
+        {
+            return new FundingServiceDto()
+            {
+                Message = new Message()
+                {
+                    Learner = TestLearners().Cast<MessageLearner>().ToArray()
+                },
+                ValidLearners = new[]
+                {
+                    "Learner1", "Learner2"
+                }
+            };
+        }
 
         private static ISerializationService SerializationService => new JsonSerializationService();
 

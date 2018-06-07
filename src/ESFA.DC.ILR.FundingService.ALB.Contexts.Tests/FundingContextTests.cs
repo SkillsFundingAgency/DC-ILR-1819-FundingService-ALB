@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ESFA.DC.ILR.FundingService.ALB.Contexts;
 using ESFA.DC.ILR.FundingService.ALB.Contexts.Interface;
+using ESFA.DC.ILR.FundingService.Dtos;
+using ESFA.DC.ILR.FundingService.Dtos.Interfaces;
 using ESFA.DC.ILR.Model;
 using ESFA.DC.ILR.Model.Interface;
 using ESFA.DC.IO.Dictionary;
@@ -132,7 +135,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
 
         #region Test Helpers
 
-        private static readonly IFundingContextManager TestFundingContextManager = new FundingContextManager(JobContextMessage, KeyValuePersistenceService, SerializationService);
+        private static readonly IFundingContextManager TestFundingContextManager = new FundingContextManager(JobContextMessage, FundingServiceDto);
 
         private static IJobContextMessage JobContextMessage => new JobContextMessage
         {
@@ -155,6 +158,23 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts.Tests
         private static IKeyValuePersistenceService KeyValuePersistenceService => BuildKeyValueDictionary();
 
         private static ISerializationService SerializationService => new JsonSerializationService();
+
+        private static IFundingServiceDto FundingServiceDto => BuildFundingServiceDto();
+
+        private static IFundingServiceDto BuildFundingServiceDto()
+        {
+            return new FundingServiceDto()
+            {
+                Message = new Message()
+                {
+                    Learner = TestLearners().Cast<MessageLearner>().ToArray()
+                },
+                ValidLearners = new[]
+                {
+                    "Learner1", "Learner2"
+                }
+            };
+        }
 
         private static DictionaryKeyValuePersistenceService BuildKeyValueDictionary()
         {

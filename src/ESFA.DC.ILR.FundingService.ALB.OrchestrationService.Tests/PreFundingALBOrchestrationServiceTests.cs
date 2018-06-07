@@ -21,6 +21,8 @@ using ESFA.DC.ILR.FundingService.ALB.Service.Builders;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Stubs;
+using ESFA.DC.ILR.FundingService.Dtos;
+using ESFA.DC.ILR.FundingService.Dtos.Interfaces;
 using ESFA.DC.ILR.Model;
 using ESFA.DC.ILR.Model.Interface;
 using ESFA.DC.IO.Dictionary;
@@ -327,16 +329,9 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
         {
             IKeyValuePersistenceService keyValuePersistenceService = BuildKeyValueDictionary(message);
             ISerializationService serializationService = new JsonSerializationService();
-            IFundingContextManager fundingContextManager = new FundingContextManager(JobContextMessage, keyValuePersistenceService, serializationService);
+            IFundingServiceDto fundingServiceDto = BuildFundingServiceDto(message);
 
-            return new FundingContext(fundingContextManager);
-        }
-
-        private IFundingContext SetupFundingContext(IList<string> validLearners)
-        {
-            IKeyValuePersistenceService keyValuePersistenceService = new DictionaryKeyValuePersistenceService();
-            ISerializationService serializationService = new JsonSerializationService();
-            IFundingContextManager fundingContextManager = new FundingContextManager(JobContextMessage, keyValuePersistenceService, serializationService);
+            IFundingContextManager fundingContextManager = new FundingContextManager(JobContextMessage, fundingServiceDto);
 
             return new FundingContext(fundingContextManager);
         }
@@ -365,6 +360,15 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
             list.SaveAsync("ValidLearnRefNumbers", serializer.Serialize(learners)).Wait();
 
             return list;
+        }
+
+        private static IFundingServiceDto BuildFundingServiceDto(IMessage message)
+        {
+            return new FundingServiceDto()
+            {
+                Message = message,
+                ValidLearners = message.Learners.Select(learner => learner.LearnRefNumber).ToArray()
+            };
         }
 
         #endregion

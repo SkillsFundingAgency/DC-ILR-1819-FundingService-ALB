@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ESFA.DC.ILR.FundingService.ALB.Contexts.Interface;
+using ESFA.DC.ILR.FundingService.Dtos.Interfaces;
 using ESFA.DC.ILR.Model;
 using ESFA.DC.ILR.Model.Interface;
 using ESFA.DC.IO.Interfaces;
@@ -17,14 +19,12 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts
         private const string UKPRNKey = "UkPrn";
 
         private readonly IJobContextMessage _jobContextMessage;
-        private readonly IKeyValuePersistenceService _keyValuePersistenceService;
-        private readonly ISerializationService _serializationService;
+        private readonly IFundingServiceDto _fundingServiceDto;
 
-        public FundingContextManager(IJobContextMessage jobContextMessage, IKeyValuePersistenceService keyValuePersistenceService, ISerializationService serializationService)
+        public FundingContextManager(IJobContextMessage jobContextMessage, IFundingServiceDto fundingServiceDto)
         {
             _jobContextMessage = jobContextMessage;
-            _keyValuePersistenceService = keyValuePersistenceService;
-            _serializationService = serializationService;
+            _fundingServiceDto = fundingServiceDto;
         }
 
         public int MapUKPRN()
@@ -39,9 +39,8 @@ namespace ESFA.DC.ILR.FundingService.ALB.Contexts
 
         public IList<ILearner> MapTo(IJobContextMessage jobContextMessage)
         {
-            var key = jobContextMessage.KeyValuePairs.Where(k => k.Key.ToString() == ValidLearnRefNumberKey).Select(v => v.Value.ToString()).FirstOrDefault();
-
-            return (IList<ILearner>)_serializationService.Deserialize<MessageLearner[]>(_keyValuePersistenceService.GetAsync(key).Result);
+            return _fundingServiceDto.Message.Learners.Where(learner =>
+                _fundingServiceDto.ValidLearners.Contains(learner.LearnRefNumber)).ToList();
         }
 
         public IJobContextMessage MapFrom(IList<ILearner> learners)

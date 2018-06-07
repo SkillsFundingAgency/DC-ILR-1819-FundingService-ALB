@@ -20,6 +20,8 @@ using ESFA.DC.ILR.FundingService.ALB.InternalData;
 using ESFA.DC.ILR.FundingService.ALB.InternalData.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders;
 using ESFA.DC.ILR.FundingService.ALB.Service.Builders.Interface;
+using ESFA.DC.ILR.FundingService.Dtos;
+using ESFA.DC.ILR.FundingService.Dtos.Interfaces;
 using ESFA.DC.ILR.Model;
 using ESFA.DC.ILR.Model.Interface;
 using ESFA.DC.IO.Dictionary;
@@ -429,20 +431,18 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Tests
 
         private IFundingContext SetupFundingContext(IMessage message)
         {
-            IKeyValuePersistenceService keyValuePersistenceService = BuildKeyValueDictionary(message);
-            ISerializationService serializationService = new JsonSerializationService();
-            IFundingContextManager fundingContextManager = new FundingContextManager(JobContextMessage, keyValuePersistenceService, serializationService);
-
+            IFundingServiceDto fundingServiceDto = BuildFundingServiceDto(message);
+            IFundingContextManager fundingContextManager = new FundingContextManager(JobContextMessage, fundingServiceDto);
             return new FundingContext(fundingContextManager);
         }
 
-        private IFundingContext SetupFundingContext(IList<string> validLearners)
+        private static IFundingServiceDto BuildFundingServiceDto(IMessage message)
         {
-            IKeyValuePersistenceService keyValuePersistenceService = new DictionaryKeyValuePersistenceService();
-            ISerializationService serializationService = new JsonSerializationService();
-            IFundingContextManager fundingContextManager = new FundingContextManager(JobContextMessage, keyValuePersistenceService, serializationService);
-
-            return new FundingContext(fundingContextManager);
+            return new FundingServiceDto()
+            {
+                Message = message,
+                ValidLearners = message.Learners.Select(learner => learner.LearnRefNumber).ToArray()
+            };
         }
 
         private static IRulebaseProvider RulebaseProviderMock()

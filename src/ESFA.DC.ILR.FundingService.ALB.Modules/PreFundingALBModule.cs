@@ -10,6 +10,7 @@ using ESFA.DC.ILR.FundingService.ALB.ExternalData;
 using ESFA.DC.ILR.FundingService.ALB.ExternalData.Interface;
 using ESFA.DC.ILR.FundingService.ALB.InternalData;
 using ESFA.DC.ILR.FundingService.ALB.InternalData.Interface;
+using ESFA.DC.ILR.FundingService.ALB.Modules.Models;
 using ESFA.DC.ILR.FundingService.ALB.OrchestrationService;
 using ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface;
 using ESFA.DC.ILR.FundingService.ALB.Service.Interface;
@@ -22,8 +23,18 @@ namespace ESFA.DC.ILR.FundingService.ALB.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<LARS>().As<ILARS>().InstancePerLifetimeScope();
-            builder.RegisterType<Postcodes>().As<IPostcodes>().InstancePerLifetimeScope();
+            builder.Register(c =>
+            {
+                var referenceDataConfig = c.Resolve<ReferenceDataConfig>();
+                return new LARS(referenceDataConfig.LARSConnectionString);
+            }).As<ILARS>().InstancePerLifetimeScope();
+
+            builder.Register(c =>
+            {
+                var referenceDataConfig = c.Resolve<ReferenceDataConfig>();
+                return new Postcodes(referenceDataConfig.PostCodeConnectionString);
+            }).As<IPostcodes>().InstancePerLifetimeScope();
+
             builder.RegisterType<PreFundingALBOrchestrationService>().As<IPreFundingALBOrchestrationService>().InstancePerLifetimeScope();
             builder.RegisterType<PreFundingALBPopulationService>().As<IPreFundingALBPopulationService>().InstancePerLifetimeScope();
             builder.RegisterType<ReferenceDataCachePopulationService>().As<IReferenceDataCachePopulationService>().InstancePerLifetimeScope();
