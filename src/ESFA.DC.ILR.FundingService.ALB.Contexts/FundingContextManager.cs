@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ESFA.DC.ILR.FundingService.ALB.Contexts.Interface;
-using ESFA.DC.ILR.FundingService.Dtos.Interfaces;
+using ESFA.DC.ILR.FundingService.Dto.Interfaces;
 using ESFA.DC.ILR.Model;
 using ESFA.DC.ILR.Model.Interface;
 using ESFA.DC.IO.Interfaces;
