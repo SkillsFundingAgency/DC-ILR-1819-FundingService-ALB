@@ -80,7 +80,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ASSERT
             var expectedFundingOutputModel = jsonSerializationService.Deserialize<FundingOutputs>(LoadJsonToString());
 
-            expectedFundingOutputModel.Should().BeEquivalentTo(actualFundingOutput.FirstOrDefault());
+            expectedFundingOutputModel.Should().BeEquivalentTo(actualFundingOutput);
         }
 
         #endregion
@@ -427,7 +427,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             var fundingOutput = DataEntitytoFundingOutput();
 
             // ASSERT
-            fundingOutput.Count().Should().Be(1);
+            fundingOutput.Should().NotBeNull();
         }
 
         /// <summary>
@@ -443,7 +443,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             var fundingOutput = DataEntitytoFundingOutput();
 
             // ASSERT
-            fundingOutput.SelectMany(f => f.Learners).Count().Should().Be(2);
+            fundingOutput.Learners.Count().Should().Be(2);
         }
 
         /// <summary>
@@ -461,7 +461,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ASSERT
             var expectedFundingOutputModel = jsonSerializationService.Deserialize<FundingOutputs>(LoadJsonToString());
 
-            expectedFundingOutputModel.Global.Should().BeEquivalentTo(actualFundingOutput.Select(g => g.Global).FirstOrDefault());
+            expectedFundingOutputModel.Global.Should().BeEquivalentTo(actualFundingOutput.Global);
         }
 
         /// <summary>
@@ -479,7 +479,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             // ASSERT
             var expectedFundingOutputModel = jsonSerializationService.Deserialize<FundingOutputs>(LoadJsonToString());
 
-            expectedFundingOutputModel.Learners.Should().BeEquivalentTo(actualFundingOutput.Select(l => l.Learners).FirstOrDefault());
+            expectedFundingOutputModel.Learners.Should().BeEquivalentTo(actualFundingOutput.Learners);
         }
 
         #endregion
@@ -673,7 +673,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             return postcodesContextMock;
         }
 
-        private IEnumerable<IFundingOutputs> RunFundingService()
+        private IFundingOutputs RunFundingService()
         {
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IFundingContext fundingContext = SetupFundingContext(message);
@@ -735,7 +735,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service.Tests
             return fundingService.ExecuteSessions(inputs);
         }
 
-        private IList<IFundingOutputs> DataEntitytoFundingOutput()
+        private IFundingOutputs DataEntitytoFundingOutput()
         {
             IMessage message = ILRFile(@"Files\ILR-10006341-1819-20180118-023456-02.xml");
             IFundingContext fundingContext = SetupFundingContext(message);

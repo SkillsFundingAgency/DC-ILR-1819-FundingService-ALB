@@ -15,7 +15,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService
             _fundingService = fundingService;
         }
 
-        public IEnumerable<IFundingOutputs> Execute(int ukprn, IList<ILearner> albValidLearners)
+        public IFundingOutputs Execute(int ukprn, IList<ILearner> albValidLearners)
         {
             return _fundingService.ProcessFunding(ukprn, albValidLearners);
         }

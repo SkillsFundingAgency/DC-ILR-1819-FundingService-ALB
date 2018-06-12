@@ -6,6 +6,6 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService.Interface
 {
     public interface IALBOrchestrationService
     {
-        IEnumerable<IFundingOutputs> Execute(int ukprn, IList<ILearner> albValidLearners);
+        IFundingOutputs Execute(int ukprn, IList<ILearner> albValidLearners);
     }
 }

@@ -51,7 +51,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
             var fundingOutput = fundingOutputService.ProcessFundingOutputs(TestEntities());
 
             // ASSERT
-            fundingOutput.Select(g => g.Global).Should().NotBeNull();
+            fundingOutput.Global.Should().NotBeNull();
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
             var fundingOutput = fundingOutputService.ProcessFundingOutputs(TestEntities());
 
             // ASSERT
-            fundingOutput.Select(g => g.Global).Should().BeEquivalentTo(expectedGlobal);
+            fundingOutput.Global.Should().BeEquivalentTo(expectedGlobal);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
             var fundingOutput = fundingOutputService.ProcessFundingOutputs(TestEntities());
 
             // ASSERT
-            fundingOutput.Select(l => l.Learners).Should().NotBeNull();
+            fundingOutput.Learners.Should().NotBeNull();
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
             var fundingOutput = fundingOutputService.ProcessFundingOutputs(TestEntities());
 
             // ASSERT
-            fundingOutput.SelectMany(l => l.Learners).Should().BeEquivalentTo(expectedLearners);
+            fundingOutput.Learners.Should().BeEquivalentTo(expectedLearners);
         }
 
         /// <summary>
@@ -139,9 +139,9 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
             var fundingOutput = fundingOutputService.ProcessFundingOutputs(TestEntities());
 
             // ASSERT
-            fundingOutput.SelectMany(l => l.Learners).Select(l => l.LearnRefNumber).Should().NotBeNull();
-            fundingOutput.SelectMany(l => l.Learners).Select(l => l.LearnerPeriodisedAttributes).Should().NotBeNull();
-            fundingOutput.SelectMany(l => l.Learners).Select(l => l.LearningDeliveryAttributes).Should().NotBeNull();
+            fundingOutput.Learners.Select(l => l.LearnRefNumber).Should().NotBeNull();
+            fundingOutput.Learners.Select(l => l.LearnerPeriodisedAttributes).Should().NotBeNull();
+            fundingOutput.Learners.Select(l => l.LearningDeliveryAttributes).Should().NotBeNull();
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
             var fundingOutput = fundingOutputService.ProcessFundingOutputs(TestEntities());
 
             // ASSERT
-            var learnRefNmbers = fundingOutput.SelectMany(l => l.Learners).Select(l => l.LearnRefNumber).ToList();
+            var learnRefNmbers = fundingOutput.Learners.Select(l => l.LearnRefNumber).ToList();
 
             expectedLearnRefNumbers.Should().BeEquivalentTo(learnRefNmbers);
         }
@@ -183,7 +183,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
             var fundingOutput = fundingOutputService.ProcessFundingOutputs(TestEntities());
 
             // ASSERT
-            var learnerPeriodisedAttributes = fundingOutput.SelectMany(l => l.Learners).Select(l => l.LearnerPeriodisedAttributes).ToList();
+            var learnerPeriodisedAttributes = fundingOutput.Learners.Select(l => l.LearnerPeriodisedAttributes).ToList();
 
             expectedLearnerPeriodisedAttributes.Should().BeEquivalentTo(learnerPeriodisedAttributes);
         }
@@ -207,7 +207,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Tests
             var fundingOutput = fundingOutputService.ProcessFundingOutputs(TestEntities());
 
             // ASSERT
-            var learningDelAttributes = fundingOutput.SelectMany(l => l.Learners).Select(l => l.LearningDeliveryAttributes).ToList();
+            var learningDelAttributes = fundingOutput.Learners.Select(l => l.LearningDeliveryAttributes).ToList();
 
             expectedLearningDeliveryAttributes.Should().BeEquivalentTo(learningDelAttributes);
         }

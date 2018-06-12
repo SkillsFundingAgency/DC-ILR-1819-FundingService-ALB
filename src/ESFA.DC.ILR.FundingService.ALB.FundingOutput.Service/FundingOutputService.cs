@@ -36,15 +36,12 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service
            { 12, new DateTime(2018, 07, 01) },
         };
 
-        public IFundingOutputs[] ProcessFundingOutputs(IEnumerable<IDataEntity> dataEntities)
+        public IFundingOutputs ProcessFundingOutputs(IEnumerable<IDataEntity> dataEntities)
         {
-            return new FundingOutputs[]
+            return new FundingOutputs
             {
-                new FundingOutputs
-                {
-                    Global = GlobalOutput(dataEntities.Select(g => g.Attributes).First()),
-                    Learners = LearnerOutput(dataEntities.SelectMany(g => g.Children)),
-                },
+                Global = GlobalOutput(dataEntities.Select(g => g.Attributes).First()),
+                Learners = LearnerOutput(dataEntities.SelectMany(g => g.Children))
             };
         }
 

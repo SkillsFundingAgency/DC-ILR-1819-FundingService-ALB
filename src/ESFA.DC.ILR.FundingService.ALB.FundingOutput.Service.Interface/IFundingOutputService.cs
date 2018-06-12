@@ -6,6 +6,6 @@ namespace ESFA.DC.ILR.FundingService.ALB.FundingOutput.Service.Interface
 {
     public interface IFundingOutputService
     {
-        IFundingOutputs[] ProcessFundingOutputs(IEnumerable<IDataEntity> dataEntities);
+        IFundingOutputs ProcessFundingOutputs(IEnumerable<IDataEntity> dataEntities);
     }
 }

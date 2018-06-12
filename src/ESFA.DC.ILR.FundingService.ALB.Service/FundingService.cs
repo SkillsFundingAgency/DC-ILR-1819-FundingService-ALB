@@ -23,7 +23,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service
             _fundingOutputService = fundingOutputService;
         }
 
-        public IEnumerable<IFundingOutputs> ProcessFunding(int ukprn, IList<ILearner> learnerList)
+        public IFundingOutputs ProcessFunding(int ukprn, IList<ILearner> learnerList)
         {
             // Generate Funding Inputs
             var inputDataEntities = BuildInputEntities(ukprn, learnerList);
@@ -54,7 +54,7 @@ namespace ESFA.DC.ILR.FundingService.ALB.Service
             return outputDataEntities;
         }
 
-        protected internal IList<IFundingOutputs> DataEntitytoFundingOutput(ConcurrentBag<IDataEntity> dataEntities)
+        protected internal IFundingOutputs DataEntitytoFundingOutput(ConcurrentBag<IDataEntity> dataEntities)
         {
             return _fundingOutputService.ProcessFundingOutputs(dataEntities);
         }

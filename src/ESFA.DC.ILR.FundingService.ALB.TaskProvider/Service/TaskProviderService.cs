@@ -58,10 +58,10 @@ namespace ESFA.DC.ILR.FundingService.ALB.TaskProvider.Service
             _keyValuePersistenceService.SaveAsync("ValidLearnRefNumbers", serializer.Serialize(learners)).Wait();
         }
 
-        private IList<IEnumerable<IFundingOutputs>> ProcessFunding(IEnumerable<IList<ILearner>> learnersList)
+        private IList<IFundingOutputs> ProcessFunding(IEnumerable<IList<ILearner>> learnersList)
         {
             int ukprn = _internalDataCache.UKPRN;
-            IList<IEnumerable<IFundingOutputs>> fundingOutputsList = new List<IEnumerable<IFundingOutputs>>();
+            IList<IFundingOutputs> fundingOutputsList = new List<IFundingOutputs>();
 
             foreach (var list in learnersList)
             {
@@ -71,11 +71,11 @@ namespace ESFA.DC.ILR.FundingService.ALB.TaskProvider.Service
             return fundingOutputsList;
         }
 
-        private IFundingOutputs TransformFundingOutput(IList<IEnumerable<IFundingOutputs>> fundingOutputsList)
+        private IFundingOutputs TransformFundingOutput(IList<IFundingOutputs> fundingOutputsList)
         {
-            var global = fundingOutputsList[0].Select(f => f.Global).FirstOrDefault();
+            var global = fundingOutputsList[0].Global;
 
-            var learnerAttributes = fundingOutputsList.SelectMany(f => f.SelectMany(l => l.Learners)).ToArray();
+            var learnerAttributes = fundingOutputsList.SelectMany(l => l.Learners).ToArray();
 
             return new FundingOutputs
             {
