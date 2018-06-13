@@ -39,10 +39,6 @@ namespace ESFA.DC.ILR.FundingService.ALB.OrchestrationService
                         learnerList.Add(learner);
                         added = true;
                     }
-                    else
-                    {
-                        break;
-                    }
 
                     if (added)
                     {
